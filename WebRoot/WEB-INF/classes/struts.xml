@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+	
+
+<struts>
+	<package name="default" namespace="/" extends="struts-default">
+	
+		<!-- 全局结果 
+		<global-results>
+			<result name="Exception">/Exception.jsp</result>
+		</global-results> -->
+		<!-- 全局异常映射  
+		<global-exception-mappings>
+			<exception-mapping result="Exception" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>-->
+		
+		
+		<!-- 配置Action -->
+		<!-- 测试界面  -->
+		<action name="test" class="action.TestAction">
+			<result name="success">/jsp/testJSP.jsp</result>
+		</action>
+		<!-- 进入注册 -->
+		<action name="show_register" class="action.page.Register">
+			<result>/jsp/register1.jsp</result>
+			<result name="haveReg">/register/register_failure.html</result>
+		</action>
+		<!-- 处理注册  -->
+		<action name="getVeriCode" class="action.FinishReg" method="GetVeriCode">
+		</action>
+		<action name="completeReg" class="action.FinishReg" method="CompleteReg">
+			<result>/register/register_success.html</result>
+		</action>
+		<action name="regSuccess" class="action.FinishReg" method="RegSuccess">
+			<result>/register/register_success.html</result>
+		</action>
+		<action name="regFailure" class="action.FinishReg" method="RegFailure">
+			<result>/register/register_failure.html</result>
+		</action>
+		
+		<!-- 页面显示   -->
+		<!-- 进入图书馆首页 -->
+		<action name="show_main" class="action.page.Library_main">
+			<result>/jsp/main.html</result>
+		</action>
+		<!-- 进入单类书籍 -->
+		<action name="show_singleCat" class="action.page.Library_main" method="enterWenxue">
+			<result name="ok">/jsp/single_cat.jsp</result>
+		</action>
+		<!-- 进入单本书籍  -->
+		<action name="show_singleItem" class="action.page.SingleItem">
+			<result>/jsp/single_item.jsp</result>
+		</action>
+		<!-- 显示搜索结果 -->
+		<action name="show_searchInfo" class="action.page.SearchList">
+			<result>/jsp/search_back.jsp</result>
+		</action>
+		
+		<!-- 侧边栏菜单  -->
+		<!-- 我的书架   -->
+		<action name="show_bookshelf" class="action.sidemenu.MyBookshelf">
+			<result>/sidemenu/myBookshelf.jsp</result>
+		</action>
+		<!-- 历史记录   -->
+		<action name="show_history" class="action.sidemenu.History">
+			<result>/sidemenu/history.jsp</result>
+		</action>
+		<!-- 我的借阅   -->
+		<action name="show_myborrow" class="action.sidemenu.Borrow">
+			<result>/sidemenu/borrow.jsp</result>
+		</action>
+		<!-- 购物车   -->
+		<action name="show_shoppingcart" class="action.sidemenu.ShoppingCart">
+			<result>/sidemenu/shoppingcart.jsp</result>
+		</action>
+		<!-- 支付   -->
+		<action name="show_pay" class="action.sidemenu.Pay">
+			<result>/sidemenu/pay.jsp</result>
+		</action>
+				
+	</package>
+</struts>

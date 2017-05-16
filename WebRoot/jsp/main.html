@@ -1,0 +1,160 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,user-scalable=0">
+<title>首页</title>
+
+<link rel="stylesheet" href="css/weui.css" />
+<link rel="stylesheet" href="css/weui2.css" />
+<link rel="stylesheet" href="css/weui3.css" />
+<link rel="stylesheet" type="text/css" href="css/weuix.min.css">
+
+<script src="js/zepto.min.js"></script>
+<script src="js/swipe.js"></script>
+
+<script>
+        $(function(){
+            $('#slide1').swipeSlide({
+                autoSwipe:true,//自动切换默认是
+                speed:3000,//速度默认4000
+                continuousScroll:true,//默认否
+                transitionType:'cubic-bezier(0.22, 0.69, 0.72, 0.88)',//过渡动画linear/ease/ease-in/ease-out/ease-in-out/cubic-bezier
+                lazyLoad:true,//懒加载默认否
+                firstCallback : function(i,sum,me){
+                    me.find('.dot').children().first().addClass('cur');
+                },
+                callback : function(i,sum,me){
+                    me.find('.dot').children().eq(i).addClass('cur').siblings().removeClass('cur');
+                }
+            });
+        });      
+    </script>
+
+
+</head>
+
+<body>
+	<!-- 标题栏   -->
+	<div class="weui-header bg-blue" style="height:78px">
+		<div class="weui-header-left">
+			<a class=" f-white">
+				<div class="weui-avatar-circle">
+					<img src="/library/image/myicon/book.svg" class="weui-avatar-url">
+				</div> </a>
+		</div>
+		<h1 class="weui-header-title" style="margin-top:15px">
+			<span class="">移动图书馆</span>
+		</h1>
+		<!-- <div class="weui-header-right" style="margin-top:15px">
+            <a class="icon icon-83 f-white"></a>
+        </div> -->
+	</div>
+
+	<!-- 搜索框  -->
+	<div class="weui_search_bar">
+		<input type="search" class="search-input" id='search'
+			placeholder='关键字' style="box-sizing:content-box" />
+		<button class="weui_btn weui_btn_mini weui_btn_default">
+			<i class="icon icon-4"></i>
+		</button>
+	</div>
+
+	<!-- 轮播  -->
+	<div class="slide" id="slide1">
+		<ul>
+			<li><a href="#"> <img
+					src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+					data-src="http://7xr193.com1.z0.glb.clouddn.com/1.jpg" alt="">
+			</a>
+				<div class="slide-desc">零哥章魚 完成传奇世界H5-王者归来任务 获得30金币</div>
+			</li>
+			<li><a href="#"> <img
+					src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+					data-src="http://7xr193.com1.z0.glb.clouddn.com/2.jpg" alt="">
+			</a>
+				<div class="slide-desc">23333零哥章魚 完成传奇世界H5-王者归来任务 获得30金币</div>
+			</li>
+			<li><a href="#"> <img
+					src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+					data-src="http://7xr193.com1.z0.glb.clouddn.com/3.jpg" alt="">
+			</a>
+				<div class="slide-desc">33333零哥章魚 完成传奇世界H5-王者归来任务 获得30金币</div>
+			</li>
+		</ul>
+		<div class="dot">
+			<span></span> <span></span> <span></span>
+		</div>
+	</div>
+
+
+	<!-- 书籍分类  -->
+	<div class="weui_grids">
+			<a href="/library/show_singleCat.action?id=wenxue&pagenum=1" class="weui_grid js_grid">
+			<div class="weui_grid_icon">
+				<img src="/library/image/myicon/wenxue.svg" alt="文学">
+			</div>
+			<p class="weui_grid_label">文学</p> 
+			</a> 
+			
+			<a href="/library/show_singleCat.action?id=zhuanji&pagenum=1"  class="weui_grid js_grid">
+			<div class="weui_grid_icon">
+				<img src="/library/image/myicon/zhuanji.svg" alt="传记">
+			</div>
+			<p class="weui_grid_label">传记</p> 
+			</a> 
+			
+			<a href="/library/show_singleCat.action?id=lishi&pagenum=1"	class="weui_grid js_grid">
+			<div class="weui_grid_icon">
+				<img src="/library/image/myicon/lishi.svg" alt="历史">
+			</div>
+			<p class="weui_grid_label">历史</p> 
+			</a> 
+			
+			<a href="/library/show_singleCat.action?id=zhexue&pagenum=1"	class="weui_grid js_grid">
+			<div class="weui_grid_icon">
+				<img src="/library/image/myicon/zhexue.svg" alt="哲学">
+			</div>
+			<p class="weui_grid_label">哲学</p>
+			</a> 
+			
+			<a href="/library/show_singleCat.action?id=ertong&pagenum=1"	class="weui_grid js_grid">
+			<div class="weui_grid_icon">
+				<img src="/library/image/myicon/ertong.svg" alt="儿童">
+			</div>
+			<p class="weui_grid_label">儿童</p>
+			</a>
+			
+			<a href="/library/show_singleCat.action?id=xiaoshuo&pagenum=1"	class="weui_grid js_grid">
+			<div class="weui_grid_icon">
+				<img src="/library/image/myicon/xiaoshuo.svg" alt="小说">
+			</div>
+			<p class="weui_grid_label">小说</p> 
+			</a> 
+			
+			<a href="/library/show_singleCat.action?id=xinli&pagenum=1"	class="weui_grid js_grid">
+			<div class="weui_grid_icon">
+				<img src="/library/image/myicon/xinli.svg" alt="心理">
+			</div>
+			<p class="weui_grid_label">心理</p> 
+			</a> 
+			
+			<a href="/library/show_singleCat.action?id=shehui&pagenum=1"	class="weui_grid js_grid">
+			<div class="weui_grid_icon">
+				<img src="/library/image/myicon/guanli.svg" alt="社会">
+			</div>
+			<p class="weui_grid_label">社会</p> 
+			</a> 
+			
+			<a href="/library/show_singleCat.action?id=keji&pagenum=1"	class="weui_grid js_grid">
+			<div class="weui_grid_icon">
+				<img src="/library/image/myicon/jisuanji.svg" alt="科技">
+			</div>
+			<p class="weui_grid_label">科技</p> 
+			</a>
+			
+	</div>
+
+
+</body>
+</html>

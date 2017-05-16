@@ -1,0 +1,11 @@
+现在又一张表library_test
+结构为：id varchar(16), name varchar(16), tel varchar(16)
+
+第一步先将用户的微信信息存入
+	例如insert into library_test(name) values ('gyz'); 
+	注意：列名name不要加引号！！！！！！
+第二步存入用户的其他信息
+	例如update library_test
+		set id = '001',tel='110'
+		where name='gyz';
+最终可以得到一个完整的行		
