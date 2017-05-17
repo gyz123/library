@@ -77,13 +77,46 @@ public class History extends ActionSupport{
 	}
 
 	
-	private void createYear(HashMap<String,Integer> bookYear){
+	private void createYear(HashMap<String,Integer> bookYear) throws IOException{
+		StringBuffer sb = new StringBuffer();
+		sb.append("{");
+		sb.append("\"title\":[\"2015\", \"2016\", \"2017\"],");
+		sb.append("\"num\" : [" + bookYear.get("2015") + "," + bookYear.get("2016") + "," + bookYear.get("2017") + "]");
+		sb.append("}");
+		
+		final String filename = "C:\\year.txt";  
+		FileWriter fw = new FileWriter(filename);
+		BufferedWriter bw = new BufferedWriter(fw);
+		bw.write(sb.toString());
+		bw.newLine();
+		bw.flush();
+		bw.close();
+		fw.close();
 		
 	}
 	
 	
-	private void createMonth(HashMap<String,Integer> bookMonth){
+	private void createMonth(HashMap<String,Integer> bookMonth) throws IOException{
+		StringBuffer sb = new StringBuffer();
+		sb.append("{");
+		sb.append("\"year\" : 2017,");
+		sb.append("\"data\": [");
+		Set<String> keySet = bookMonth.keySet();
+		for(String month:keySet){
+			sb.append(bookMonth.get(month) + ",");
+		}
+		sb.deleteCharAt(sb.toString().length()-1);
+		sb.append("]");
+		sb.append("}");
 		
+		final String filename = "C:\\month.txt";  
+		FileWriter fw = new FileWriter(filename);
+		BufferedWriter bw = new BufferedWriter(fw);
+		bw.write(sb.toString());
+		bw.newLine();
+		bw.flush();
+		bw.close();
+		fw.close();
 	}
 	
 	
