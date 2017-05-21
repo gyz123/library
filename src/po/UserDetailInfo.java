@@ -70,12 +70,11 @@ public class UserDetailInfo {
 		this.unionid = unionid;
 	}
 
-	@Override
+	@Override  // ∏Ò Ω£∫openid=1,nickname=gyz,headimgurl=***,realName=GYZ,idCard=123456,tel=110}
 	public String toString() {
-		return "UserDetailInfo [openid=" + openid + ", nickname=" + nickname
-				+ ", headimgurl=" + headimgurl + ", realName=" + realName
-				+ ", idCard=" + idCard + ", tel=" + tel + ", unionid="
-				+ unionid + "]";
+		return "openid=" + openid + ",nickname=" + nickname
+				+ ",headimgurl=" + headimgurl + ",realName=" + realName
+				+ ",idCard=" + idCard + ",tel=" + tel + "}";
 	}
 	
 }

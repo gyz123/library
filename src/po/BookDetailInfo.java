@@ -116,6 +116,19 @@ public class BookDetailInfo {
 	public void setTag3(String tag3) {
 		this.tag3 = tag3;
 	}
+
+	@Override
+	public String toString() { // Î´Êä³ötag
+		return "bookno=" + bookno + ",isbn=" + isbn
+				+ ",bookname=" + bookname + ",category=" + category
+				+ ",publisher=" + publisher + ",version=" + version
+				+ ",bookimg=" + bookimg + ",outline=" + outline
+				+ ",bookAbstract=" + bookAbstract + ",guide=" + guide
+				+ ",leftnum=" + leftnum + ",price=" + price + "}";
+	}
+
+	
+	
 	
 	
 }

@@ -26,5 +26,13 @@ public class Book {
 	public void setBookimg(String bookimg) {
 		this.bookimg = bookimg;
 	}
+
+	@Override  // bookno=001,bookname=Œ¢π€¿˙ ∑,bookimg=************}
+	public String toString() {
+		return "bookno=" + bookno + ",bookname=" + bookname
+				+ ",bookimg=" + bookimg + "}";
+	}
+	
+	
 	
 }

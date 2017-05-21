@@ -114,7 +114,7 @@ public class Library_main extends ActionSupport{
 //       		if (bookList.size() > 0) {
 //				context.put("booklist", bookList);
 //			}
-       		String str = SQLUtil.querySingleCat2("('¶ùÍ¯')", pageNum);
+       		String str = SQLUtil.querySingleCat2("('¶ùÍ¯ÎÄÑ§')", pageNum);
        		String[] dataList = str.split("##");
        		for(int i=0; i<dataList.length; i++){
        			Book book = new Book();

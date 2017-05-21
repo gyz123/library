@@ -58,6 +58,7 @@
 			<result>/jsp/search_back.jsp</result>
 		</action>
 		
+		
 		<!-- 侧边栏菜单  -->
 		<!-- 我的书架   -->
 		<action name="show_bookshelf" class="action.sidemenu.MyBookshelf">
@@ -78,6 +79,21 @@
 		<!-- 支付   -->
 		<action name="show_pay" class="action.sidemenu.Pay">
 			<result>/sidemenu/pay.jsp</result>
+		</action>
+				
+		
+		<!-- 管理员操作    -->
+		<!-- bookno搜索  -->
+		<action name="searchsingle" class="action.manager.SearchBook" method="searchSingle">
+		</action>
+		<!-- bookname搜索   -->
+		<action name="searchlist" class="action.manager.SearchBook" method="searchList">
+		</action>
+		<!-- category搜索 -->
+		<action name="booklist" class="action.manager.SearchBook" method="bookList">
+		</action>
+		<!-- 用户列表   -->
+		<action name="userlist" class="action.manager.SearchUser" method="searchList">
 		</action>
 				
 	</package>
