@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.opensymphony.xwork2.ActionContext;
-
 import po.Book;
 import po.BookDetailInfo;
 import po.UserDetailInfo;
@@ -71,7 +69,42 @@ public class SQLUtil {
 		}
 	}
 	
-	// 查找单类书籍的简要信息
+	// 返回用户详细信息的列表
+	public static ArrayList<UserDetailInfo> queryUserList(){
+		ArrayList<UserDetailInfo> userList = new ArrayList<UserDetailInfo>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+			Statement s = con.createStatement();
+			String query = "select * from user";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {  
+            	String weid = ret.getString(1);  
+            	String phone = ret.getString(2);
+            	String wename  = ret.getString(3);
+            	String weimg = ret.getString(4);
+            	String idcard = ret.getString(5);
+            	String username = ret.getString(6);
+            	UserDetailInfo user = new UserDetailInfo();
+            	user.setOpenid(weid);
+            	user.setTel(phone);
+            	user.setNickname(wename);
+            	user.setHeadimgurl(weimg);
+            	user.setIdCard(idcard);
+            	user.setRealName(username);
+            	userList.add(user);
+            }
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return userList;
+	}
+	
+	
+	// 查找单类书籍（简要信息）
 	public static ArrayList<Book> querySingleCat(String category,String pageNum){
 		ArrayList<Book> bookList = new ArrayList<Book>();
 		try {
@@ -102,7 +135,7 @@ public class SQLUtil {
 		return bookList;
 	}
 	
-	// 查找单本书籍的详细信息（由类别进入）
+	// 查找单本书籍（详细信息）（由类别进入）
 	public static BookDetailInfo querySingleBookFromCat(String bookNo){
 		BookDetailInfo book = new BookDetailInfo();
 		try {
@@ -150,7 +183,7 @@ public class SQLUtil {
 		return book;
 	}
 	
-	// 搜索返回结果
+	// 搜索返回结果(简略信息)
 	public static ArrayList<Book> querySingleBookFromSearch(String bookName,String pageNum){
 		ArrayList<Book> bookSearchList = new ArrayList<Book>();
 		try {
@@ -204,4 +237,49 @@ public class SQLUtil {
 		
 		return sb.toString();
 	}
+	
+	
+	// 查找单类书籍（详细信息）
+	public static ArrayList<BookDetailInfo> querySingleCat3(String category,
+			String pageNum) {
+		ArrayList<BookDetailInfo> bookList = new ArrayList<BookDetailInfo>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library", "root", "root");
+			Statement s = con.createStatement();
+
+			String query = "select bookno,bookname,bookimg from book where category in "
+					+ category
+					+ " limit "
+					+ (9 * ((Integer.parseInt(pageNum)) - 1)) + ",9;";
+			System.out.println(query);
+			ResultSet ret = s.executeQuery(query);
+			// 将搜索到的9本书放入ArrayList中
+			while (ret.next()) {
+				BookDetailInfo book = new BookDetailInfo();
+				String bookno = ret.getString(1);
+            	book.setBookno(bookno);
+            	String isbn = ret.getString(2);
+            	book.setIsbn(isbn);
+            	String bookname = ret.getString(3);
+            	book.setBookname(bookname);
+            	book.setCategory(ret.getString(4));
+            	book.setPublisher(ret.getString(5));
+            	book.setVersion(ret.getString(6));
+            	book.setBookimg(ret.getString(7));
+            	book.setOutline(ret.getString(8));
+            	book.setBookAbstract(ret.getString(9));
+            	book.setGuide(ret.getString(10));
+            	book.setLeftnum(ret.getString(11));
+            	book.setPrice(ret.getString(12));
+				bookList.add(book);
+			}
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bookList;
+	}
+	
 }

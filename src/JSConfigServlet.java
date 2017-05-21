@@ -12,8 +12,8 @@ import util.PastUtil;
 
 
 public class JSConfigServlet extends HttpServlet{
-	private static final String APPID = "wx6b71cb3f69dd9a86";
-	private static final String APPSECRET = "f02adc4026d13796f35169b778b4e9ef";
+	private static final String APPID = "wxde3504dfb219fc20";
+	private static final String APPSECRET = "1824588d88f3251162b7ba687776b855";
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)

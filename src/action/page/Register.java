@@ -31,7 +31,7 @@ public class Register extends ActionSupport{
 		String userID = "";
 		String access_token = "";
 		String refresh_token = "";
-		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx6b71cb3f69dd9a86&secret=f02adc4026d13796f35169b778b4e9ef&code=" + code + "&grant_type=authorization_code";
+		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxde3504dfb219fc20&secret=1824588d88f3251162b7ba687776b855&code=" + code + "&grant_type=authorization_code";
 		JSONObject jsonObject = WeixinUtil.doGetStr(url);
 		if(jsonObject != null){
 			userID = jsonObject.getString("openid");
