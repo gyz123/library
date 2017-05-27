@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import po.Book;
 import po.BookDetailInfo;
+import po.BookInCategory;
 import po.UserDetailInfo;
 
 public class SQLUtil {
@@ -36,15 +37,15 @@ public class SQLUtil {
 	}
 	
 	// 添加用户微信信息
-	public static void addUserWXInfo(String database,UserDetailInfo user){
+	public static void addUserWXInfo(String database,String openid,String nickname,String headimg){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
 					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
 			Statement s = con.createStatement();
-			String query = "insert into user (weid,wename,weimg) values ('" + user.getOpenid() + "','" 
-					+ user.getNickname()+ "','" + user.getHeadimgurl() + "');";
-//			System.out.println(query);
+			String query = "insert into user (weid,wename,weimg) values ('" + openid + "','" 
+					+ nickname + "','" + headimg + "');";
+			System.out.println(query);
 			s.executeUpdate(query);
             con.close();
 		} catch (Exception e) {
@@ -69,7 +70,7 @@ public class SQLUtil {
 		}
 	}
 	
-	// 返回用户详细信息的列表
+	// 返回所有用户的详细信息
 	public static ArrayList<UserDetailInfo> queryUserList(){
 		ArrayList<UserDetailInfo> userList = new ArrayList<UserDetailInfo>();
 		try {
@@ -103,29 +104,88 @@ public class SQLUtil {
 		return userList;
 	}
 	
+	// 返回单个用户的详细信息
+	public static UserDetailInfo querySingleUser(String wename){
+		UserDetailInfo user = new UserDetailInfo();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+			Statement s = con.createStatement();
+			String query = "select * from user where wename = '" + wename +"';";
+//			System.out.println(query);
+			ResultSet ret = s.executeQuery(query);
+			// 获取用户信息
+			while (ret.next()) {  
+				user.setOpenid(ret.getString(1));
+				user.setTel(ret.getString(2));
+				user.setNickname(ret.getString(3));
+				user.setHeadimgurl(ret.getString(4));
+				user.setIdCard(ret.getString(5));
+				user.setRealName(ret.getString(6));
+            }
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
 	
-	// 查找单类书籍（简要信息）
-	public static ArrayList<Book> querySingleCat(String category,String pageNum){
-		ArrayList<Book> bookList = new ArrayList<Book>();
+	
+	// 查找单类书籍（编号，书名，图片）
+//	public static ArrayList<Book> querySingleCat(String category,String pageNum){
+//		ArrayList<Book> bookList = new ArrayList<Book>();
+//		try {
+//			Class.forName("com.mysql.jdbc.Driver");
+//			Connection con = DriverManager.getConnection(
+//					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+//			Statement s = con.createStatement();
+//			
+//			String query = "select bookno,bookname,bookimg from book where category in " + category + " limit "
+//								+ (5*((Integer.parseInt(pageNum))-1)) + ",5;";
+//			System.out.println(query);
+//			ResultSet ret = s.executeQuery(query);
+//			// 将搜索到的9本书放入ArrayList中
+//			while (ret.next()) {  
+//				System.out.println("bookno" + ret.getString(1));
+//				System.out.println("bookname" + ret.getString(2));
+//				System.out.println("bookimg" + ret.getString(3));
+//				Book book = new Book();
+//            	book.setBookno(ret.getString(1));
+//            	book.setBookname(ret.getString(2));
+//            	book.setBookimg(ret.getString(3));
+//            	bookList.add(book);
+//            }
+//            con.close();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return bookList;
+//	}
+	
+	
+	// 查找单类书籍（编号，书名，图片，作者，剩余）
+	public static ArrayList<BookInCategory> querySingleCat(String category,String pageNum){
+		ArrayList<BookInCategory> bookList = new ArrayList<BookInCategory>();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
 					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
 			Statement s = con.createStatement();
 			
-			String query = "select bookno,bookname,bookimg from book where category in " + category + " limit "
-								+ (9*((Integer.parseInt(pageNum))-1)) + ",9;";
+			String query = "select bookno,bookname,bookimg,author,leftnum,publisher from book where category in " + category + " limit "
+								+ (5*((Integer.parseInt(pageNum))-1)) + ",5;";
 			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			// 将搜索到的9本书放入ArrayList中
 			while (ret.next()) {  
-				System.out.println("bookno" + ret.getString(1));
-				System.out.println("bookname" + ret.getString(2));
-				System.out.println("bookimg" + ret.getString(3));
-				Book book = new Book();
+				BookInCategory book = new BookInCategory();
             	book.setBookno(ret.getString(1));
             	book.setBookname(ret.getString(2));
             	book.setBookimg(ret.getString(3));
+            	book.setAuthor(ret.getString(4));
+            	book.setLeftNum(ret.getString(5));
+				book.setPublisher(ret.getString(6));
             	bookList.add(book);
             }
             con.close();
@@ -135,7 +195,8 @@ public class SQLUtil {
 		return bookList;
 	}
 	
-	// 查找单本书籍（详细信息）（由类别进入）
+	
+	// 查找单本书籍（所有）（由类别进入）
 	public static BookDetailInfo querySingleBookFromCat(String bookNo){
 		BookDetailInfo book = new BookDetailInfo();
 		try {
@@ -183,26 +244,29 @@ public class SQLUtil {
 		return book;
 	}
 	
-	// 搜索返回结果(简略信息)
-	public static ArrayList<Book> querySingleBookFromSearch(String bookName,String pageNum){
-		ArrayList<Book> bookSearchList = new ArrayList<Book>();
+	// 依据关键词搜索书籍列表 (编号，书名，图片，出版社，作者，剩余量)
+	public static ArrayList<BookInCategory> querySingleBookFromSearch(String keyword,String pageNum){
+		ArrayList<BookInCategory> bookSearchList = new ArrayList<BookInCategory>();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
 					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
 			Statement s = con.createStatement();
 			
-			String query = "select bookno,bookname,bookimg from book " +
-								"where bookname like %" + bookName +"% limit "
-								+ (9*((Integer.parseInt(pageNum))-1)) + ",9;";
+			String query = "select bookno,bookname,bookimg,publisher,author,leftnum from book " +
+								"where bookname like '%" + keyword +"%' limit "
+								+ (5*((Integer.parseInt(pageNum))-1)) + ",5;";
 			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			// 获取书籍信息
 			while (ret.next()) {  
-				Book book = new Book();
+				BookInCategory book = new BookInCategory();
             	book.setBookno(ret.getString(1));
             	book.setBookname(ret.getString(2));
             	book.setBookimg(ret.getString(3));
+            	book.setPublisher(ret.getString(4));
+            	book.setAuthor(ret.getString(5));
+            	book.setLeftNum(ret.getString(6));
             	bookSearchList.add(book);
             }
             con.close();
@@ -213,33 +277,46 @@ public class SQLUtil {
 		return bookSearchList;
 	}
 	
-	// 查找单类书籍的简要信息
-	public static String querySingleCat2(String category,String pageNum){
-		StringBuffer sb = new StringBuffer();
+	// 依据bookname查找单本书籍  （所有信息）
+	public static BookDetailInfo querySingleBookByKeyword(String keyword){
+		BookDetailInfo book = new BookDetailInfo();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
 					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
 			Statement s = con.createStatement();
 			
-			String query = "select bookno,bookname,bookimg from book where category in " + category + " limit "
-					+ (9*((Integer.parseInt(pageNum))-1)) + ",9;";
+			String query = "select * from book where bookname = '" + keyword +"';";
 			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			// 获取书籍信息
 			while (ret.next()) {  
-            	sb.append(ret.getString(1)+";;").append(ret.getString(2)+";;").append(ret.getString(3)+"##");
+            	String bookno = ret.getString(1);
+            	book.setBookno(bookno);
+            	String isbn = ret.getString(2);
+            	book.setIsbn(isbn);
+            	String bookname = ret.getString(3);
+            	book.setBookname(bookname);
+            	book.setCategory(ret.getString(4));
+            	book.setPublisher(ret.getString(5));
+            	book.setVersion(ret.getString(6));
+            	book.setBookimg(ret.getString(7));
+            	book.setOutline(ret.getString(8));
+            	book.setBookAbstract(ret.getString(9));
+            	book.setGuide(ret.getString(10));
+            	book.setLeftnum(ret.getString(11));
+            	book.setPrice(ret.getString(12));
             }
             con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return sb.toString();
+		return book;
 	}
 	
 	
-	// 查找单类书籍（详细信息）
+	// 查找单类书籍 （所有信息）
 	public static ArrayList<BookDetailInfo> querySingleCat3(String category,
 			String pageNum) {
 		ArrayList<BookDetailInfo> bookList = new ArrayList<BookDetailInfo>();
@@ -249,10 +326,10 @@ public class SQLUtil {
 					"jdbc:mysql://127.0.0.1:3306/library", "root", "root");
 			Statement s = con.createStatement();
 
-			String query = "select bookno,bookname,bookimg from book where category in "
+			String query = "select * from book where category in "
 					+ category
 					+ " limit "
-					+ (9 * ((Integer.parseInt(pageNum)) - 1)) + ",9;";
+					+ (5 * ((Integer.parseInt(pageNum)) - 1)) + ",5;";
 			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			// 将搜索到的9本书放入ArrayList中

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
 
 import po.Book;
+import po.BookInCategory;
 
 import util.SQLUtil;
 
@@ -33,7 +34,7 @@ public class Library_main extends ActionSupport{
         }
         System.out.println("pagenum:" + pageNum + " id:" + catName);
         
-		ArrayList<Book> bookList = new ArrayList<Book>();
+        ArrayList<BookInCategory> bookList = new ArrayList<BookInCategory>();
 		ActionContext context = ActionContext.getContext();
 		// 文学：中国文学、外国文学
        	if(catName.equals("wenxue")){
@@ -51,6 +52,7 @@ public class Library_main extends ActionSupport{
 //            	book.setBookimg(bookdata[2]);
 //            	bookList.add(book);
 //       		}
+       		context.put("cat", "文学");
        		context.put("booklist", bookList);
        		
        	}
@@ -60,142 +62,49 @@ public class Library_main extends ActionSupport{
        		if (bookList.size() > 0) {
 				context.put("booklist", bookList);
 			}
-//       		String str = SQLUtil.querySingleCat2("('人物传记')", pageNum);
-//       		String[] dataList = str.split("##");
-//       		for(int i=0; i<dataList.length; i++){
-//       			Book book = new Book();
-//       			String[] bookdata = dataList[i].split(";;");
-//       			book.setBookno(bookdata[0]);
-//            	book.setBookname(bookdata[1]);
-//            	book.setBookimg(bookdata[2]);
-//            	bookList.add(book);
-//       		}
+       		context.put("cat", "传记");
        		context.put("booklist", bookList);
        	}
        	// 历史
        	else if(catName.equals("lishi")){
-//       		bookList = SQLUtil.querySingleCat("('历史')", pageNum);
-//       		if (bookList.size() > 0) {
-//				context.put("booklist", bookList);
-//			}
-       		String str = SQLUtil.querySingleCat2("('历史')", pageNum);
-       		String[] dataList = str.split("##");
-       		for(int i=0; i<dataList.length; i++){
-       			Book book = new Book();
-       			String[] bookdata = dataList[i].split(";;");
-       			book.setBookno(bookdata[0]);
-            	book.setBookname(bookdata[1]);
-            	book.setBookimg(bookdata[2]);
-            	bookList.add(book);
-       		}
+       		bookList = SQLUtil.querySingleCat("('历史')", pageNum);
+       		context.put("cat", "历史");
        		context.put("booklist", bookList);
        	}
        	// 哲学
        	else if(catName.equals("zhexue")){
-//       		bookList = SQLUtil.querySingleCat("('哲学')", pageNum);
-//       		if (bookList.size() > 0) {
-//				context.put("booklist", bookList);
-//			}
-       		String str = SQLUtil.querySingleCat2("('哲学')", pageNum);
-       		String[] dataList = str.split("##");
-       		for(int i=0; i<dataList.length; i++){
-       			Book book = new Book();
-       			String[] bookdata = dataList[i].split(";;");
-       			book.setBookno(bookdata[0]);
-            	book.setBookname(bookdata[1]);
-            	book.setBookimg(bookdata[2]);
-            	bookList.add(book);
-       		}
+       		bookList = SQLUtil.querySingleCat("('哲学')", pageNum);
+       		context.put("cat", "哲学");
        		context.put("booklist", bookList);
        	}
        	// 儿童
        	else if(catName.equals("ertong")){
-//       		bookList = SQLUtil.querySingleCat("('儿童文学')", pageNum);
-//       		if (bookList.size() > 0) {
-//				context.put("booklist", bookList);
-//			}
-       		String str = SQLUtil.querySingleCat2("('儿童文学')", pageNum);
-       		String[] dataList = str.split("##");
-       		for(int i=0; i<dataList.length; i++){
-       			Book book = new Book();
-       			String[] bookdata = dataList[i].split(";;");
-       			book.setBookno(bookdata[0]);
-            	book.setBookname(bookdata[1]);
-            	book.setBookimg(bookdata[2]);
-            	bookList.add(book);
-       		}
+       		bookList = SQLUtil.querySingleCat("('儿童文学')", pageNum);
+       		context.put("cat", "少儿");
        		context.put("booklist", bookList);
        	}
        	// 小说
        	else if(catName.equals("xiaoshuo")){
-//       		bookList = SQLUtil.querySingleCat("('小说')", pageNum);
-//       		if (bookList.size() > 0) {
-//				context.put("booklist", bookList);
-//			}
-       		String str = SQLUtil.querySingleCat2("('小说')", pageNum);
-       		String[] dataList = str.split("##");
-       		for(int i=0; i<dataList.length; i++){
-       			Book book = new Book();
-       			String[] bookdata = dataList[i].split(";;");
-       			book.setBookno(bookdata[0]);
-            	book.setBookname(bookdata[1]);
-            	book.setBookimg(bookdata[2]);
-            	bookList.add(book);
-       		}
+       		bookList = SQLUtil.querySingleCat("('小说')", pageNum);
+       		context.put("cat", "小说");
        		context.put("booklist", bookList);
        	}
        	// 心理：鸡汤、心理
        	else if(catName.equals("xinli")){
-//       		bookList = SQLUtil.querySingleCat("('心灵鸡汤','心理学')", pageNum);
-//       		if (bookList.size() > 0) {
-//				context.put("booklist", bookList);
-//			}
-       		String str = SQLUtil.querySingleCat2("('心灵鸡汤','心理学')", pageNum);
-       		String[] dataList = str.split("##");
-       		for(int i=0; i<dataList.length; i++){
-       			Book book = new Book();
-       			String[] bookdata = dataList[i].split(";;");
-       			book.setBookno(bookdata[0]);
-            	book.setBookname(bookdata[1]);
-            	book.setBookimg(bookdata[2]);
-            	bookList.add(book);
-       		}
+       		bookList = SQLUtil.querySingleCat("('心灵鸡汤','心理学')", pageNum);
+       		context.put("cat", "心理");
        		context.put("booklist", bookList);
        	}
        	// 社会：成功励志、教育、管理
-       	else if(catName.equals("zhexue")){
-//       		bookList = SQLUtil.querySingleCat("('成功励志','教育','管理')", pageNum);
-//       		if (bookList.size() > 0) {
-//				context.put("booklist", bookList);
-//			}
-       		String str = SQLUtil.querySingleCat2("('成功励志','教育','管理')", pageNum);
-       		String[] dataList = str.split("##");
-       		for(int i=0; i<dataList.length; i++){
-       			Book book = new Book();
-       			String[] bookdata = dataList[i].split(";;");
-       			book.setBookno(bookdata[0]);
-            	book.setBookname(bookdata[1]);
-            	book.setBookimg(bookdata[2]);
-            	bookList.add(book);
-       		}
+       	else if(catName.equals("shehui")){
+       		bookList = SQLUtil.querySingleCat("('成功励志','教育','管理')", pageNum);
+       		context.put("cat", "社会");
        		context.put("booklist", bookList);
        	}
        	// 计算机
-       	else if(catName.equals("jisuanji")){
-//       		bookList = SQLUtil.querySingleCat("('计算机')", pageNum);
-//       		if (bookList.size() > 0) {
-//				context.put("booklist", bookList);
-//			}
-       		String str = SQLUtil.querySingleCat2("('计算机')", pageNum);
-       		String[] dataList = str.split("##");
-       		for(int i=0; i<dataList.length; i++){
-       			Book book = new Book();
-       			String[] bookdata = dataList[i].split(";;");
-       			book.setBookno(bookdata[0]);
-            	book.setBookname(bookdata[1]);
-            	book.setBookimg(bookdata[2]);
-            	bookList.add(book);
-       		}
+       	else if(catName.equals("keji")){
+       		bookList = SQLUtil.querySingleCat("('计算机')", pageNum);
+       		context.put("cat", "科技");
        		context.put("booklist", bookList);
        	}
 		return "ok";
