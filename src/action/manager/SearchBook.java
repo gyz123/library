@@ -36,26 +36,41 @@ public class SearchBook extends ActionSupport{
 	}
 	
 	// 管理员输入书的名字，依据bookname，返回具有关键字的书的简略信息
-	public String searchList() throws IOException{
+//	public String searchList() throws IOException{
+//		HttpServletRequest request = ServletActionContext.getRequest();
+//		String bookName = request.getParameter("bookname");
+//		ArrayList<Book> bookSearchList = new ArrayList<Book>();
+//		bookSearchList = SQLUtil.querySingleBookFromSearch(bookName, "1");
+//		
+//		StringBuffer sb = new StringBuffer();
+//		Iterator<Book> iterator = bookSearchList.iterator();
+//		while(iterator.hasNext()){
+//			Book book = iterator.next();
+//			sb.append(book.toString());
+//		}
+//		
+//		HttpServletResponse response = ServletActionContext.getResponse();
+//		response.setCharacterEncoding("UTF-8");
+//		PrintWriter pw = response.getWriter();
+//		pw.write(sb.toString());
+//		pw.flush();
+//		pw.close();
+//		
+//		return null;
+//	}
+	
+	public String searchList() throws IOException {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String bookName = request.getParameter("bookname");
-		ArrayList<Book> bookSearchList = new ArrayList<Book>();
-		bookSearchList = SQLUtil.querySingleBookFromSearch(bookName, "1");
-		
-		StringBuffer sb = new StringBuffer();
-		Iterator<Book> iterator = bookSearchList.iterator();
-		while(iterator.hasNext()){
-			Book book = iterator.next();
-			sb.append(book.toString());
-		}
-		
+		BookDetailInfo book = SQLUtil.querySingleBookByKeyword(bookName);
+
 		HttpServletResponse response = ServletActionContext.getResponse();
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter pw = response.getWriter();
-		pw.write(sb.toString());
+		pw.write(book.toString());
 		pw.flush();
 		pw.close();
-		
+
 		return null;
 	}
 	

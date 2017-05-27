@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
 
 import po.Book;
+import po.BookDetailInfo;
+import po.BookInCategory;
 import util.SQLUtil;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -28,11 +30,16 @@ public class SearchList extends ActionSupport{
         if(pageNum == null){
         	pageNum = "1";
         }
-        String bookName = request.getParameter("bookname");
+        String keyword = request.getParameter("search");
+        if(keyword == null){
+        	keyword = "ÀúÊ·";
+        }
         
-        ArrayList<Book> searchList = SQLUtil.querySingleBookFromSearch(bookName, pageNum);
+        ArrayList<BookInCategory> searchList = SQLUtil.querySingleBookFromSearch(keyword, pageNum);
         ActionContext context = ActionContext.getContext();
-        context.put("searchlist", searchList);
+        context.put("keyword",keyword);
+        context.put("pagenum", pageNum);
+        context.put("booklist", searchList);
         
         return SUCCESS;
 	}

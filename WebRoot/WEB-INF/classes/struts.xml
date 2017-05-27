@@ -72,9 +72,12 @@
 		<action name="show_myborrow" class="action.sidemenu.Borrow">
 			<result>/sidemenu/borrow.jsp</result>
 		</action>
-		<!-- 购物车   -->
+		<!-- 购物车，显示   -->
 		<action name="show_shoppingcart" class="action.sidemenu.ShoppingCart">
 			<result>/sidemenu/shoppingcart.jsp</result>
+		</action>
+		<!-- 购物车，删除 -->
+		<action name="show_shoppingcart_delete" class="action.sidemenu.ShoppingCart" method="delete">
 		</action>
 		<!-- 支付   -->
 		<action name="show_pay" class="action.sidemenu.Pay">
@@ -95,6 +98,9 @@
 		<!-- 用户列表   -->
 		<action name="userlist" class="action.manager.SearchUser" method="searchList">
 		</action>
-				
+		<!-- wename搜索 -->	
+		<action name="usersingle" class="action.manager.SearchUser" method="searchSingle">
+		</action>
+			
 	</package>
 </struts>

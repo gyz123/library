@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
@@ -36,6 +37,21 @@ public class SearchUser extends ActionSupport{
 		pw.flush();
 		pw.close();
 		
+		return null;
+	}
+	
+	// 通过微信昵称搜索用户
+	public String searchSingle() throws IOException{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		String wename = request.getParameter("wename");
+		UserDetailInfo user = SQLUtil.querySingleUser(wename); // 获取用户信息
+		// 返回数据
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("UTF-8");
+		PrintWriter pw = response.getWriter();
+		pw.write(user.toString());
+		pw.flush();
+		pw.close();
 		return null;
 	}
 	

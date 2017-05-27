@@ -9,12 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import util.CheckUtil;
 import util.PastUtil;
+import util.WeixinUtil;
 
 
 public class JSConfigServlet extends HttpServlet{
-	private static final String APPID = "wxde3504dfb219fc20";
-	private static final String APPSECRET = "1824588d88f3251162b7ba687776b855";
-	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -24,7 +22,7 @@ public class JSConfigServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		Map<String,String> map = PastUtil.getParam(APPID, APPSECRET, req);		
+		Map<String,String> map = PastUtil.getParam(WeixinUtil.APPID, WeixinUtil.APPSECRET, req);		
 		String noncestr = map.get("nonceStr");
 		String jsapi_ticket = map.get("jsapi_ticket");
 		String timestamp = map.get("timestamp");
@@ -34,7 +32,7 @@ public class JSConfigServlet extends HttpServlet{
 		String signature = CheckUtil.generateSignature(noncestr, jsapi_ticket, timestamp, url);
 		
 		// …Ë÷√≤Œ ˝
-		req.setAttribute("appId", APPID);
+		req.setAttribute("appId", WeixinUtil.APPID);
 		req.setAttribute("timeStamp", timestamp);
 		req.setAttribute("nonceStr", noncestr);
 		req.setAttribute("signature", signature);

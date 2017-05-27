@@ -34,55 +34,172 @@
         });
 	  });    
      
-      </script>
+
+	$(function() {
+		//定义文本
+		const
+		paragraph = $('#paragraph');
+		const
+		paragraphText = paragraph.text();
+		const
+		paragraphLength = paragraph.text().length;
+		//定义文章长度
+		const
+		maxParagraphLength = 80;
+		//定义全文按钮
+		const
+		paragraphExtender = $('#paragraphExtender');
+		var toggleFullParagraph = false;
+
+		//定义全文按钮
+		if (paragraphLength < maxParagraphLength) {
+			paragraphExtender.hide();
+		} else {
+			paragraph.html(paragraphText.substring(0, maxParagraphLength)
+					+ '...');
+			paragraphExtender.click(function() {
+				if (toggleFullParagraph) {
+					toggleFullParagraph = false;
+					paragraphExtender.html('↓'); // 收缩时显示的提示文字
+					paragraph.html(paragraphText.substring(0,
+							maxParagraphLength)
+							+ '...');
+				} else {
+					toggleFullParagraph = true;
+					paragraphExtender.html('↑');  // 展开时显示的提示文字
+					paragraph.html(paragraphText);
+				}
+			});
+		}
+		;
+		const
+		menu = $('#actionMenu');
+		const
+		menuBtn = $('#actionToggle');
+		menuBtn.click(function() {
+			menu.toggleClass('active')
+		});
+	});
+	
+
+	$(function() {
+		$('.weui-menu-inner')
+				.click(
+						function() {
+							var $menu = $(this).find('ul'), height = $menu
+									.find('li').length
+									* 40 + 15 + 'px', opacity = $menu
+									.css('opacity');
+
+							$('.weui-menu-inner ul').css({
+								'top' : '0',
+								'opacity' : '0'
+							});
+
+							if (opacity == 0) {
+								$menu.css({
+									'top' : '-' + height,
+									'opacity' : 1
+								});
+							} else {
+								$menu.css({
+									'top' : 0,
+									'opacity' : 0
+								});
+							}
+						});
+
+	});
+</script>
 
 
 </head>
 
-<body ontouchstart style="background-color: #f8f8f8;">
-	<div class="weui_panel" style="background-color: #f8f8f8;">
-	<div class="weui_cell_bd weui_cell_primary">
-		<div class="weui_panel_bd">
-			
-				<div class="weui_media_box weui_media_text"
-					style="display:inline-block;width=100px">
-					<div style="display:inline-block;width=100px">
-						<span class="f20"> 标题一  ${book.bookname }</span>
-					</div>
-				</div>
-				<div style="width=100px; margin-top=10px;display:inline-block;">
-					<span class="f15"> 由各种物质组成的巨型球状天体，叫做星球。星球有一定的形状，有自己的运行轨道。 </span>
-				</div>
+<body ontouchstart style="background-color: #ffffff;">
 
-				<ul class="weui_media_info">
-					<li class="weui_media_info_meta">文字来源</li>
-					<li class="weui_media_info_meta">时间</li>
-					<li class="weui_media_info_meta weui_media_info_meta_extra">其它信息</li>
-				</ul>
+	<div style="height:16px;width:100%"></div>
+	<div class="weui_cell">
+		<div class="weui_cell_hd">
+			<img	
+			src="${book.bookimg }"
+			alt="" style="width:96px;margin-left:4px;display:block">
+		</div>
+		<div class="weui_cell_bd weui_cell_primary" style="margin-left:16px">
+			<span class="f24" >${book.bookname }</span>
+			<br><hr style="color:gray;width:100%;size:1px"><br>
+			<span class="f16" style="margin-left:4px">分类：${book.category }
+					<br><br>&nbsp;出版社：${book.publisher }
+					<br><br>&nbsp;版本：${book.version }
+					<br><br>&nbsp;剩余量：${book.leftnum }</span><br>
+		</div>
+	</div>
+
+	<div style="height:16px;width:100%;background-color:#f8f8f8"></div>
+
+	<div class="weui_cell">
+		<div class="weui_cell_bd weui_cell_primary" style="margin-top:8px">
+			<span class="f16" style="margin-left:8px">
+				简介<br>
+				<div style="margin-top:8px"></div><span class="f14">${book.bookAbstract }</span></div>
+			</span>
+		</div>
+	</div>
+
+	<div class="weui_cells weui_cells_access" style="margin-top:8px">
+		<a class="weui_cell " href="" style="height:24px">
+			<div class="weui_cell_bd weui_cell_primary">
+				<span class="f16" style="margin-left:8px">目录</span>
 			</div>
 			<div class="weui_cell_ft">
-				<div class="weui_cell_bd weui_cell_primary"
-					style="margin-right=10px">
-					<p class='weui-updown'>
-						<img src="/library/image/picture.jpg"
-							data-src="/library/image/picture.jpg" height='100' />
-					</p>
-				</div>
-			</div>
-		</div>
+				<span class="f16 f-gray">点此查看</span>
+			</div> </a>
 	</div>
 
-
-	<div class="weui_cell" style="display:inline;">
-		<div class="weui_cell_bd weui_cell_primary">
-			<p class='weui-updown'>
-				<img src="/library/image/picture.jpg"
-					data-src="/library/image/picture.jpg" height='100' />
-			</p>
-		</div>
-		<div class="weui_cell_ft"></div>
+	<div style="height:16px;width:100%;background-color:#f8f8f8"></div>
+	<div style="height:24px;width:100%;margin-left:24px;padding-top:12px">
+		<span class="f16">导读</span>
+	</div>
+	<div class="weui_cell" >
+		<span style="margin-left:8px">
+		<p id="paragraph" class="paragraph">
+			${book.guide }
+		</p>
+		</span>
+		<!-- 伸张链接 -->
+		<a id="paragraphExtender" class="paragraphExtender" style="position:relative; top:40px; ">↓</a>
 	</div>
 
+	<div style="height:16px;width:100%;background-color:#f8f8f8"></div>
+	
+	<div style="height:24px;width:100%;margin-left:16px;padding-top:12px">
+		<span class="f16">相关推荐</span>
+	</div>
+	<div class="weui_cell">
+		<div class="weui_cell_hd" style="width:45%;text-align:center">
+			<p><img	
+			src="${book.bookimg }"
+			alt="" style="width:60%;margin-left:4px;display:block;padding-left:25%;padding-bottom:8px">
+			<span style="margin-top:8px"><p>${book.bookname }</p></span>
+		</div>
+		<div class="weui_cell_hd" style="width:45%;text-align:center">
+			<img	
+			src="${book.bookimg }"
+			alt="" style="width:60%;margin-left:4px;display:block;padding-left:25%;padding-bottom:8px">
+			<span><p>${book.bookname }</p></span>
+		</div>
+	</div>
+	
+	<div style="height:51px"></div>
+	
+	<section class="weui-menu" style="">
+        <div class="weui-menu-inner" >
+            <a href="" style="display:block;padding-top:12px">我要预定</a>
+        </div>
+        <div class="weui-menu-inner" >
+            <a href="" style="display:block;padding-top:12px">加入购物车</a>
+        </div>
+    </section>
+	
 
 </body>
 </html>

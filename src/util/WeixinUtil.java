@@ -44,8 +44,12 @@ import po.User;
 
 public class WeixinUtil {
 	// 测试号的数据
-	private static final String APPID = "wxde3504dfb219fc20";
-	private static final String APPSECRET = "1824588d88f3251162b7ba687776b855";
+	public static final String APPID = "wx6b71cb3f69dd9a86";
+	public static final String APPSECRET = "f02adc4026d13796f35169b778b4e9ef";
+	
+	// 老马的数据
+//	private static final String APPID = "wxde3504dfb219fc20";
+//	private static final String APPSECRET = "1824588d88f3251162b7ba687776b855";
 
 	private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	private static final String UPLOAD_URL = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE";

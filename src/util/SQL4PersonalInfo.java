@@ -12,29 +12,32 @@ import java.util.Iterator;
 import java.util.Map;
 
 import po.Book;
+import po.BookInCategory;
 import po.BookWithouImg;
 import po.BorrowedBook;
 
 // 定义了个人信息搜索的SQL函数
 public class SQL4PersonalInfo {
-	// 获取我的书架中收藏的书
-	public static ArrayList<Book> queryMyBookshelf(String weid){
-		ArrayList<Book> bookList = new ArrayList<Book>();
+	// 获取我的书架中收藏的书 (编号，书名，图片，出版社，作者，剩余量)
+	public static ArrayList<BookInCategory> queryMyBookshelf(String weid){
+		ArrayList<BookInCategory> bookList = new ArrayList<BookInCategory>();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
 					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
 			Statement s = con.createStatement();
 			
-			String query = "select dist bookno,bookname,bookimg from bookshelf where weid = " + weid + ";"; 
+			String query = "select bookno,bookname,bookimg,publisher,author from bookshelf where weid = " + weid + ";"; 
 			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			// 将搜索到的9本书放入ArrayList中
 			while (ret.next()) {  
-				Book book = new Book();
-            	book.setBookno(ret.getString(1));
+				BookInCategory book = new BookInCategory();
+				book.setBookno(ret.getString(1));
             	book.setBookname(ret.getString(2));
             	book.setBookimg(ret.getString(3));
+            	book.setPublisher(ret.getString(4));
+            	book.setAuthor(ret.getString(5));
             	bookList.add(book);
             }
             con.close();
@@ -99,6 +102,22 @@ public class SQL4PersonalInfo {
 			e.printStackTrace();
 		}
 		return bookList;
+	}
+	
+	
+	// 删除购物车中的商品
+	public static void deleteBookFromCart(String weid,String bookno){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+			Statement s = con.createStatement();
+			String query = "delete from shoppingcart where weid = '" + weid + "' and bookno = " + bookno + ";";
+			s.executeQuery(query);
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
