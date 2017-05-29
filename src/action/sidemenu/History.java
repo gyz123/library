@@ -3,6 +3,7 @@ package action.sidemenu;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -10,6 +11,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
+
+import po.BorrowedBook;
 
 import util.SQL4PersonalInfo;
 
@@ -43,6 +46,10 @@ public class History extends ActionSupport{
 				createMonth(info.get(str));
 			}
 		}
+		
+		ArrayList<BorrowedBook> bookList = SQL4PersonalInfo.queryMyBorrow(weid);
+		ActionContext context = ActionContext.getContext();
+		context.put("booklist", bookList);
 		
 		return SUCCESS;
 	}

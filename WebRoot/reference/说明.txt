@@ -17,10 +17,15 @@
 3.搜索
 	返回结果的数据由SearchList提供，
 	外部访问形式："/library/show_searchInfo.action?参数"，
-	参数：bookName书名，pageNum当前页数（默认为1）
+	参数：keyword关键词，pageNum当前页数（默认为1）
 	返回一个名为keyword的属性，String类型，表示用户输入的关键词
 	返回给前端一个名为booklist的属性，可由EL表达式获取
 	booklist是一个存储类型为Book的ArrayList
+	
+	自动补全
+	外部访问形式："/library/complete_search.action?参数"，
+	参数：keyword关键词
+	返回一个字符串给前端页面
 
 
 4.我的书架
