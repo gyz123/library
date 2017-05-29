@@ -57,6 +57,9 @@
 		<action name="show_searchInfo" class="action.page.SearchList">
 			<result>/jsp/search_back.jsp</result>
 		</action>
+		<!-- 返回自动补全 -->
+		<action name="complete_search" class="action.page.SearchList" method="getKeywords">
+		</action>
 		
 		
 		<!-- 侧边栏菜单  -->
@@ -71,6 +74,9 @@
 		<!-- 我的借阅   -->
 		<action name="show_myborrow" class="action.sidemenu.Borrow">
 			<result>/sidemenu/borrow.jsp</result>
+		</action>
+		<!-- 已经借阅的时间  -->
+		<action name="cal_pasttime" class="action.sidemenu.Borrow" method="getPastTime">
 		</action>
 		<!-- 购物车，显示   -->
 		<action name="show_shoppingcart" class="action.sidemenu.ShoppingCart">

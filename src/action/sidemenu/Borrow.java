@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,7 +22,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class Borrow extends ActionSupport{
 	private static final long serialVersionUID=1L;
 	
-	public String getLeftTime(){
+	public String getPastTime(){
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String bookno = request.getParameter("bookno");
 		String borrowtime = "";
@@ -32,9 +34,8 @@ public class Borrow extends ActionSupport{
 			Statement s = con.createStatement();
 			
 			String query = "select borrowtime from borrow where bookno = " + bookno + 
-							"and returntime is null;"; 
+							" and returntime is null;"; 
 			ResultSet ret = s.executeQuery(query);
-			// 将搜索到的9本书放入ArrayList中
 			while (ret.next()) {  
 				borrowtime = ret.getString(1);
             }
@@ -44,13 +45,36 @@ public class Borrow extends ActionSupport{
 		}
 		
 		String datas[];
-		String month,day;
+		int month = 1,day = 1;
 		if(!borrowtime.isEmpty()){
 			datas = borrowtime.split("-");
-			month = datas[1];
-			day = datas[2];
+			month = Integer.parseInt(datas[1]);
+			day = Integer.parseInt(datas[1]);
 		}
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String nowDate = sdf.format(new Date());
+		String datas1[] = nowDate.split("-");
+		int nowMonth = Integer.parseInt(datas1[1]);
+		int nowDay = Integer.parseInt(datas1[2]);
+		
+		int temp = 1;
+		if(nowDay >= day){
+			temp = nowDay - day + 1;
+		}else{
+			switch(month){
+				case 2: temp = 28-day+1+nowDay; break;
+				case 4:
+				case 6:
+				case 9:
+				case 11:temp = 28-day+1+nowDay; break;
+				default: temp = 31-day+1+nowDay; break;
+			}
+		}
+		// 这本书已经借阅的时间
+		int rate = (int)(100*temp*1.0/30);
+		ActionContext context = ActionContext.getContext();
+		context.put("rate", rate);
 		
 		return "ok";
 	}
@@ -62,6 +86,9 @@ public class Borrow extends ActionSupport{
 		// 获取前台传来的参数weid
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String weid = request.getParameter("weid");
+		if(weid == null){
+			weid = "1";
+		}
 		// 获取用户曾经借阅的书
 		bookList = SQL4PersonalInfo.queryMyBorrow2(weid);
 		ActionContext context = ActionContext.getContext();

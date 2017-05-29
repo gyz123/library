@@ -195,7 +195,7 @@ public class SQL4PersonalInfo {
 				e.printStackTrace();
 			}
 			
-			// 借阅日期格式：yyyy-mm-dd
+			// 借阅日期格式：yyyy-MM-dd
 			String borrowTime[] = book.getBorrowtime().split("-");
 			String year = borrowTime[0];
 			String month = borrowTime[1];
@@ -287,7 +287,7 @@ public class SQL4PersonalInfo {
 			Statement s = con.createStatement();
 			
 			String query = "select bookno,bookname,borrowtime from borrow where weid = " + weid + 
-							"and returntime is null;"; 
+							" and returntime is null;"; 
 			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			// 将搜索到的9本书放入ArrayList中
