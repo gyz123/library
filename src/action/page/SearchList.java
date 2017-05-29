@@ -30,7 +30,7 @@ public class SearchList extends ActionSupport{
 		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
-        String keyword = request.getParameter("search");
+        String keyword = request.getParameter("keyword");
         
         StringBuffer sb = new StringBuffer();
 //      格式：['百度1', '百度2', '百度3', '百度4', '百度5', '百度6', '百度7','a4','b1','b2','b3','b4' ]
