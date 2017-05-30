@@ -350,7 +350,7 @@
 		var keyword = document.getElementById("search").value;
 		var his = new History('library');
 		his.add("library", keyword, "历史记录");
-		location.href = "/library/show_searchInfo.action?keyword=" + keyword;
+		location.href = "/library/show_searchInfo.action?keyword=" + encodeURI(encodeURI(keyword));
 	}
 	
 </script>
