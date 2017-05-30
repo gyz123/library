@@ -2,6 +2,7 @@ package action.page;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -30,8 +31,8 @@ public class SearchList extends ActionSupport{
 		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
-        String keyword = request.getParameter("keyword");
-        
+        //String keyword = request.getParameter("keyword");
+        String keyword = URLDecoder.decode(request.getParameter("keyword"),"utf-8");//解决中文乱码问题
         StringBuffer sb = new StringBuffer();
 //      格式：['百度1', '百度2', '百度3', '百度4', '百度5', '百度6', '百度7','a4','b1','b2','b3','b4' ]
         sb.append("['");
@@ -72,7 +73,8 @@ public class SearchList extends ActionSupport{
         if(pageNum == null){
         	pageNum = "1";
         }
-        String keyword = request.getParameter("search");
+        //String keyword = request.getParameter("keyword");
+        String keyword = URLDecoder.decode(request.getParameter("keyword"),"utf-8");
         if(keyword == null){
         	keyword = "历史";
         }
