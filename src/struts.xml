@@ -108,5 +108,13 @@
 		<action name="usersingle" class="action.manager.SearchUser" method="searchSingle">
 		</action>
 			
+			
+		<!-- 微信支付 -->
+		<action name="post_param" class="pay.action.PayAction" method="PostParam">
+		</action>
+		<action name="pay_success" class="pay.action.PayAction" method="paySuccess">
+		</action>
+			
+			
 	</package>
 </struts>

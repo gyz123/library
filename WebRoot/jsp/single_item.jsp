@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib  uri= "http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -7,7 +8,7 @@
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width,initial-scale=1,user-scalable=0">
-<title>首页</title>
+<title>书籍详情</title>
 
 <link rel="stylesheet" href="css/weui.css" />
 <link rel="stylesheet" href="css/weui2.css" />
@@ -33,8 +34,9 @@
             }
         });
 	  });    
-     
+</script>     
 
+<script>
 	$(function() {
 		//定义文本
 		const
@@ -81,7 +83,8 @@
 		});
 	});
 	
-
+</script>
+<script>
 	$(function() {
 		$('.weui-menu-inner')
 				.click(
@@ -112,10 +115,39 @@
 	});
 </script>
 
+<script>
+		$(document).on("click", "#reserveSuccess", function() {
+			$.toast("预定成功");
+			
+			//location.href = "/library/show_main.action";
+		});
+</script>
+
+<script>
+		$(document).on("click", "#addSuccess", function() {
+			$.toast("已加入购物车");
+			
+			//location.href = "/library/show_main.action";
+		});
+</script>
+
+<script>
+	
+</script>
 
 </head>
 
 <body ontouchstart style="background-color: #ffffff;">
+
+	<a href="/library/show_main.action">
+	<div class="weui-header bg-blue" style="height:56px;background-color:#01164b">
+		<div class="weui-header-left">
+		</div>
+		<h1 class="weui-header-title" style="margin-top:5px">
+			<span class="">超新星智能图书馆</span>
+		</h1>
+	</div>
+	</a>
 
 	<div style="height:16px;width:100%"></div>
 	<div class="weui_cell">
@@ -176,7 +208,7 @@
 	</div>
 	<div class="weui_cell">
 		<div class="weui_cell_hd" style="width:45%;text-align:center">
-			<p><img	
+			<img	
 			src="${book.bookimg }"
 			alt="" style="width:60%;margin-left:4px;display:block;padding-left:25%;padding-bottom:8px">
 			<span style="margin-top:8px"><p>${book.bookname }</p></span>
@@ -191,15 +223,32 @@
 	
 	<div style="height:51px"></div>
 	
+	<c:if var="flag" test="${book.leftnum > 0 }" scope="page">
 	<section class="weui-menu" style="">
         <div class="weui-menu-inner" >
-            <a href="" style="display:block;padding-top:12px">我要预定</a>
+            <a href="javascript:;" style="display:block;padding-top:12px" id="reserveSuccess">
+            	我要预定
+            </a>
         </div>
         <div class="weui-menu-inner" >
-            <a href="" style="display:block;padding-top:12px">加入购物车</a>
+            <a href="javascript:;" style="display:block;padding-top:12px" id="addSuccess">
+            	加入购物车
+            </a>
         </div>
     </section>
+	</c:if>
 	
+	<c:if var="flag" test="${book.leftnum == 0 }" scope="page">
+	<section class="weui-menu" style="">
+        <div class="weui-menu-inner" >
+            <a href="javascript:;" style="display:block;padding-top:12px" id="reserveSuccess">
+            	我要预定
+            </a>
+        </div>
+    </section>
+	</c:if>
+
+
 
 </body>
 </html>

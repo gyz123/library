@@ -211,7 +211,6 @@
 	
 		
 		var history = his.getTitle('library');
-		console.log(history);
 		//his.clearHistory();
 		//首先获得用户的输入
 		var content = document.getElementById("search");
@@ -227,7 +226,7 @@
 
 		//给服务器发送数据 encodeURI二次转码解决中文乱码
 		var url = "/library/complete_search.action?" + "keyword=" + encodeURI(encodeURI(content.value));
-		//alert("中文乱码测试");
+		
 		//True 表示脚本会在 send()方法之后继续执行，而不等待来自服务器的响应
 		xmlHttp.open("POST", url, true);
 		//xmlHttp绑定回调方法，xmlHttp状态（0-4），4（complete）
@@ -255,6 +254,9 @@
 
 	//回调函数
 	function callback() {
+		
+		//console.log("触发callback函数");
+		//console.log("xmlHttp.status" + xmlHttp.status);
 		//4代表完成
 		if (xmlHttp.readyState == 4) {
 			if (xmlHttp.status == 200) {
@@ -264,7 +266,6 @@
 				//解析获得的数据
 				var json = eval("(" + result + ")");//JS的json有一点不同需要加()
 				//获得数据之后，动态展示在输入框下方
-
 				setContent(json);
 			}
 
@@ -338,7 +339,6 @@
 	popDiv.style.width = width + "px";
 	document.getElementById("content_table").style.width = width + "px";
 	
-	console.log(top);
 	
 	var posi = document.getElementById("myDiv");
 	posi.style = "margin-top:32px";
@@ -432,69 +432,68 @@
 
 	<!-- 书籍分类  -->
 	<div class="weui_grids">
-			<a href="/library/show_singleCat.action?id=wenxue&pagenum=1" class="weui_grid js_grid">
+			<a href="/library/show_singleCat.action?id=wenxue&pagenum=1&target=bookno" class="weui_grid js_grid">
 			<div class="weui_grid_icon">
 				<img src="/library/image/myicon/wenxue.svg" alt="文学">
 			</div>
 			<p class="weui_grid_label">文学</p> 
 			</a> 
 			
-			<a href="/library/show_singleCat.action?id=zhuanji&pagenum=1"  class="weui_grid js_grid">
+			<a href="/library/show_singleCat.action?id=zhuanji&pagenum=1&target=bookno"  class="weui_grid js_grid">
 			<div class="weui_grid_icon">
 				<img src="/library/image/myicon/zhuanji.svg" alt="传记">
 			</div>
 			<p class="weui_grid_label">传记</p> 
 			</a> 
 			
-			<a href="/library/show_singleCat.action?id=lishi&pagenum=1"	class="weui_grid js_grid">
+			<a href="/library/show_singleCat.action?id=lishi&pagenum=1&target=bookno"	class="weui_grid js_grid">
 			<div class="weui_grid_icon">
 				<img src="/library/image/myicon/lishi.svg" alt="历史">
 			</div>
 			<p class="weui_grid_label">历史</p> 
 			</a> 
 			
-			<a href="/library/show_singleCat.action?id=zhexue&pagenum=1"	class="weui_grid js_grid">
+			<a href="/library/show_singleCat.action?id=zhexue&pagenum=1&target=bookno"	class="weui_grid js_grid">
 			<div class="weui_grid_icon">
 				<img src="/library/image/myicon/zhexue.svg" alt="哲学">
 			</div>
 			<p class="weui_grid_label">哲学</p>
 			</a> 
 			
-			<a href="/library/show_singleCat.action?id=ertong&pagenum=1"	class="weui_grid js_grid">
+			<a href="/library/show_singleCat.action?id=ertong&pagenum=1&target=bookno"	class="weui_grid js_grid">
 			<div class="weui_grid_icon">
 				<img src="/library/image/myicon/ertong.svg" alt="儿童">
 			</div>
 			<p class="weui_grid_label">儿童</p>
 			</a>
 			
-			<a href="/library/show_singleCat.action?id=xiaoshuo&pagenum=1"	class="weui_grid js_grid">
+			<a href="/library/show_singleCat.action?id=xiaoshuo&pagenum=1&target=bookno"	class="weui_grid js_grid">
 			<div class="weui_grid_icon">
 				<img src="/library/image/myicon/xiaoshuo.svg" alt="小说">
 			</div>
 			<p class="weui_grid_label">小说</p> 
 			</a> 
 			
-			<a href="/library/show_singleCat.action?id=xinli&pagenum=1"	class="weui_grid js_grid">
+			<a href="/library/show_singleCat.action?id=xinli&pagenum=1&target=bookno"	class="weui_grid js_grid">
 			<div class="weui_grid_icon">
 				<img src="/library/image/myicon/xinli.svg" alt="心理">
 			</div>
 			<p class="weui_grid_label">心理</p> 
 			</a> 
 			
-			<a href="/library/show_singleCat.action?id=shehui&pagenum=1"	class="weui_grid js_grid">
+			<a href="/library/show_singleCat.action?id=shehui&pagenum=1&target=bookno"	class="weui_grid js_grid">
 			<div class="weui_grid_icon">
 				<img src="/library/image/myicon/guanli.svg" alt="社会">
 			</div>
 			<p class="weui_grid_label">社会</p> 
 			</a> 
 			
-			<a href="/library/show_singleCat.action?id=keji&pagenum=1"	class="weui_grid js_grid">
+			<a href="/library/show_singleCat.action?id=keji&pagenum=1&target=bookno"	class="weui_grid js_grid">
 			<div class="weui_grid_icon">
 				<img src="/library/image/myicon/jisuanji.svg" alt="科技">
 			</div>
 			<p class="weui_grid_label">科技</p> 
 			</a>
-			
 	</div>
 
 

@@ -1,4 +1,4 @@
-1.单类书籍
+1.单类书籍  （可跳转）
 	数据获取由Library_main的enterWenxue()方法提供，
 	外部访问形式："/library/show_singleCat.action?参数"，
 	参数：category类别，pageNum当前页数（默认为1）
@@ -6,7 +6,7 @@
 	booklist是一个存储类型为Book的ArrayList
 
 
-2.单本书籍
+2.单本书籍	（可跳转）
 	由SingleItem提供，
 	外部访问形式："/library/show_singleItem.action?参数"，
 	参数：bookNo书籍编号
@@ -14,7 +14,7 @@
 		book是一个名为BookDetailInfo的类的对象
 
 
-3.搜索
+3.搜索	（可跳转）
 	返回结果的数据由SearchList提供，
 	外部访问形式："/library/show_searchInfo.action?参数"，
 	参数：keyword关键词，pageNum当前页数（默认为1）
@@ -28,7 +28,7 @@
 	返回一个字符串给前端页面
 
 
-4.我的书架
+4.我的书架	
 	返回结果由MyBookshelf提供，
 	外部访问形式："/library/show_bookshelf.action?参数"，
 	参数：weid用户微信号

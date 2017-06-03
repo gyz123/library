@@ -47,12 +47,23 @@
 			如：${booklist[0].bookname} 
 			和   <s:property value="#booklist[3].bookname"/>
 		如果是对列表进行操作，必须加#号；普通参数可以不加 --%>
-	<div class="weui_cells_title">
-		<span class="f10">当前类别 > ${cat }</span>
+	
+	<a href="/library/show_main.action">
+	<div class="weui-header bg-blue" style="height:56px;background-color:#01164b">
+		<div class="weui-header-left">
+		</div>
+		<h1 class="weui-header-title" style="margin-top:5px">
+			<span class="">超新星智能图书馆</span>
+		</h1>
+	</div>
+	</a>
+	
+	<div class="weui_cells_title" style="margin-top:2%">
+		<div><span class="f10">当前类别 > ${cat }</span></div>
 	</div>
 	<div class="weui_cells weui_cells_access">
 		<c:forEach  var="booklist" items="${booklist }">
-		<a class="weui_cell" href="">
+		<a class="weui_cell" href="/library/show_singleItem.action?bookno=${booklist.bookno }">
 			<div class="weui_cell_hd" >
 				<img
 					src="${booklist.bookimg}"
@@ -71,16 +82,16 @@
 	<div class='pager'>
 		<div class="pager-left">
 			<div class="pager-first">
-				<a class="pager-nav" href="">首页</a>
+				<a class="pager-nav" href="/library/show_singleCat.action?id=${catid }&pagenum=1">首页</a>
 			</div>
 			<div class="pager-pre">
-				<a class="pager-nav" href="">上一页</a>
+				<a class="pager-nav" href="/library/show_singleCat.action?id=${catid }&pagenum=${pagenum-1 }">上一页</a>
 			</div>
 		</div>
-		<div class="pager-cen"><%=request.getParameter("pagenum") %>/120</div>
+		<div class="pager-cen">${pagenum }/120</div>
 		<div class="pager-right">
 			<div class="pager-next">
-				<a class="pager-nav" href="">下一页</a>
+				<a class="pager-nav" href="/library/show_singleCat.action?id=${catid }&pagenum=${pagenum+1 }">下一页</a>
 			</div>
 			<div class="pager-end">
 				<a class="pager-nav" href="">尾页</a>

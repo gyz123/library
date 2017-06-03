@@ -260,10 +260,12 @@ public class WeixinUtil {
 		button12.setType("view");
 		button12.setUrl(showSingleCatAction);
 		
+		String url13 = SCOPE.replace("APPID", APPID).replace("REDIRECT_URI", openLibraryAction)
+				.replace("SCOPE", "snsapi_userinfo").replace("STATE", "123");
 		ViewButton button13 = new ViewButton();
 		button13.setName("在线图书馆");
 		button13.setType("view");
-		button13.setUrl(openLibraryAction);
+		button13.setUrl(url13);
 		
 		
 		ViewButton button21 = new ViewButton();
@@ -277,12 +279,12 @@ public class WeixinUtil {
 		button22.setUrl("http://www.iotesta.cn/library/show_register.action");
 		
 		// 获取详细用户信息
-		String url2 = SCOPE.replace("APPID", APPID).replace("REDIRECT_URI", registerAction)
+		String url23 = SCOPE.replace("APPID", APPID).replace("REDIRECT_URI", registerAction)
 				.replace("SCOPE", "snsapi_userinfo").replace("STATE", "123");
 		ViewButton button23 = new ViewButton();
 		button23.setName("详细信息注册");
 		button23.setType("view");
-		button23.setUrl(url2);
+		button23.setUrl(url23);
 		
 		ViewButton button24 = new ViewButton();
 		button24.setName("JSSDK测试页面");

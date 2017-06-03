@@ -57,12 +57,22 @@ $(function() {
 </head>
 
 <body ontouchstart style="">
+	<a href="/library/show_main.action">
+	<div class="weui-header bg-blue" style="height:56px;background-color:#01164b">
+		<div class="weui-header-left">
+		</div>
+		<h1 class="weui-header-title" style="margin-top:5px">
+			<span class="">超新星智能图书馆</span>
+		</h1>
+	</div>
+	</a>
+
 	<div class="weui_cells_title">
 		<span class="f10">关键词 > ${keyword }</span>
 	</div>
 	<div class="weui_cells weui_cells_access">
 		<c:forEach  var="booklist" items="${booklist }">
-			<a class="weui_cell" href="">
+			<a class="weui_cell" href="/library/show_singleItem.action?bookno=${booklist.bookno }">
 				<div class="weui_cell_hd">
 					<img src="${booklist.bookimg}" alt=""
 						style="width:72px;margin-right:8px;display:block;margin-right:16px">
@@ -83,7 +93,7 @@ $(function() {
 		</c:forEach> 
 	</div>
 	
-	<c:if var="flag" test="${booklist[4].bookno != null }" scope="page">
+	<c:if var="flag" test="${booklist[3].bookno != null }" scope="page">
 	<div class='pager'>
 		<div class="pager-left">
 			<div class="pager-first">
@@ -105,7 +115,7 @@ $(function() {
 	</div>
 	</c:if>
 	
-	<c:if var="flag" test="${booklist[4].bookno == null }" scope="page">
+	<c:if var="flag" test="${booklist[3].bookno == null }" scope="page">
 	<div class='pager' style="position:fixed;bottom:0;width:100%">
 		<div class="pager-left">
 			<div class="pager-first">

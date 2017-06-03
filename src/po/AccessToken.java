@@ -4,6 +4,10 @@ public class AccessToken {
 	private String token;
 	private int expiresIn;
 	
+	public AccessToken(){
+		
+	}
+	
 	public String getToken() {
 		return token;
 	}

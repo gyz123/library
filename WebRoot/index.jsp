@@ -18,5 +18,8 @@ contentType="text/html; charset=UTF-8"%>
     <s:a action="show_singleCat">文学类书籍</s:a>
     <br>
     <s:a action="show_singleItem">单本书</s:a>
+    <br>
+    <s:a action="show_pay">支付测试页面</s:a>
+    <br>
   </body>
 </html>

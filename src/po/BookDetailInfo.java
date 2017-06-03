@@ -13,6 +13,9 @@ public class BookDetailInfo {
 	private String guide;
 	private String leftnum;
 	private String price;
+	private String author;
+	private String readingnum;
+	private String score;
 	private String tag1;
 	private String tag2;
 	private String tag3;
@@ -92,6 +95,31 @@ public class BookDetailInfo {
 	public void setPrice(String price) {
 		this.price = price;
 	}
+	
+	
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public String getReadingnum() {
+		return readingnum;
+	}
+
+	public void setReadingnum(String readingnum) {
+		this.readingnum = readingnum;
+	}
+
+	public String getScore() {
+		return score;
+	}
+
+	public void setScore(String score) {
+		this.score = score;
+	}
 
 	public String getTag1() {
 		return tag1;
@@ -124,7 +152,8 @@ public class BookDetailInfo {
 				+ ",publisher=" + publisher + ",version=" + version
 				+ ",bookimg=" + bookimg + ",outline=" + outline
 				+ ",bookAbstract=" + bookAbstract + ",guide=" + guide
-				+ ",leftnum=" + leftnum + ",price=" + price + "}";
+				+ ",leftnum=" + leftnum + ",price=" + price + ",author=" + author 
+				+ ",readingnum=" + readingnum + ",score=" + score + "}";
 	}
 
 	
