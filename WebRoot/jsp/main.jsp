@@ -1,3 +1,7 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib  uri= "http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta charset="UTF-8">
@@ -364,7 +368,8 @@
 		var keyword = document.getElementById("search").value;
 		var his = new History('library');
 		his.add("library", keyword, "历史记录");
-		location.href = "/library/show_searchInfo.action?keyword=" + encodeURI(encodeURI(keyword));
+		location.href = "/library/show_searchInfo.action?keyword=" + encodeURI(encodeURI(keyword)) + 
+		"&weid=" + "<%=request.getParameter("weid")%>";
 	}
 
 </script>
@@ -374,23 +379,51 @@
 
 	<!--侧边栏-->
 	<nav id="menu" class="menu" style="position:absolute;left:0;width:300px;background-color:#2B2F3E;">
-        <header class="menu-header" style="background-color:#2B2F3E;margin-right:20px;">
-          <span>
-          	<img src=""
-          	class="circle" style="width:50px;height:50px;margin-top:38px;margin-left:10px;">
-          </span>
-          <span style="margin-left:10px;color:red;" class="f18">
-			是我是我还是我
-          </span>
+        <header class="menu-header" style="background-color:#2B2F3E;margin-right:20px; ">
+
+          <c:if var="flag" test="${flag == true }" scope="page">
+          <div class="weui_panel_bd">
+                <a href="javascript:void(0);" class="weui_media_box weui_media_appmsg" style="margin-left:0px;">
+                    <div class="weui_media_hd" >
+                        <img class="circle" src="${user.headimgurl }" alt=""
+                        	style="width:64px; height:64px; margin-top:16px ">
+                    </div>
+                    <div class="weui_media_bd" style="margin-left:4px">
+                    	<br><br>
+                        <span style="font-family:'微软雅黑'; font-size:20px">
+                        	${user.nickname }
+                        </span>
+                    </div>
+                </a>
+          </div>
+          </c:if>
+          
+          <c:if var="flag" test="${flag == false }" scope="page">
+          <div class="weui_panel_bd">
+                <a href="javascript:void(0);" class="weui_media_box weui_media_appmsg" style="margin-left:0px;">
+                    <div class="weui_media_hd" >
+                        <img class="circle" src="" alt=""
+                        	style="width:64px; height:64px; margin-top:16px ">
+                    </div>
+                    <div class="weui_media_bd" style="margin-left:4px">
+                    	<br><br>
+                        <span class="f20">
+                        	游客账号
+                        </span>
+                    </div>
+                </a>
+          </div>
+          </c:if>
+          
         </header>	
 
       <section class="menu-section" style="background-color:#2B2F3E">
         <h3 class="menu-section-title">我的图书馆</h3>
         <ul class="menu-section-list">
-          <li><a href="#">我的书架</a></li>
-          <li><a href="#">借阅历史</a></li>
-          <li><a href="#">我的借阅</a></li>
-          <li><a href="#">购物车</a></li>
+          <li><a href="/library/show_bookshelf.action?weid=${weid }">我的书架</a></li>
+          <li><a href="/library/show_history.action?weid=${weid }">借阅历史</a></li>
+          <li><a href="/library/show_myborrow.action?weid=${weid }">我的借阅</a></li>
+          <li><a href="/library/show_shoppingcart.action?weid=${weid }">购物车</a></li>
         </ul>
       </section>
 
@@ -418,7 +451,9 @@
 						</div> </a>
 				</div>
 				<h1 class="weui-header-title" style="margin-top:15px">
-					<span class="">超新星智能图书馆</span>
+						<span style="font-family:''; font-size:">
+                        	超新星智能图书馆
+                        </span>
 				</h1>
 				<!-- <div class="weui-header-right" style="margin-top:15px">
 					         <a class="icon icon-83 f-white"></a>
@@ -484,63 +519,72 @@
 
 					<!-- 书籍分类  -->
 					<div class="weui_grids">
-							<a href="/library/show_singleCat.action?id=wenxue&pagenum=1" class="weui_grid js_grid">
+							<a href="/library/show_singleCat.action?id=wenxue&pagenum=1&weid=${weid }" 
+								class="weui_grid js_grid">
 							<div class="weui_grid_icon">
 								<img src="/library/image/myicon/wenxue.svg" alt="文学">
 							</div>
 							<p class="weui_grid_label">文学</p>
 							</a>
 
-							<a href="/library/show_singleCat.action?id=zhuanji&pagenum=1"  class="weui_grid js_grid">
+							<a href="/library/show_singleCat.action?id=zhuanji&pagenum=1&weid=${weid }"
+							    class="weui_grid js_grid">
 							<div class="weui_grid_icon">
 								<img src="/library/image/myicon/zhuanji.svg" alt="传记">
 							</div>
 							<p class="weui_grid_label">传记</p>
 							</a>
 
-							<a href="/library/show_singleCat.action?id=lishi&pagenum=1"	class="weui_grid js_grid">
+							<a href="/library/show_singleCat.action?id=lishi&pagenum=1&weid=${weid }"	
+								class="weui_grid js_grid">
 							<div class="weui_grid_icon">
 								<img src="/library/image/myicon/lishi.svg" alt="历史">
 							</div>
 							<p class="weui_grid_label">历史</p>
 							</a>
 
-							<a href="/library/show_singleCat.action?id=zhexue&pagenum=1"	class="weui_grid js_grid">
+							<a href="/library/show_singleCat.action?id=zhexue&pagenum=1&weid=${weid }"	
+								class="weui_grid js_grid">
 							<div class="weui_grid_icon">
 								<img src="/library/image/myicon/zhexue.svg" alt="哲学">
 							</div>
 							<p class="weui_grid_label">哲学</p>
 							</a>
 
-							<a href="/library/show_singleCat.action?id=ertong&pagenum=1"	class="weui_grid js_grid">
+							<a href="/library/show_singleCat.action?id=ertong&pagenum=1&weid=${weid }"	
+								class="weui_grid js_grid">
 							<div class="weui_grid_icon">
 								<img src="/library/image/myicon/ertong.svg" alt="儿童">
 							</div>
 							<p class="weui_grid_label">儿童</p>
 							</a>
 
-							<a href="/library/show_singleCat.action?id=xiaoshuo&pagenum=1"	class="weui_grid js_grid">
+							<a href="/library/show_singleCat.action?id=xiaoshuo&pagenum=1&weid=${weid }"	
+								class="weui_grid js_grid">
 							<div class="weui_grid_icon">
 								<img src="/library/image/myicon/xiaoshuo.svg" alt="小说">
 							</div>
 							<p class="weui_grid_label">小说</p>
 							</a>
 
-							<a href="/library/show_singleCat.action?id=xinli&pagenum=1"	class="weui_grid js_grid">
+							<a href="/library/show_singleCat.action?id=xinli&pagenum=1&weid=${weid }"	
+								class="weui_grid js_grid">
 							<div class="weui_grid_icon">
 								<img src="/library/image/myicon/xinli.svg" alt="心理">
 							</div>
 							<p class="weui_grid_label">心理</p>
 							</a>
 
-							<a href="/library/show_singleCat.action?id=shehui&pagenum=1"	class="weui_grid js_grid">
+							<a href="/library/show_singleCat.action?id=shehui&pagenum=1&weid=${weid }"	
+								class="weui_grid js_grid">
 							<div class="weui_grid_icon">
 								<img src="/library/image/myicon/guanli.svg" alt="社会">
 							</div>
 							<p class="weui_grid_label">社会</p>
 							</a>
 
-							<a href="/library/show_singleCat.action?id=keji&pagenum=1"	class="weui_grid js_grid">
+							<a href="/library/show_singleCat.action?id=keji&pagenum=1&weid=${weid }"	
+								class="weui_grid js_grid">
 							<div class="weui_grid_icon">
 								<img src="/library/image/myicon/jisuanji.svg" alt="科技">
 							</div>

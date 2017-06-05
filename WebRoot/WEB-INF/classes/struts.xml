@@ -22,44 +22,77 @@
 		<action name="test" class="action.TestAction">
 			<result name="success">/jsp/testJSP.jsp</result>
 		</action>
+		
 		<!-- 进入注册 -->
 		<action name="show_register" class="action.page.Register">
 			<result>/jsp/register1.jsp</result>
 			<result name="haveReg">/register/register_failure.html</result>
 		</action>
+		
 		<!-- 处理注册  -->
 		<action name="getVeriCode" class="action.FinishReg" method="GetVeriCode">
 		</action>
+		
 		<action name="completeReg" class="action.FinishReg" method="CompleteReg">
 			<result>/register/register_success.html</result>
 		</action>
+		
 		<action name="regSuccess" class="action.FinishReg" method="RegSuccess">
 			<result>/register/register_success.html</result>
 		</action>
+		
 		<action name="regFailure" class="action.FinishReg" method="RegFailure">
 			<result>/register/register_failure.html</result>
 		</action>
 		
+		
+		
 		<!-- 页面显示   -->
 		<!-- 进入图书馆首页 -->
 		<action name="show_main" class="action.page.Library_main">
-			<result>/jsp/main.html</result>
+			<result>/jsp/main.jsp</result>
 		</action>
-		<!-- 进入单类书籍 -->
+		
+		<!-- 返回首页 -->
+		<action name="back_to_main" class="action.page.Library_main" method="backToMain">
+			<result name="ok">/jsp/main.jsp</result>
+		</action>
+		
+		<!-- 单类书籍 -->
 		<action name="show_singleCat" class="action.page.Library_main" method="enterWenxue">
 			<result name="ok">/jsp/single_cat.jsp</result>
 		</action>
-		<!-- 进入单本书籍  -->
+		
+		<!-- 单本书籍，显示  -->
 		<action name="show_singleItem" class="action.page.SingleItem">
 			<result>/jsp/single_item.jsp</result>
 		</action>
+		
+		<!-- 单本书籍，加入待借清单  -->
+		<action name="add_to_shoppingcart" class="action.page.SingleItem" method="addToShoppingCart">
+			<result name="ok">/sidemenu/addCart_success.jsp</result>
+		</action>
+		
+		<!-- 单本书籍，预定   -->
+		<action name="add_to_reserve" class="action.page.SingleItem" method="addToReserve">
+			<result name="ok">/sidemenu/reserve_success.jsp</result>
+			<result name="fail">/sidemenu/reserve_fail.jsp</result>
+		</action>
+		
+		<!-- 单本书籍，书评   -->
+		<action name="get_book_comments" class="action.page.SingleItem" method="getBookComments">
+			<result name="ok">/jsp/remark.jsp</result>
+		</action>
+		
 		<!-- 显示搜索结果 -->
 		<action name="show_searchInfo" class="action.page.SearchList">
 			<result>/jsp/search_back.jsp</result>
 		</action>
+		
 		<!-- 返回自动补全 -->
 		<action name="complete_search" class="action.page.SearchList" method="getKeywords">
 		</action>
+		
 		
 		
 		<!-- 侧边栏菜单  -->
@@ -67,51 +100,64 @@
 		<action name="show_bookshelf" class="action.sidemenu.MyBookshelf">
 			<result>/sidemenu/myBookshelf.jsp</result>
 		</action>
+		
 		<!-- 历史记录   -->
 		<action name="show_history" class="action.sidemenu.History">
 			<result>/sidemenu/history.jsp</result>
 		</action>
+		
 		<!-- 我的借阅   -->
 		<action name="show_myborrow" class="action.sidemenu.Borrow">
 			<result>/sidemenu/borrow.jsp</result>
 		</action>
+		
 		<!-- 已经借阅的时间  -->
 		<action name="cal_pasttime" class="action.sidemenu.Borrow" method="getPastTime">
 		</action>
+		
 		<!-- 购物车，显示   -->
 		<action name="show_shoppingcart" class="action.sidemenu.ShoppingCart">
 			<result>/sidemenu/shoppingcart.jsp</result>
 		</action>
+		
 		<!-- 购物车，删除 -->
 		<action name="show_shoppingcart_delete" class="action.sidemenu.ShoppingCart" method="delete">
 		</action>
+		
 		<!-- 支付   -->
 		<action name="show_pay" class="action.sidemenu.Pay">
 			<result>/sidemenu/pay.jsp</result>
 		</action>
 				
 		
+		
 		<!-- 管理员操作    -->
 		<!-- bookno搜索  -->
 		<action name="searchsingle" class="action.manager.SearchBook" method="searchSingle">
 		</action>
+		
 		<!-- bookname搜索   -->
 		<action name="searchlist" class="action.manager.SearchBook" method="searchList">
 		</action>
+		
 		<!-- category搜索 -->
 		<action name="booklist" class="action.manager.SearchBook" method="bookList">
 		</action>
+		
 		<!-- 用户列表   -->
 		<action name="userlist" class="action.manager.SearchUser" method="searchList">
 		</action>
+		
 		<!-- wename搜索 -->	
 		<action name="usersingle" class="action.manager.SearchUser" method="searchSingle">
 		</action>
 			
 			
+			
 		<!-- 微信支付 -->
-		<action name="post_param" class="pay.action.PayAction" method="PostParam">
+		<action name="post_param" class="pay.action.PayAction" method="postParam">
 		</action>
+		
 		<action name="pay_success" class="pay.action.PayAction" method="paySuccess">
 		</action>
 			

@@ -15,9 +15,45 @@ import po.Book;
 import po.BookInCategory;
 import po.BookWithouImg;
 import po.BorrowedBook;
+import po.UserDetailInfo;
 
 // 定义了个人信息搜索的SQL函数
 public class SQL4PersonalInfo {
+	// 获取用户信息
+	public static UserDetailInfo queryUser(String openid){
+		UserDetailInfo user = new UserDetailInfo();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+			Statement s = con.createStatement();
+			String query = "select * from user where weid = '" + openid + "'";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {  
+            	String weid = ret.getString(1);  
+            	String phone = ret.getString(2);
+            	String wename  = ret.getString(3);
+            	String weimg = ret.getString(4);
+            	String idcard = ret.getString(5);
+            	String username = ret.getString(6);
+            	user.setOpenid(weid);
+            	user.setTel(phone);
+            	user.setNickname(wename);
+            	user.setHeadimgurl(weimg);
+            	user.setIdCard(idcard);
+            	user.setRealName(username);
+            }
+            con.close();
+            if(user.getIdCard()!=null){
+            	return user;
+            }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 	// 获取我的书架中收藏的书 (编号，书名，图片，出版社，作者，剩余量)
 	public static ArrayList<BookInCategory> queryMyBookshelf(String weid){
 		ArrayList<BookInCategory> bookList = new ArrayList<BookInCategory>();
@@ -27,7 +63,9 @@ public class SQL4PersonalInfo {
 					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
 			Statement s = con.createStatement();
 			
-			String query = "select bookno,bookname,bookimg,publisher,author from bookshelf where weid = " + weid + ";"; 
+			String query = "select book.bookno,book.bookname,book.bookimg,book.publisher,book.author " +
+							"from bookshelf,book " +
+							"where book.bookno = bookshelf.bookno and weid = '" + weid + "';"; 
 			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			// 将搜索到的9本书放入ArrayList中
@@ -77,6 +115,59 @@ public class SQL4PersonalInfo {
 	}
 	
 	
+	// 预定
+	public static Boolean addToReserve(String weid,String bookno){
+		Boolean whetherSuccess = false;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+			Statement s = con.createStatement();
+			// 先判断用户是否已经预定
+			Boolean flag = true;
+			String query = "select bookno from reserve where weid = '" + weid + "'";
+			ResultSet ret = s.executeQuery(query);
+			while(ret.next()){
+				if(ret.getString(1).equals(bookno)){
+					// 已经预定
+					flag = false;	
+					break;
+				}
+			}
+			
+			if(flag){
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				String time = df.format(new Date());
+				query = "insert into reserve (weid,bookno,reservetime) values ('" + weid + "','" + bookno + "','" + time + "');";
+				s.executeUpdate(query);
+				// 预定成功
+				whetherSuccess = true; 
+			}
+			
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return whetherSuccess;
+	}
+	
+	
+	// 添加书本到购物车（可添加同一本书多次到购物车）
+	public static void addToShoppingCart(String bookno,String weid){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+			Statement s = con.createStatement();
+			String query = "insert into shoppingcart (weid,bookno) values ('" + weid + "','" + bookno + "');";
+			s.executeUpdate(query);
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	// 获取个人购物车详情
 	public static ArrayList<Book> queryShoppingCart(String weid){
 		ArrayList<Book> bookList = new ArrayList<Book>();
@@ -86,7 +177,9 @@ public class SQL4PersonalInfo {
 					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
 			Statement s = con.createStatement();
 			
-			String query = "select bookno,bookname,bookimg from shoppingcart where weid = " + weid + ";"; 
+			String query = "select book.bookno,book.bookname,book.bookimg " +
+							"from shoppingcart,book " +
+							"where book.bookno = shoppingcart.bookno and shoppingcart.weid = '" + weid + "';"; 
 			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			// 将搜索到的9本书放入ArrayList中

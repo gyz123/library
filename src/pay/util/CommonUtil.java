@@ -16,8 +16,8 @@ import javax.net.ssl.TrustManager;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import po.AccessToken;
 
@@ -27,7 +27,7 @@ import po.AccessToken;
  * @date 2014-11-21下午9:10:30
  */
 public class CommonUtil {
-	private static Logger log = LoggerFactory.getLogger(CommonUtil.class);
+//	private static Logger log = LoggerFactory.getLogger(CommonUtil.class);
 	/**
 	 * 发送https请求
 	 * @param requestUrl 请求地址
@@ -76,9 +76,11 @@ public class CommonUtil {
 			conn.disconnect();
 			return buffer.toString();
 		} catch (ConnectException ce) {
-			log.error("连接超时：{}", ce);
+//			log.error("连接超时：{}", ce);
+			System.out.println("连接超时" + ce);
 		} catch (Exception e) {
-			log.error("https请求异常：{}", e);
+//			log.error("https请求异常：{}", e);
+			System.out.println("https请求异常" + e);
 		}
 		return null;
 	}
@@ -104,7 +106,8 @@ public class CommonUtil {
 			} catch (JSONException e) {
 				token = null;
 				// 获取token失败
-				log.error("获取token失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));
+//				log.error("获取token失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));
+				System.out.println("获取token失败，errcode:" + jsonObject.getInt("errcode"));
 			}
 		}
 		return token;

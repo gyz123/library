@@ -6,20 +6,17 @@
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width,initial-scale=1,user-scalable=0">
-<title>购物车</title>
+<title>待借列表</title>
 
 <link rel="stylesheet" href="css/weui.css" />
 <link rel="stylesheet" href="css/weui2.css" />
 <link rel="stylesheet" href="css/weui3.css" />
 <link rel="stylesheet" type="text/css" href="css/weuix.min.css">
 
-<style type="text/css">
-	
-</style>
-
 </head>
   
-    <body ontouchstart style="background-color: #f8f8f8;">
-    购物车
-  </body>
+<body ontouchstart style="background-color: #f8f8f8;">
+	
+	
+</body>
 </html>

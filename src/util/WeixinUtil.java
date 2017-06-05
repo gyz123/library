@@ -1,25 +1,18 @@
 package util;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 import menu.Button;
@@ -30,7 +23,6 @@ import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
@@ -46,10 +38,12 @@ public class WeixinUtil {
 	// 测试号的数据
 	public static final String APPID = "wx6b71cb3f69dd9a86";
 	public static final String APPSECRET = "f02adc4026d13796f35169b778b4e9ef";
+	public static final String DN = "http://www.iotesta.cn";
 	
 	// 老马的数据
-//	private static final String APPID = "wxde3504dfb219fc20";
-//	private static final String APPSECRET = "1824588d88f3251162b7ba687776b855";
+//	public static final String APPID = "wxde3504dfb219fc20";
+//	public static final String APPSECRET = "1824588d88f3251162b7ba687776b855";
+//	public static final String DN = "http://www.iotesta.com.cn";
 
 	private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	private static final String UPLOAD_URL = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE";
@@ -59,9 +53,10 @@ public class WeixinUtil {
 	
 	private static final String SCOPE = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
 	
-	private static final String registerAction = "http://www.iotesta.cn/library/show_register.action";
-	private static final String openLibraryAction = "http://www.iotesta.cn/library/show_main.action";
-	private static final String showSingleCatAction = "http://www.iotesta.cn/library/show_singleCat.action";
+	private static final String registerAction = DN + "/library/show_register.action";
+	private static final String openLibraryAction = DN + "/library/show_main.action";
+	private static final String showSingleCatAction = DN + "/library/show_singleCat.action";
+	private static final String payAction = DN + "/library/show_pay.action";
 	
 	private static final String GET_USER_ID = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
 	
@@ -271,12 +266,14 @@ public class WeixinUtil {
 		ViewButton button21 = new ViewButton();
 		button21.setName("index 页面");
 		button21.setType("view");
-		button21.setUrl("http://www.iotesta.cn/library/index.jsp");
+		button21.setUrl(DN + "/library/index.jsp");
 		
+		String url22 = SCOPE.replace("APPID", APPID).replace("REDIRECT_URI", payAction)
+				.replace("SCOPE", "snsapi_userinfo").replace("STATE", "123");
 		ViewButton button22 = new ViewButton();
-		button22.setName("界面测试");
+		button22.setName("支付测试");
 		button22.setType("view");
-		button22.setUrl("http://www.iotesta.cn/library/show_register.action");
+		button22.setUrl(url22);
 		
 		// 获取详细用户信息
 		String url23 = SCOPE.replace("APPID", APPID).replace("REDIRECT_URI", registerAction)
@@ -289,7 +286,7 @@ public class WeixinUtil {
 		ViewButton button24 = new ViewButton();
 		button24.setName("JSSDK测试页面");
 		button24.setType("view");
-		button24.setUrl("http://www.iotesta.cn/library/JSConfigServlet");
+		button24.setUrl(DN + "/library/JSConfigServlet");
 		
 		
 		ClickButton button31 = new ClickButton();

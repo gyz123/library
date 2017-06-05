@@ -1,7 +1,5 @@
 package po;
 
-import java.util.Arrays;
-
 public class UserDetailInfo {
 	private String openid;  // Œ¢–≈∫≈
 	private String nickname;  // Í«≥∆

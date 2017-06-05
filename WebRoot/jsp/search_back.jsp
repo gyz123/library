@@ -57,7 +57,7 @@ $(function() {
 </head>
 
 <body ontouchstart style="">
-	<a href="/library/show_main.action">
+	<a href="/library/back_to_main.action?weid=${weid }">
 	<div class="weui-header bg-blue" style="height:56px;background-color:#01164b">
 		<div class="weui-header-left">
 		</div>
@@ -72,7 +72,7 @@ $(function() {
 	</div>
 	<div class="weui_cells weui_cells_access">
 		<c:forEach  var="booklist" items="${booklist }">
-			<a class="weui_cell" href="/library/show_singleItem.action?bookno=${booklist.bookno }">
+			<a class="weui_cell" href="/library/show_singleItem.action?bookno=${booklist.bookno }&weid=${weid }">
 				<div class="weui_cell_hd">
 					<img src="${booklist.bookimg}" alt=""
 						style="width:72px;margin-right:8px;display:block;margin-right:16px">

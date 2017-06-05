@@ -24,6 +24,7 @@ public class ShoppingCart extends ActionSupport{
 		return null;
 	}
 	
+	
 	@Override // 获取用户的购物车列表
 	public String execute() throws Exception {
 		ArrayList<Book> bookList = new ArrayList<Book>();
