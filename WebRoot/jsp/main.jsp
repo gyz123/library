@@ -371,7 +371,6 @@
 		location.href = "/library/show_searchInfo.action?keyword=" + encodeURI(encodeURI(keyword)) + 
 		"&weid=" + "<%=request.getParameter("weid")%>";
 	}
-
 </script>
 </head>
 
@@ -383,18 +382,18 @@
 
           <c:if var="flag" test="${flag == true }" scope="page">
           <div class="weui_panel_bd">
-                <a href="javascript:void(0);" class="weui_media_box weui_media_appmsg" style="margin-left:0px;">
+                <div class="weui_media_box weui_media_appmsg" style="margin-left:0px;">
                     <div class="weui_media_hd" >
                         <img class="circle" src="${user.headimgurl }" alt=""
                         	style="width:64px; height:64px; margin-top:16px ">
                     </div>
                     <div class="weui_media_bd" style="margin-left:4px">
                     	<br><br>
-                        <span style="font-family:'微软雅黑'; font-size:20px">
+                        <span style="font-family:'微软雅黑'; font-size:20px" class="f-white">
                         	${user.nickname }
                         </span>
                     </div>
-                </a>
+                </div>
           </div>
           </c:if>
           
@@ -407,7 +406,7 @@
                     </div>
                     <div class="weui_media_bd" style="margin-left:4px">
                     	<br><br>
-                        <span class="f20">
+                        <span style="font-family:'微软雅黑'; font-size:20px" class="f-white">
                         	游客账号
                         </span>
                     </div>
@@ -455,148 +454,117 @@
                         	超新星智能图书馆
                         </span>
 				</h1>
-				<!-- <div class="weui-header-right" style="margin-top:15px">
-					         <a class="icon icon-83 f-white"></a>
-					  </div> -->
+			</div>
+ <section>
+    <h2 class="box-title" style="display:none;"></h2>
+        
+	<div id="mocha">
+		<div class="weui_search_bar">
+			<!--输入框-->
+			<input type="text" size="50" class="search-input" id="search"
+				onkeyup="getMoreContents()" placeholder='关键字' onblur="keywordBlur()"
+				onfocus="getMoreContents()">
+			<button class="weui_btn weui_btn_mini weui_btn_default"
+				id="searchaction" onclick="add();">
+				<i class="icon icon-4"></i>
+			</button>
+
+			<div id="myDiv">
+				<div id="popDiv">
+					<table id="content_table" bgcolor="#FFFAFA" border="0"
+						cellspacing="0" cellpadding="0">
+						<tbody id="content_table_body">
+							<!-- 数据显示处 -->
+						</tbody>
+					</table>
 				</div>
-      <section><!--class="box"-->
-        <h2 class="box-title" style="display:none;"></h2>
-        <div id="mocha">
-					
+			</div>
+		</div>
+		<!-- 轮播  -->
+		<div class="slide" id="slide1" style="position:relative;z-index:0;">
+			<ul>
+				<li><a href="#"> <img
+						src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+						data-src="http://7xr193.com1.z0.glb.clouddn.com/1.jpg" alt="">
+				</a>
+					<div class="slide-desc">帅帅的轮播~</div></li>
+				<li><a href="#"> <img
+						src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+						data-src="http://7xr193.com1.z0.glb.clouddn.com/2.jpg" alt="">
+				</a>
+					<div class="slide-desc">小柯的轮播~</div></li>
+				<li><a href="#"> <img
+						src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
+						data-src="http://7xr193.com1.z0.glb.clouddn.com/3.jpg" alt="">
+				</a>
+					<div class="slide-desc">大师的轮播~</div></li>
+			</ul>
+			<div class="dot">
+				<span></span> <span></span> <span></span>
+			</div>
+		</div>
 
-					<div class="weui_search_bar">
-						<!--输入框-->
-						<input type="text" size="50" class="search-input" id="search" onkeyup="getMoreContents()"
-						placeholder='关键字' onblur="keywordBlur()" onfocus="getMoreContents()" >
-						<button class="weui_btn weui_btn_mini weui_btn_default" id="searchaction" onclick="add();">
-							<i class="icon icon-4"></i>
-						</button>
-
-						<div id="myDiv">
-							<div id="popDiv">
-								<table id="content_table" bgcolor="#FFFAFA" border="0"
-									cellspacing="0" cellpadding="0">
-									<tbody id="content_table_body">
-										<!-- 数据显示处 -->
-									</tbody>
-								</table>
-							</div>
-						</div>
-
-					</div>
-					<!-- 轮播  -->
-					<div class="slide" id="slide1" style="position:relative;z-index:0;">
-						<ul>
-							<li>
-								<a href="#">
-								<img
-									src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
-									data-src="http://7xr193.com1.z0.glb.clouddn.com/1.jpg" alt="">
-								</a>
-								<div class="slide-desc">帅帅的轮播~</div>
-							</li>
-							<li>
-								<a href="#">
-								<img
-									src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
-									data-src="http://7xr193.com1.z0.glb.clouddn.com/2.jpg" alt="">
-								</a>
-								<div class="slide-desc">小柯的轮播~</div>
-							</li>
-							<li>
-								<a href="#">
-								<img
-									src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
-									data-src="http://7xr193.com1.z0.glb.clouddn.com/3.jpg" alt="">
-								</a>
-								<div class="slide-desc">大师的轮播~</div>
-							</li>
-						</ul>
-						<div class="dot">
-							<span></span> <span></span> <span></span>
-						</div>
-					</div>
-
-					<!-- 书籍分类  -->
-					<div class="weui_grids">
-							<a href="/library/show_singleCat.action?id=wenxue&pagenum=1&weid=${weid }" 
-								class="weui_grid js_grid">
-							<div class="weui_grid_icon">
-								<img src="/library/image/myicon/wenxue.svg" alt="文学">
-							</div>
-							<p class="weui_grid_label">文学</p>
-							</a>
-
-							<a href="/library/show_singleCat.action?id=zhuanji&pagenum=1&weid=${weid }"
-							    class="weui_grid js_grid">
-							<div class="weui_grid_icon">
-								<img src="/library/image/myicon/zhuanji.svg" alt="传记">
-							</div>
-							<p class="weui_grid_label">传记</p>
-							</a>
-
-							<a href="/library/show_singleCat.action?id=lishi&pagenum=1&weid=${weid }"	
-								class="weui_grid js_grid">
-							<div class="weui_grid_icon">
-								<img src="/library/image/myicon/lishi.svg" alt="历史">
-							</div>
-							<p class="weui_grid_label">历史</p>
-							</a>
-
-							<a href="/library/show_singleCat.action?id=zhexue&pagenum=1&weid=${weid }"	
-								class="weui_grid js_grid">
-							<div class="weui_grid_icon">
-								<img src="/library/image/myicon/zhexue.svg" alt="哲学">
-							</div>
-							<p class="weui_grid_label">哲学</p>
-							</a>
-
-							<a href="/library/show_singleCat.action?id=ertong&pagenum=1&weid=${weid }"	
-								class="weui_grid js_grid">
-							<div class="weui_grid_icon">
-								<img src="/library/image/myicon/ertong.svg" alt="儿童">
-							</div>
-							<p class="weui_grid_label">儿童</p>
-							</a>
-
-							<a href="/library/show_singleCat.action?id=xiaoshuo&pagenum=1&weid=${weid }"	
-								class="weui_grid js_grid">
-							<div class="weui_grid_icon">
-								<img src="/library/image/myicon/xiaoshuo.svg" alt="小说">
-							</div>
-							<p class="weui_grid_label">小说</p>
-							</a>
-
-							<a href="/library/show_singleCat.action?id=xinli&pagenum=1&weid=${weid }"	
-								class="weui_grid js_grid">
-							<div class="weui_grid_icon">
-								<img src="/library/image/myicon/xinli.svg" alt="心理">
-							</div>
-							<p class="weui_grid_label">心理</p>
-							</a>
-
-							<a href="/library/show_singleCat.action?id=shehui&pagenum=1&weid=${weid }"	
-								class="weui_grid js_grid">
-							<div class="weui_grid_icon">
-								<img src="/library/image/myicon/guanli.svg" alt="社会">
-							</div>
-							<p class="weui_grid_label">社会</p>
-							</a>
-
-							<a href="/library/show_singleCat.action?id=keji&pagenum=1&weid=${weid }"	
-								class="weui_grid js_grid">
-							<div class="weui_grid_icon">
-								<img src="/library/image/myicon/jisuanji.svg" alt="科技">
-							</div>
-							<p class="weui_grid_label">科技</p>
-							</a>
-					</div>
-				</div><!--class="box-content"-->
+		<!-- 书籍分类  -->
+		<div class="weui_grids">
+			<a
+				href="/library/show_singleCat.action?id=wenxue&pagenum=1&weid=${weid }"
+				class="weui_grid js_grid">
+				<div class="weui_grid_icon">
+					<img src="/library/image/myicon/wenxue.svg" alt="文学">
+				</div>
+				<p class="weui_grid_label">文学</p> </a> <a
+				href="/library/show_singleCat.action?id=zhuanji&pagenum=1&weid=${weid }"
+				class="weui_grid js_grid">
+				<div class="weui_grid_icon">
+					<img src="/library/image/myicon/zhuanji.svg" alt="传记">
+				</div>
+				<p class="weui_grid_label">传记</p> </a> <a
+				href="/library/show_singleCat.action?id=lishi&pagenum=1&weid=${weid }"
+				class="weui_grid js_grid">
+				<div class="weui_grid_icon">
+					<img src="/library/image/myicon/lishi.svg" alt="历史">
+				</div>
+				<p class="weui_grid_label">历史</p> </a> <a
+				href="/library/show_singleCat.action?id=zhexue&pagenum=1&weid=${weid }"
+				class="weui_grid js_grid">
+				<div class="weui_grid_icon">
+					<img src="/library/image/myicon/zhexue.svg" alt="哲学">
+				</div>
+				<p class="weui_grid_label">哲学</p> </a> <a
+				href="/library/show_singleCat.action?id=ertong&pagenum=1&weid=${weid }"
+				class="weui_grid js_grid">
+				<div class="weui_grid_icon">
+					<img src="/library/image/myicon/ertong.svg" alt="儿童">
+				</div>
+				<p class="weui_grid_label">儿童</p> </a> <a
+				href="/library/show_singleCat.action?id=xiaoshuo&pagenum=1&weid=${weid }"
+				class="weui_grid js_grid">
+				<div class="weui_grid_icon">
+					<img src="/library/image/myicon/xiaoshuo.svg" alt="小说">
+				</div>
+				<p class="weui_grid_label">小说</p> </a> <a
+				href="/library/show_singleCat.action?id=xinli&pagenum=1&weid=${weid }"
+				class="weui_grid js_grid">
+				<div class="weui_grid_icon">
+					<img src="/library/image/myicon/xinli.svg" alt="心理">
+				</div>
+				<p class="weui_grid_label">心理</p> </a> <a
+				href="/library/show_singleCat.action?id=shehui&pagenum=1&weid=${weid }"
+				class="weui_grid js_grid">
+				<div class="weui_grid_icon">
+					<img src="/library/image/myicon/guanli.svg" alt="社会">
+				</div>
+				<p class="weui_grid_label">社会</p> </a> <a
+				href="/library/show_singleCat.action?id=keji&pagenum=1&weid=${weid }"
+				class="weui_grid js_grid">
+				<div class="weui_grid_icon">
+					<img src="/library/image/myicon/jisuanji.svg" alt="科技">
+				</div>
+				<p class="weui_grid_label">科技</p> </a>
+		</div>
+	</div>
       </section>
 
-      <!-- <footer class="panel-footer" style="display:none">
-        <p></p>
-      </footer> -->
     </main>
 
 

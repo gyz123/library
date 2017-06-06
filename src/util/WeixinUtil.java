@@ -35,6 +35,11 @@ import po.AccessToken;
 import po.User;
 
 public class WeixinUtil {
+	// 数据库配置
+	public static final String MYSQL_DN = "127.0.0.1:3306";
+	public static final String MYSQL_NAME = "root";
+	public static final String MYSQL_PASSWORD = "root";
+	
 	// 测试号的数据
 	public static final String APPID = "wx6b71cb3f69dd9a86";
 	public static final String APPSECRET = "f02adc4026d13796f35169b778b4e9ef";

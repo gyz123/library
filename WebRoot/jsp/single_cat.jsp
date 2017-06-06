@@ -15,25 +15,6 @@
 <link rel="stylesheet" href="css/weui3.css" />
 <link rel="stylesheet" type="text/css" href="css/weuix.min.css">
 <script src="js/zepto.min.js"></script>
-      <script>
-  $(function(){
- 
- $('.weui-comment-icon').click(function(){
- if($(this).parent().hasClass('checked')){
- $(this).parent().removeClass('checked');
- var  val = $(this).next().html();
-  $(this).next().html(parseInt(val)-1);
- }else{
- $(this).parent().addClass('checked');
-  var  val = $(this).next().html();
-  $(this).next().html(parseInt(val)+1);
- }
- });
-	  
-	  });    
-      
-      </script>
-
 
 
 </head>
@@ -61,6 +42,8 @@
 	<div class="weui_cells_title" style="margin-top:2%">
 		<div><span class="f10">当前类别 > ${cat }</span></div>
 	</div>
+	
+	
 	<div class="weui_cells weui_cells_access">
 		<c:forEach  var="booklist" items="${booklist }">
 		<a class="weui_cell" href="/library/show_singleItem.action?bookno=${booklist.bookno }&weid=${weid }">

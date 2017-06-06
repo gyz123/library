@@ -71,12 +71,15 @@
 		<!-- 单本书籍，加入待借清单  -->
 		<action name="add_to_shoppingcart" class="action.page.SingleItem" method="addToShoppingCart">
 			<result name="ok">/sidemenu/addCart_success.jsp</result>
+			<result name="fail">/sidemenu/addCart_fail.jsp</result>
+			<result name="reg">/sidemenu/hintReg.jsp</result>
 		</action>
 		
 		<!-- 单本书籍，预定   -->
 		<action name="add_to_reserve" class="action.page.SingleItem" method="addToReserve">
 			<result name="ok">/sidemenu/reserve_success.jsp</result>
 			<result name="fail">/sidemenu/reserve_fail.jsp</result>
+			<result name="reg">/sidemenu/hintReg.jsp</result>
 		</action>
 		
 		<!-- 单本书籍，书评   -->
@@ -124,11 +127,31 @@
 		<action name="show_shoppingcart_delete" class="action.sidemenu.ShoppingCart" method="delete">
 		</action>
 		
-		<!-- 支付   -->
+		<!-- 支付，显示支付界面   -->
 		<action name="show_pay" class="action.sidemenu.Pay">
 			<result>/sidemenu/pay.jsp</result>
 		</action>
-				
+		
+		<!-- 支付，生成二维码 -->
+		<action name="generate_code" class="action.sidemenu.Pay" method="generateCode">
+		</action>
+		
+		<!-- 支付，监听管理员是否确认   -->
+		<action name="listen_status" class="action.sidemenu.Pay" method="listenStatus">
+		</action>
+		
+		
+			
+		<!-- 微信支付 -->
+		<action name="post_param" class="pay.action.PayAction" method="postParam">
+		</action>
+		
+		<action name="pay_success" class="pay.action.PayAction" method="paySuccess">
+		</action>
+		
+		<action name="success_Back" class="pay.action.PayAction" method="successBack">
+			<result name="ok">/jsp/main.jsp</result>
+		</action>
 		
 		
 		<!-- 管理员操作    -->
@@ -152,13 +175,8 @@
 		<action name="usersingle" class="action.manager.SearchUser" method="searchSingle">
 		</action>
 			
-			
-			
-		<!-- 微信支付 -->
-		<action name="post_param" class="pay.action.PayAction" method="postParam">
-		</action>
-		
-		<action name="pay_success" class="pay.action.PayAction" method="paySuccess">
+		<!-- 确认订单   -->
+		<action name="setstatus" class="action.manager.ConfirmPay" method="setStatus">
 		</action>
 			
 			

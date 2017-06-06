@@ -29,11 +29,16 @@ public class SingleItem extends ActionSupport{
 		request.setCharacterEncoding("utf-8");
 		String weid = request.getParameter("weid");
 		String bookno = request.getParameter("bookno");
-		SQL4PersonalInfo.addToShoppingCart(bookno, weid);
 		ActionContext context = ActionContext.getContext();
-        context.put("weid", weid);
-		 
-		return "ok";
+		context.put("weid", weid);
+		if(weid == null){
+			return "reg";	// ÐèÒªÏÈ×¢²á
+		}
+		Boolean flag = SQL4PersonalInfo.addToShoppingCart(bookno, weid);
+		if(flag){
+			return "ok";
+		}
+		return "fail";
 	}
 	
 	
@@ -43,9 +48,13 @@ public class SingleItem extends ActionSupport{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		request.setCharacterEncoding("utf-8");
 		String weid = request.getParameter("weid");
+		System.out.println(weid);
 		String bookno = request.getParameter("bookno");
 		ActionContext context = ActionContext.getContext();
         context.put("weid", weid);
+        if(weid.isEmpty() || weid.equals("null")){
+			return "reg";	
+		}
 		Boolean flag = SQL4PersonalInfo.addToReserve(weid, bookno);
 		if(flag){
 			return "ok";

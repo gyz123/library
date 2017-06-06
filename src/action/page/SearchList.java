@@ -68,6 +68,7 @@ public class SearchList extends ActionSupport{
         pw.close();
 	}
 	
+	
 	// ËÑË÷
 	@Override
 	public String execute() throws Exception {

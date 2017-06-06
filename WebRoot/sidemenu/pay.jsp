@@ -29,6 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
     <form action="" method="post" >  
         <input type="button" value="确认支付" name="ajaxLoadId" id="test"/>  
+        
     </form>  
     <script type="text/javascript">  
     var basePath = "<%=basePath%>";  
@@ -61,7 +62,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 }else{  
                 	// 支付失败
                     alert("fail");  
-                    window.location.href="http://www.iotesta.com.cn/library/regFailure.action";     
+                    window.location.href="/library/regFailure.action";     
                                        //<span style="font-family:微软雅黑;">当失败后，继续跳转该支付页面让用户可以继续付款，贴别注意不能直接调转jsp，</span><span style="font-size:10.5pt">不然会报</span><span style="font-size:12.0pt"> system:access_denied。</span>  
                 }  
             });  

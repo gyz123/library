@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Map;
 import java.util.SortedMap;
@@ -21,7 +22,9 @@ import pay.util.CommonUtil;
 import pay.util.ConfigUtil;
 import pay.util.PayCommonUtil;
 import pay.util.XMLUtil;
+import util.SQL4PersonalInfo;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class PayAction extends ActionSupport{
@@ -31,6 +34,7 @@ public class PayAction extends ActionSupport{
 		System.out.println("执行postParam方法");
 		HttpServletRequest request = ServletActionContext.getRequest();
         request.setCharacterEncoding("UTF-8");
+        String subscribenum = request.getParameter("num");
         
 		SortedMap<String,String> parameters = new TreeMap<String,String>();
 		parameters.put("appid", ConfigUtil.APPID);
@@ -80,6 +84,8 @@ public class PayAction extends ActionSupport{
         String userAgent = request.getHeader("user-agent");
         char agent = userAgent.charAt(userAgent.indexOf("MicroMessenger")+15);
         params.put("agent", new String(new char[]{agent}));//微信版本号，用于前面提到的判断用户手机微信的版本是否是5.0以上版本。
+        // 订单号
+        params.put("num", subscribenum);
         String json = JSONObject.fromObject(params).toString();
         System.out.println("json: " + json);
 		
@@ -92,6 +98,7 @@ public class PayAction extends ActionSupport{
         pw.close();
 		
 	}
+	
 	
 	// 异步接收微信支付结果
 	public void paySuccess() throws Exception{
@@ -121,8 +128,22 @@ public class PayAction extends ActionSupport{
             System.out.println("微信支付订单号:　" + map.get("transaction_id"));
             System.out.println("支付完成时间: " + map.get("time_end"));
         }
-        
-        
     }
+	
+	
+	// 成功支付，跳转
+	public String successBack() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+        request.setCharacterEncoding("UTF-8");
+        String subscribenum = request.getParameter("num");
+        SQL4PersonalInfo.setWhetherPay(subscribenum);
+        
+        ActionContext context = ActionContext.getContext();
+		context.put("weid", request.getParameter("openid"));
+		
+		return "ok";
+	}
+	
+	
 	
 }

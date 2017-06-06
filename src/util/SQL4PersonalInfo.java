@@ -11,10 +11,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import po.Book;
 import po.BookInCategory;
+import po.BookInShoppingcart;
 import po.BookWithouImg;
 import po.BorrowedBook;
+import po.PayList;
 import po.UserDetailInfo;
 
 // 定义了个人信息搜索的SQL函数
@@ -95,7 +96,8 @@ public class SQL4PersonalInfo {
 					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
 			Statement s = con.createStatement();
 			
-			String query = "select bookno,bookname,borrowtime,returntime from borrow where weid = " + weid + ";"; 
+			String query = "select bookno,bookname,borrowtime,returntime from borrow " +
+							"where returntime IS NOT NULL and weid = '" + weid + "';"; 
 			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			// 将搜索到的9本书放入ArrayList中
@@ -153,41 +155,59 @@ public class SQL4PersonalInfo {
 	
 	
 	// 添加书本到购物车（可添加同一本书多次到购物车）
-	public static void addToShoppingCart(String bookno,String weid){
+	public static Boolean addToShoppingCart(String bookno,String weid){
+		Boolean whetherSuccess = false;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
 					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
 			Statement s = con.createStatement();
-			String query = "insert into shoppingcart (weid,bookno) values ('" + weid + "','" + bookno + "');";
-			s.executeUpdate(query);
+			// 先判断用户是否已经预定
+			Boolean flag = true;
+			String query = "select bookno from shoppingcart where weid = '" + weid + "'";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {
+				if (ret.getString(1).equals(bookno)) {
+					// 已经加入了购物车
+					flag = false;
+					break;
+				}
+			}
+			
+			if(flag){
+				query = "insert into shoppingcart (weid,bookno) values ('" + weid + "','" + bookno + "');";
+				s.executeUpdate(query);
+				whetherSuccess = true;
+			}
             con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return whetherSuccess;
 	}
 	
 	
 	// 获取个人购物车详情
-	public static ArrayList<Book> queryShoppingCart(String weid){
-		ArrayList<Book> bookList = new ArrayList<Book>();
+	public static ArrayList<BookInShoppingcart> queryShoppingCart(String weid){
+		ArrayList<BookInShoppingcart> bookList = new ArrayList<BookInShoppingcart>();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
 					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
 			Statement s = con.createStatement();
 			
-			String query = "select book.bookno,book.bookname,book.bookimg " +
+			String query = "select book.bookno,book.bookname,book.bookimg,book.price " +
 							"from shoppingcart,book " +
 							"where book.bookno = shoppingcart.bookno and shoppingcart.weid = '" + weid + "';"; 
 			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			// 将搜索到的9本书放入ArrayList中
 			while (ret.next()) {  
-				Book book = new Book();
+				BookInShoppingcart book = new BookInShoppingcart();
             	book.setBookno(ret.getString(1));
             	book.setBookname(ret.getString(2));
             	book.setBookimg(ret.getString(3));
+            	book.setPrice(ret.getString(4));
             	bookList.add(book);
             }
             con.close();
@@ -206,7 +226,8 @@ public class SQL4PersonalInfo {
 					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
 			Statement s = con.createStatement();
 			String query = "delete from shoppingcart where weid = '" + weid + "' and bookno = " + bookno + ";";
-			s.executeQuery(query);
+			System.out.println(query);
+			s.executeUpdate(query);
             con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -399,7 +420,7 @@ public class SQL4PersonalInfo {
 	}
 	
 	
-	// 添加借阅
+	// 完成借阅
 	public static void addToBorrow(String weid,BookWithouImg book1,BookWithouImg book2){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -422,12 +443,110 @@ public class SQL4PersonalInfo {
 						+ book2.getBookno() + "','" + book2.getBookname() + "','" + time + "');";
 				s.executeUpdate(query);
 			}
-			
             con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	// 保存订单
+	public static void saveOrder(String weid,PayList list){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+			Statement s = con.createStatement();
+			String query = "insert into paylist values ('" + list.getWeid() + "','" + list.getSubsribenum() + "','" 
+					+ list.getMoney() + "','" + list.getBookname() +  "','" + list.getBookno() + "','" 
+					+ list.getStatus() + "','" + list.getWhetherPay() + "');";
+			System.out.println(query);
+			s.executeUpdate(query);
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	// 组装订单
+	public static PayList setPayList(String weid,String bookno,String subscribenum){
+		PayList list = new PayList();
+		list.setWeid(weid);
+		list.setBookno(bookno);
+		list.setSubsribenum(subscribenum);  // 订单号
+		list.setStatus("N");  // 管理员确认状态
+		list.setWhetherPay("N");	// 用户支付状态
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+			Statement s = con.createStatement();
+			String query = "select price,bookname from book where bookno = " + bookno + ";";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {  
+            	list.setMoney(ret.getString(1));
+            	list.setBookname(ret.getString(2));
+            }
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
+		return list;
+	}
+	
+	
+	// 监听status状态
+	public static String judgeManagerConfirm(String subscribenum){
+		String status = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+			Statement s = con.createStatement();
+			String query = "select status from paylist where subscribenum = '" + subscribenum + "';";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {  
+            	status = ret.getString(1);
+            }
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return status;
+	}
+	
+	
+	// 管理员确认订单
+	public static void setManagerConfirm(String subscribenum){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+			Statement s = con.createStatement();
+			String query = "update paylist set status = 'Y' where subscribenum = '" + subscribenum + "';";
+			s.executeUpdate(query);
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	// 用户完成订单支付
+	public static void setWhetherPay(String subscribenum){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+			Statement s = con.createStatement();
+			String query = "update paylist set whetherpay = 'Y' where subscribenum = '" + subscribenum + "';";
+			s.executeUpdate(query);
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

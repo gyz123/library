@@ -3,6 +3,7 @@ package util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -13,13 +14,28 @@ import po.Comment;
 import po.UserDetailInfo;
 
 public class SQLUtil {
-	// ÅÐ¶ÏÖØ¸´×¢²á
-	public static boolean judgeReg(String database,String openID){
-		boolean flag = false;
+	
+	public static Connection getConnection(){
+		Connection con = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(
+			con = DriverManager.getConnection(
 					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return con;
+	}
+	
+	
+	// ÅÐ¶ÏÖØ¸´×¢²á
+	public static boolean judgeReg(String database,String openID) throws Exception{
+		boolean flag = false;
+//		try {
+//			Class.forName("com.mysql.jdbc.Driver");
+//			Connection con = DriverManager.getConnection(
+//					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+		Connection con = getConnection();
 			Statement s = con.createStatement();
 			String query = "select * from user";
 			ResultSet ret = s.executeQuery(query);
@@ -31,9 +47,9 @@ public class SQLUtil {
                 }
             }
             con.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		return flag; 
 	}
 	

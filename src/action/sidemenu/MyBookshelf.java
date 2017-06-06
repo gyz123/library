@@ -38,6 +38,7 @@ public class MyBookshelf extends ActionSupport{
 		ActionContext context = ActionContext.getContext();
 		context.put("pagenum","1");
 		context.put("booklist", bookList);
+		context.put("weid", weid);
 		
 		return SUCCESS;
 	}

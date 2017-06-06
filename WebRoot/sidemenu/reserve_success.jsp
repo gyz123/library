@@ -21,7 +21,7 @@
 
 			if(t <= 0)
 			{
-				window.location.href="http://www.iotesta.cn/library/back_to_main.action";
+				window.location.href="/library/back_to_main.action?weid=" + "<%=request.getParameter("weid") %>";
 				//alert("时间到");
 			}
 			else{
@@ -41,7 +41,7 @@
   			<div class="weui_text_area">
   				<h2 class="weui_msg_title f-green">预定成功啦~等有书了我们提醒您</h2>
   				
-  				<!--  <p class="weui_msg_desc f11" id="time">5秒后自动跳转页面</p>  -->
+  				<p class="weui_msg_desc f11" id="time">5秒后自动跳转</p>  
   			</div>
   			<div class="weui_opr_area">
   				<p class="weui_btn_area">

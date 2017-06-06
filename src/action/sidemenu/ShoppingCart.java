@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.ServletActionContext;
 
 import po.Book;
+import po.BookInShoppingcart;
 import util.SQL4PersonalInfo;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -27,13 +28,14 @@ public class ShoppingCart extends ActionSupport{
 	
 	@Override // 获取用户的购物车列表
 	public String execute() throws Exception {
-		ArrayList<Book> bookList = new ArrayList<Book>();
+		ArrayList<BookInShoppingcart> bookList = new ArrayList<BookInShoppingcart>();
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String weid = request.getParameter("weid");
 		// 获取购物车中商品列表
 		bookList = SQL4PersonalInfo.queryShoppingCart(weid);
 		ActionContext context = ActionContext.getContext();
 		context.put("booklist", bookList);
+		context.put("weid", weid);
 		return SUCCESS;
 	}
 
