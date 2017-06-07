@@ -1,10 +1,12 @@
 package action.page;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -93,6 +95,23 @@ public class SingleItem extends ActionSupport{
 		}
 		context.put("bookname", bookname);
 		context.put("score",score);
+		
+		return "ok";
+	}
+	
+	
+	// Ŀ¼
+	public String getBookOutline() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getParameter("weid");
+		String bookno = request.getParameter("bookno");
+		HashMap<String,String> bookInfo = SQLUtil.getBookOutline(bookno);
+		
+		ActionContext context = ActionContext.getContext();
+		context.put("weid", weid);
+		context.put("outline", bookInfo.get("outline"));
+		context.put("bookname",bookInfo.get("bookname"));
 		
 		return "ok";
 	}

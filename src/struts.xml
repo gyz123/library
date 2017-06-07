@@ -87,6 +87,11 @@
 			<result name="ok">/jsp/remark.jsp</result>
 		</action>
 		
+		<!-- 单本书籍，目录 -->
+		<action name="get_book_outline" class="action.page.SingleItem" method="getBookOutline">
+			<result name="ok">/jsp/outline.jsp</result>
+		</action>
+		
 		<!-- 显示搜索结果 -->
 		<action name="show_searchInfo" class="action.page.SearchList">
 			<result>/jsp/search_back.jsp</result>

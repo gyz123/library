@@ -3,11 +3,10 @@ package util;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import po.Book;
 import po.BookDetailInfo;
 import po.BookInCategory;
 import po.Comment;
@@ -29,13 +28,13 @@ public class SQLUtil {
 	
 	
 	// 判断重复注册
-	public static boolean judgeReg(String database,String openID) throws Exception{
+	public static boolean judgeReg(String database,String openID){
 		boolean flag = false;
-//		try {
-//			Class.forName("com.mysql.jdbc.Driver");
-//			Connection con = DriverManager.getConnection(
-//					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
-		Connection con = getConnection();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+//		Connection con = getConnection();
 			Statement s = con.createStatement();
 			String query = "select * from user";
 			ResultSet ret = s.executeQuery(query);
@@ -47,9 +46,9 @@ public class SQLUtil {
                 }
             }
             con.close();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return flag; 
 	}
 	
@@ -295,10 +294,32 @@ public class SQLUtil {
 		}
 		return list;
 	}
+
+	
+	// 目录
+	public static HashMap<String,String> getBookOutline(String bookno){
+		HashMap<String,String> bookInfo = new HashMap<String,String>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+			Statement s = con.createStatement();
+			String query = "select outline,bookname from book where bookno = " + bookno + ";";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {  
+				bookInfo.put( "outline",ret.getString(1) );
+				bookInfo.put("bookname",ret.getString(2));
+			}
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bookInfo;
+	}
 	
 	
 	// 依据关键词搜索书籍列表 (编号，书名，图片，出版社，作者，剩余量, 阅读量，评分)
- 	public static ArrayList<BookInCategory> querySingleBookFromSearch(String keyword,String pageNum){
+  	public static ArrayList<BookInCategory> querySingleBookFromSearch(String keyword,String pageNum){
 		ArrayList<BookInCategory> bookSearchList = new ArrayList<BookInCategory>();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");

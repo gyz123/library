@@ -53,9 +53,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 
 	<c:forEach var="booklist" items="${booklist}">
-	<!--店铺-->
 	<div class="jd_shop">
-
 		<div class="jd_shop_con">
 			<div class="product">
 				<div class="check_box" >
@@ -90,6 +88,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
 	</div>
+	</c:forEach>
+	
 	<div class="jd_win">
 		<div class="jd_win_box">
 			<div class="jd_win_tit">你确定删除该图书吗？</div>
@@ -99,8 +99,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
 	</div>
-	</c:forEach>
-	
 	
 	<c:if var="flag" test="${booklist[5].bookno == null }" scope="page">
 	<section class="weui-menu">

@@ -2,14 +2,20 @@ package action.sidemenu;
 
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 
+import po.BookInShoppingcart;
 import po.PayList;
+import po.UserDetailInfo;
 import util.SQL4PersonalInfo;
+import util.SQLUtil;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -39,7 +45,7 @@ public class Pay extends ActionSupport{
 		SQL4PersonalInfo.saveOrder(weid, list1);
 		sb.append(list1.getSubsribenum() + "," + list1.getBookno() + "||"); // 第一本书
 		
-		if (!bookno2.isEmpty()) {
+		if (!( bookno2.isEmpty() || bookno2.equals("undefined") )) {
 			PayList list2 = SQL4PersonalInfo.setPayList(weid, bookno2, subscribenum);
 			SQL4PersonalInfo.saveOrder(weid, list2);
 			sb.append(list2.getSubsribenum() + "," + list2.getBookno()); // 第二本书
@@ -60,6 +66,7 @@ public class Pay extends ActionSupport{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		request.setCharacterEncoding("utf-8");
 		String subscribenum = request.getParameter("num");
+//		String openid = request.getParameter("openid");
 		
 		// 获取
 		String status = SQL4PersonalInfo.judgeManagerConfirm(subscribenum);
@@ -69,6 +76,12 @@ public class Pay extends ActionSupport{
 		pw.write(status);
 		pw.flush();
 		pw.close();
+		
+//		ActionContext context = ActionContext.getContext();
+//		context.put("openid", openid);
+//		context.put("num", subscribenum);
+		
+//		return "ok";
 	}
 	
 	
@@ -81,9 +94,32 @@ public class Pay extends ActionSupport{
 		String weid = request.getParameter("weid");
 		String subscribenum = request.getParameter("num");
 		
+		
+		
 		ActionContext context = ActionContext.getContext();
 		context.put("openid", weid);
+		UserDetailInfo user = SQLUtil.querySingleUser(weid);
+		context.put("user",user);
 		context.put("num", subscribenum);
+		SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日 hh:mm:ss");
+		String date = df.format(new Date());
+		context.put("date", date);
+		
+		
+		// 测试数据
+		BookInShoppingcart book1 = new BookInShoppingcart();
+		book1.setBookno("1");
+		book1.setBookname("微观历史");
+		book1.setPrice("0.01");
+		BookInShoppingcart book2 = new BookInShoppingcart();
+		book2.setBookno("2");
+		book2.setBookname("梦里花落知多少");
+		book2.setPrice("0.02");
+		ArrayList<BookInShoppingcart> list = new ArrayList<BookInShoppingcart>();
+		list.add(book1);
+		list.add(book2);
+		context.put("booklist", list);
+		
 		
 //		sb.append(weid + "||");
 //		
