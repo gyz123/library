@@ -12,7 +12,9 @@ import org.apache.struts2.ServletActionContext;
 
 import po.Book;
 import po.BookInCategory;
+import po.UserDetailInfo;
 
+import util.SQL4PersonalInfo;
 import util.SQLUtil;
 import util.WeixinUtil;
 
@@ -31,6 +33,7 @@ public class Library_main extends ActionSupport{
         response.setCharacterEncoding("utf-8");
 		
         // 获取搜索条件
+        String weid = request.getParameter("weid");
         String catName = request.getParameter("id");
         String pageNum = request.getParameter("pagenum");
         String target = request.getParameter("target");
@@ -42,6 +45,7 @@ public class Library_main extends ActionSupport{
         }
         
         ActionContext context = ActionContext.getContext();
+        context.put("weid", weid);
         context.put("pagenum", pageNum);
         ArrayList<BookInCategory> bookList = new ArrayList<BookInCategory>();
 		// 文学：中国文学、外国文学
@@ -127,7 +131,30 @@ public class Library_main extends ActionSupport{
 		return "ok";
 	}
 	
-	@Override // 进入首页
+	// 返回首页
+	public String backToMain() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getParameter("weid");
+		ActionContext context = ActionContext.getContext();
+		context.put("weid", weid);
+		
+		UserDetailInfo user = SQL4PersonalInfo.queryUser(weid);
+		if(user != null){
+			context.put("flag", true);
+			context.put("user",user);
+			System.out.println("已注册:" + user.getRealName() + " " + user.getOpenid());
+		}
+		else{
+			context.put("flag", false);	// 说明用户还没有注册
+			System.out.println("未注册:"  + " " + weid);
+		}
+		
+		return "ok";
+	}
+	
+	
+	@Override // 由公众号进入首页
 	public String execute() throws Exception {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response = ServletActionContext.getResponse();
@@ -136,18 +163,32 @@ public class Library_main extends ActionSupport{
         
         String weid = "";
         // 获取用户微信id
-//        String code = request.getParameter("code");	 
-//		String url = GetCode.replace("APPID", WeixinUtil.APPID).replace("SECRET", WeixinUtil.APPSECRET).replace("CODE", code);
-//		JSONObject jsonObject = WeixinUtil.doGetStr(url);
-//		if(jsonObject != null){
-//			weid = jsonObject.getString("openid");
-//		}
+        String code = request.getParameter("code");	 
+        if(code != null){
+        	String url = GetCode.replace("APPID", WeixinUtil.APPID).replace("SECRET", WeixinUtil.APPSECRET).replace("CODE", code);
+        	JSONObject jsonObject = WeixinUtil.doGetStr(url);
+        	if(jsonObject != null){
+        		weid = jsonObject.getString("openid");
+        	}
+        }
 		
 		ActionContext context = ActionContext.getContext();
-		if(weid == null){
-			weid = "1";  // 测试数据
+		if(weid.isEmpty()){
+			weid = "oDRhGwscPxkgWHa0pzSVcRxveNSw";  // 测试数据
+//			weid = "guest";  // 未注册的用于统一分配固定的游客账号
 		}
-		context.put("weid",weid);
+		context.put("weid", weid);
+		
+		UserDetailInfo user = SQL4PersonalInfo.queryUser(weid);
+		if(user != null){
+			context.put("flag", true);
+			context.put("user",user);
+			System.out.println("已注册:" + user.getRealName() + " " + user.getOpenid());
+		}
+		else{
+			context.put("flag", false);	// 说明用户还没有注册
+			System.out.println("未注册:"  + " " + weid);
+		}
 		
 		return SUCCESS;
 	}

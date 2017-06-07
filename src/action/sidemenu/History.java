@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.ServletActionContext;
 
 import po.BorrowedBook;
+import po.UserDetailInfo;
 
 import util.SQL4PersonalInfo;
 
@@ -26,30 +27,35 @@ public class History extends ActionSupport{
 	@Override
 	public String execute() throws Exception {
 		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
 		String weid = request.getParameter("weid");
 		
-		Map<String, HashMap<String,Integer>> info = new HashMap<String, HashMap<String,Integer>>();
-		info = SQL4PersonalInfo.getPersonalBookInfo(weid);
-		
-		Set<String> mapKey = info.keySet();
-		for(String str:mapKey){
-			// 种类分类文本
-			if(str.equals("cat")){
-				createCat(info.get(str));
-			}
-			// 年度分类文本
-			else if(str.equals("year")){
-				createYear(info.get(str));
-			}
-			// 月度分类文本
-			else if(str.equals("month")){
-				createMonth(info.get(str));
-			}
-		}
-		
-		ArrayList<BorrowedBook> bookList = SQL4PersonalInfo.queryMyBorrow(weid);
+//		Map<String, HashMap<String,Integer>> info = new HashMap<String, HashMap<String,Integer>>();
+//		info = SQL4PersonalInfo.getPersonalBookInfo(weid);
+//		
+//		Set<String> mapKey = info.keySet();
+//		for(String str:mapKey){
+//			// 种类分类文本
+//			if(str.equals("cat")){
+//				createCat(info.get(str));
+//			}
+//			// 年度分类文本
+//			else if(str.equals("year")){
+//				createYear(info.get(str));
+//			}
+//			// 月度分类文本
+//			else if(str.equals("month")){
+//				createMonth(info.get(str));
+//			}
+//		}
+//		
 		ActionContext context = ActionContext.getContext();
+		// 获取借过的书
+		ArrayList<BorrowedBook> bookList = SQL4PersonalInfo.queryMyBorrow(weid);
 		context.put("booklist", bookList);
+		// 获取用户信息
+		UserDetailInfo user = SQL4PersonalInfo.queryUser(weid);		
+		context.put("user", user);
 		
 		return SUCCESS;
 	}

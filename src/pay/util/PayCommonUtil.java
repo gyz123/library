@@ -2,15 +2,14 @@ package pay.util;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 import java.util.SortedMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class PayCommonUtil {
-	private static Logger log = LoggerFactory.getLogger(PayCommonUtil.class);
+//	private static Logger log = LoggerFactory.getLogger(PayCommonUtil.class);
 	public static String CreateNoncestr(int length) {
 		String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		String res = "";
@@ -39,7 +38,7 @@ public class PayCommonUtil {
 	 * @return
 	 */
 	
-	public static String createSign(String characterEncoding,SortedMap<Object,Object> parameters){
+	public static String createSign(String characterEncoding,SortedMap<String,String> parameters){
 		StringBuffer sb = new StringBuffer();
 		Set es = parameters.entrySet();
 		Iterator it = es.iterator();
@@ -53,6 +52,7 @@ public class PayCommonUtil {
 			}
 		}
 		sb.append("key=" + ConfigUtil.API_KEY);
+		System.out.println("加密之前: " + sb.toString());
 		String sign = MD5Util.MD5Encode(sb.toString(), characterEncoding).toUpperCase();
 		return sign;
 	}
@@ -64,19 +64,38 @@ public class PayCommonUtil {
 	 * @param parameters  请求参数
 	 * @return
 	 */
-	public static String getRequestXml(SortedMap<Object,Object> parameters){
+	public static String getRequestXml(SortedMap<String,String> parameters){
+//		System.out.println("执行PayCommonUtil的getRequestXML方法");
+//		StringBuffer sb = new StringBuffer();
+//		sb.append("<xml>");
+//		Set<Entry<Object, Object>> es = parameters.entrySet();
+//		Iterator<Entry<Object, Object>> it = es.iterator();
+//		System.out.println("转型完成");
+//		while(it.hasNext()) {
+//			Map.Entry<Object,Object> entry = it.next();
+//			String k = (String)entry.getKey();
+//			String v = (String)entry.getValue();
+//			System.out.println(k + "--" + v);
+//			if ("attach".equalsIgnoreCase(k)||"body".equalsIgnoreCase(k)||"sign".equalsIgnoreCase(k)) {
+//				sb.append("<"+k+">"+"<![CDATA["+v+"]]></"+k+">");
+//			}else {
+//				sb.append("<"+k+">"+v+"</"+k+">");
+//			}
+//		}
+//		sb.append("</xml>");
+//		return sb.toString();
+		
 		StringBuffer sb = new StringBuffer();
 		sb.append("<xml>");
-		Set es = parameters.entrySet();
-		Iterator it = es.iterator();
-		while(it.hasNext()) {
-			Map.Entry entry = (Map.Entry)it.next();
-			String k = (String)entry.getKey();
-			String v = (String)entry.getValue();
-			if ("attach".equalsIgnoreCase(k)||"body".equalsIgnoreCase(k)||"sign".equalsIgnoreCase(k)) {
-				sb.append("<"+k+">"+"<![CDATA["+v+"]]></"+k+">");
+		Set<String> key = parameters.keySet();
+		for(String k:key){
+			String v = parameters.get(k);
+			System.out.println(k + "--" + v);
+			if ("attach".equalsIgnoreCase(k) || 
+						"body".equalsIgnoreCase(k) || "sign".equalsIgnoreCase(k)) {
+				sb.append("<" + k + ">" + "<![CDATA[" + v + "]]></" + k + ">");
 			}else {
-				sb.append("<"+k+">"+v+"</"+k+">");
+				sb.append("<" + k + ">" + v + "</" + k + ">");
 			}
 		}
 		sb.append("</xml>");

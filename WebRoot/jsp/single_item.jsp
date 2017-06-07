@@ -62,13 +62,13 @@
 			paragraphExtender.click(function() {
 				if (toggleFullParagraph) {
 					toggleFullParagraph = false;
-					paragraphExtender.html('↓'); // 收缩时显示的提示文字
+					paragraphExtender.html('展开'); // 收缩时显示的提示文字
 					paragraph.html(paragraphText.substring(0,
 							maxParagraphLength)
 							+ '...');
 				} else {
 					toggleFullParagraph = true;
-					paragraphExtender.html('↑');  // 展开时显示的提示文字
+					paragraphExtender.html('收起');  // 展开时显示的提示文字
 					paragraph.html(paragraphText);
 				}
 			});
@@ -114,12 +114,12 @@
 
 	});
 </script>
-
+<!--  
 <script>
 		$(document).on("click", "#reserveSuccess", function() {
 			$.toast("预定成功");
 			
-			//location.href = "/library/show_main.action";
+			//location.href = "/library/add_to_reserve.action?bookno=${book.bookno }&weid=${weid }";
 		});
 </script>
 
@@ -127,19 +127,16 @@
 		$(document).on("click", "#addSuccess", function() {
 			$.toast("已加入购物车");
 			
-			//location.href = "/library/show_main.action";
+			//location.href = "/library/add_to_shoppingcart.action?bookno=${book.bookno }&weid=${weid }";
 		});
 </script>
-
-<script>
-	
-</script>
+-->
 
 </head>
 
 <body ontouchstart style="background-color: #ffffff;">
 
-	<a href="/library/show_main.action">
+	<a href="/library/back_to_main.action?weid=${weid }">
 	<div class="weui-header bg-blue" style="height:56px;background-color:#01164b">
 		<div class="weui-header-left">
 		</div>
@@ -162,7 +159,11 @@
 			<span class="f16" style="margin-left:4px">分类：${book.category }
 					<br><br>&nbsp;出版社：${book.publisher }
 					<br><br>&nbsp;版本：${book.version }
-					<br><br>&nbsp;剩余量：${book.leftnum }</span><br>
+					<br><br>&nbsp;剩余量：${book.leftnum }</span>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a><span class="icon icon-96 f-red" ></span></a>
+					<br>
 		</div>
 	</div>
 
@@ -172,7 +173,20 @@
 		<div class="weui_cell_bd weui_cell_primary" style="margin-top:8px">
 			<span class="f16" style="margin-left:8px">
 				简介<br>
-				<div style="margin-top:8px"></div><span class="f14">${book.bookAbstract }</span></div>
+				<div style="margin-top:8px; margin-left:8px"><span class="f14">${book.bookAbstract }</span></div>
+			</span>
+		</div>
+	</div>
+
+	<div class="weui_cell" style="height:2%">
+		<div class="weui_cell_bd weui_cell_primary" style="margin-top:8px">
+			<span class="f16" style="margin-left:8px">
+				<div style="margin-top:0px; margin-left:8px">
+				<span class="f16">标签</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<c:forEach  var="tag" items="${tags }">
+					<span class="f14 f-blue">${tag}</span>&nbsp;&nbsp;
+				</c:forEach>
+				</div>
 			</span>
 		</div>
 	</div>
@@ -184,8 +198,10 @@
 			</div>
 			<div class="weui_cell_ft">
 				<span class="f16 f-gray">点此查看</span>
-			</div> </a>
+			</div> 
+		</a>
 	</div>
+
 
 	<div style="height:16px;width:100%;background-color:#f8f8f8"></div>
 	<div style="height:24px;width:100%;margin-left:24px;padding-top:12px">
@@ -198,8 +214,22 @@
 		</p>
 		</span>
 		<!-- 伸张链接 -->
-		<a id="paragraphExtender" class="paragraphExtender" style="position:relative; top:40px; ">↓</a>
+		<a id="paragraphExtender" class="paragraphExtender" 
+			style="position:relative; top:4px; left:6px">展开</a>
 	</div>
+	
+	<div class="weui_cells weui_cells_access" style="margin-top:8px">
+		<a class="weui_cell " style="height:24px" 
+				href="/library/get_book_comments.action?bookno=${book.bookno }&weid=${weid }" >
+			<div class="weui_cell_bd weui_cell_primary">
+				<span class="f16" style="margin-left:8px">评论</span>
+			</div>
+			<div class="weui_cell_ft">
+				<span class="f16 f-gray">${book.readingnum }人读过</span>
+			</div> 
+		</a>
+	</div>
+	
 
 	<div style="height:16px;width:100%;background-color:#f8f8f8"></div>
 	
@@ -226,12 +256,14 @@
 	<c:if var="flag" test="${book.leftnum > 0 }" scope="page">
 	<section class="weui-menu" style="">
         <div class="weui-menu-inner" >
-            <a href="javascript:;" style="display:block;padding-top:12px" id="reserveSuccess">
+            <a href="/library/add_to_reserve.action?bookno=${book.bookno }&weid=${weid }" 
+            			style="display:block;padding-top:12px" id="reserveSuccess">
             	我要预定
             </a>
         </div>
         <div class="weui-menu-inner" >
-            <a href="javascript:;" style="display:block;padding-top:12px" id="addSuccess">
+            <a href="/library/add_to_shoppingcart.action?bookno=${book.bookno }&weid=${weid }" 
+            			style="display:block;padding-top:12px" id="addSuccess">
             	加入购物车
             </a>
         </div>
@@ -241,7 +273,8 @@
 	<c:if var="flag" test="${book.leftnum == 0 }" scope="page">
 	<section class="weui-menu" style="">
         <div class="weui-menu-inner" >
-            <a href="javascript:;" style="display:block;padding-top:12px" id="reserveSuccess">
+            <a href="/library/add_to_reserve.action?bookno=${book.bookno }&weid=${weid }" 
+            			style="display:block;padding-top:12px" id="reserveSuccess">
             	我要预定
             </a>
         </div>

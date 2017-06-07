@@ -68,6 +68,7 @@ public class SearchList extends ActionSupport{
         pw.close();
 	}
 	
+	
 	// 搜索
 	@Override
 	public String execute() throws Exception {
@@ -75,6 +76,7 @@ public class SearchList extends ActionSupport{
 		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
+        String weid = request.getParameter("weid");
         
         // 获得搜索条件
         String pageNum = request.getParameter("pagenum");
@@ -88,6 +90,7 @@ public class SearchList extends ActionSupport{
         
         ArrayList<BookInCategory> searchList = SQLUtil.querySingleBookFromSearch(keyword, pageNum);
         ActionContext context = ActionContext.getContext();
+        context.put("weid", weid);
         context.put("keyword",keyword);
         context.put("pagenum", pageNum);
         context.put("booklist", searchList);

@@ -5,13 +5,28 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import po.Book;
 import po.BookDetailInfo;
 import po.BookInCategory;
+import po.Comment;
 import po.UserDetailInfo;
 
 public class SQLUtil {
+	
+	public static Connection getConnection(){
+		Connection con = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return con;
+	}
+	
+	
 	// 判断重复注册
 	public static boolean judgeReg(String database,String openID){
 		boolean flag = false;
@@ -19,6 +34,7 @@ public class SQLUtil {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
 					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+//		Connection con = getConnection();
 			Statement s = con.createStatement();
 			String query = "select * from user";
 			ResultSet ret = s.executeQuery(query);
@@ -219,8 +235,91 @@ public class SQLUtil {
 	}
 	
 	
+	// 获取标签
+	public static ArrayList<String> getBookTags(String bookno){
+		ArrayList<String> tags = new ArrayList<String>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+			Statement s = con.createStatement();
+			String query = "select tag1,tag2,tag3 from booktag where bookno = " + bookno +";";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {  
+            	if(ret.getString(1)!=null)
+            		tags.add(ret.getString(1));
+            	if(ret.getString(2)!=null)
+            		tags.add(ret.getString(2));
+            	if(ret.getString(3)!=null)
+            		tags.add(ret.getString(3));
+            }
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return tags;
+	}
+	
+	
+	// 获取书评
+	public static ArrayList<Comment> getBookComments(String bookno){
+		ArrayList<Comment> list = new ArrayList<Comment>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+			Statement s = con.createStatement();
+			String query = "select bookcomment.bookno,bookcomment.comment,bookcomment.commentid,bookcomment.time," +
+					"user.weid,user.wename,user.weimg,bookcomment.goodnum " +
+					"from bookcomment,user " +
+//					"where bookcomment.weid = user.weid and bookcomment.bookno = " + bookno +";";
+					"where bookcomment.bookno = " + bookno +";";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {  
+				Comment comment = new Comment();
+				comment.setBookno(ret.getString(1));
+				comment.setComment(ret.getString(2));
+				comment.setCommentid(ret.getString(3));
+				comment.setTime(ret.getString(4));
+				comment.setGoodnum(ret.getString(8)); 	// 点赞数
+				
+				comment.setWeid(ret.getString(5));
+				comment.setWename(ret.getString(6));
+				comment.setWeimg(ret.getString(7));
+				list.add(comment);
+			}
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	
+	// 目录
+	public static HashMap<String,String> getBookOutline(String bookno){
+		HashMap<String,String> bookInfo = new HashMap<String,String>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+			Statement s = con.createStatement();
+			String query = "select outline,bookname from book where bookno = " + bookno + ";";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {  
+				bookInfo.put( "outline",ret.getString(1) );
+				bookInfo.put("bookname",ret.getString(2));
+			}
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bookInfo;
+	}
+	
+	
 	// 依据关键词搜索书籍列表 (编号，书名，图片，出版社，作者，剩余量, 阅读量，评分)
-	public static ArrayList<BookInCategory> querySingleBookFromSearch(String keyword,String pageNum){
+  	public static ArrayList<BookInCategory> querySingleBookFromSearch(String keyword,String pageNum){
 		ArrayList<BookInCategory> bookSearchList = new ArrayList<BookInCategory>();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");

@@ -21,7 +21,7 @@
 <body ontouchstart style="background-color: #f8f8f8;">
 	<div class="weui_cells weui_cells_access">
 		<c:forEach  var="booklist" items="${booklist}">
-			<a class="weui_cell" href="/library/show_singleItem.action?${booklist.bookno }">
+			<a class="weui_cell" href="/library/show_singleItem.action?${booklist.bookno }&weid=${weid }">
 				<div class="weui_cell_hd">
 					<img src="${booklist.bookimg}" alt=""
 						style="width:64px;display:block;margin-right:24px">

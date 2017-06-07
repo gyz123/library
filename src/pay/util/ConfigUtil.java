@@ -13,12 +13,12 @@ public class ConfigUtil {
 	 
 	 public final static String CERT_PATH = "C:/apiclient_cert.p12";//微信支付证书存放路径地址
 	 
-	// 微信支付统一接口的回调action
-	 public final static String NOTIFY_URL = "http://www.iotesta.com.cn/library/post_param.action";
+	// 处理支付返回的信息
+	 public final static String NOTIFY_URL = "http://www.iotesta.com.cn/library/pay_success.action";
 	// 支付成功，返回首页
-	 public final static String SUCCESS_URL = "http://www.iotesta.com.cn/library/show_main.action";
+	 public final static String SUCCESS_URL = "http://www.iotesta.com.cn/library/success_Back.action";
 	 // oauth2授权时回调action
-	 public final static String REDIRECT_URI = "http://14.117.25.80:8016/GoMyTrip/a.jsp?port=8016";
+//	 public final static String REDIRECT_URI = "http://14.117.25.80:8016/GoMyTrip/a.jsp?port=8016";
 	 
 	 
 	/**
@@ -30,12 +30,13 @@ public class ConfigUtil {
 	 public final static String OAUTH2_URL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
 	 //刷新access_token接口（GET）
 	 public final static String REFRESH_TOKEN_URL = "https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN";
-	// 菜单创建接口（POST）
+	 // 菜单创建接口（POST）
 	 public final static String MENU_CREATE_URL = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
-	// 菜单查询（GET）
+	 // 菜单查询（GET）
 	 public final static String MENU_GET_URL = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN";
-	// 菜单删除（GET）
-	public final static String MENU_DELETE_URL = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN";
+	 // 菜单删除（GET）
+	 public final static String MENU_DELETE_URL = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN";
+	
 	/**
 	 * 微信支付接口地址
 	 */
