@@ -28,7 +28,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" href="css/jd_cart.css">
 	
 	<script src="js/jquery.js" charset="utf-8"></script>
+	<script>
+		var $j = jQuery.noConflict(); //自定义一个比较短的快捷方式
+	</script>
 	<script src="js/zepto.min.js"></script>
+	<script src="js/qrcode.js"></script>
 	<style type="text/css">
 		#footer {
 			position: absolute;
@@ -39,7 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			clear:both;
 		}
 	</style>
-	<script src="js/qrcode.js"></script>
+	
 	
 	
   </head>
@@ -63,7 +67,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								style="margin-top:24px; margin-bottom:32px">
 							<div class="weui_cell_hd">
 								<input type="checkbox" class="weui_check" name="checkbox1"
-									id="${booklist.bookno }" > 
+									id="${booklist.bookno }" value="${booklist.bookno }"> 
 								<i class="weui_icon_checked"></i>
 							</div> 
 						</label>
@@ -80,7 +84,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							<div class="delete_box f_right">
 								<span class="delete_up"></span> 
 								<span class="delete_down"></span>
-								<span class="booknum" style="display:none;">${booklist.bookno }</span>
+								
 							</div>
 						</div>
 					</div>
@@ -103,7 +107,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<c:if var="flag" test="${booklist[5].bookno == null }" scope="page">
 	<section class="weui-menu">
 		<div class="weui-menu-inner" >
-			<a href="javascript:void(0);"> <span style="margin-bottom:4%">生成二维码</span> </a>
+			<a href="javascript:;" class="weui_btn weui_btn_default" id='getQRCode'> 
+				<span style="margin-bottom:4%" >生成二维码</span> 
+			</a>
 		</div>
 	</section>
 	</c:if>
@@ -112,33 +118,83 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div style="height:49px"><
 		<section class="weui-menu">
 			<div class="weui-menu-inner">
-				<a href="javascript:void(0);" id='qr'> 
-					<span>生成二维码</span>
+				<a href="javascript:;" class="weui_btn weui_btn_default" id='getQRCode'> 
+					<span >生成二维码</span>
 				</a>
-				<div id="qrcodeimg" class='tcenter'></div>
+				<!-- <div id="qrcodeimg" class='tcenter'></div> -->
 			</div>
 		</section>
 	</c:if>
+
+	<!-- 弹框图 -->
+	<div class="weui_msg_img hide" id='pop_up'>
+		<div class="weui_msg_com">
+			<div onclick="$('#pop_up').fadeOut();" class="weui_msg_close">
+				<i class="icon icon-95"></i>
+			</div>
+			<div class="weui_msg_src" id="myqrcodeimg" style="padding:20px;">
+			</div>
+			<p class="f-blue">请出示此二维码给管理员</p>
+		</div>
+	</div>   
 	
 	<script>
-		var txt = "BEGIN:VCARD\r\nVERSION:3.0\r\nN:太白\r\nFN:李\r\nTITLE:工程师\r\nNICKNAME:昵称\r\nTEL;CELL;VOICE:移动18291448888\r\nTEL;WORK;VOICE:工作电话18291449999\r\nORG:组织机构\r\nEMAIL;PREF;INTERNET:logove@qq.com\r\nADR;TYPE=WORK:;;具体地址;汉中;陕西省;2324200;中国\r\nADR;TYPE=HOME:;;具体地址;汉中;陕西省;2324200;中国\r\nNOTE;ENCODING=QUOTED-PRINTABLE:备注来自名片通讯录\r\nEND:VCARD";
-		$("#qr").click(function() {
-			$("#qrcodeimg").empty().qrcode({
-				render : "image",
-				ecLevel : "L",
-				size : 300,
-				background : "#fff",
-				fill : "#000",
-				text : txt
+		var QRCodetxt ="";//二维码内容
+		var bookno = new Array();
+		var noIndex = 0;
+		$j(document).ready((function(){
+			$j('#getQRCode').click(function(){
+				console.log("方法触发了");
+			
+				$j('input:checkbox').each(function() { 
+					if ($j(this).prop('checked')) { 
+						bookno[noIndex++] = $j(this).val();
+						alert($j(this).val()); 
+					} 
+				}); 
+				noIndex = 0;
+				
+				//异步请求生成订单
+				$j.ajax({    
+		            type:'post',        
+		            url:'/library/generate_code.action',    //servlet名
+		            data:"weid=" + "<%=request.getParameter("weid")%>"
+		             + "&bookno1=" + bookno[0] 
+		             + "&bookno2=" + bookno[1],   //参数 
+		            cache:false,    
+		            //dataType:'json',
+		            success:function(data){
+		        		
+		        		QRCodetxt = data;
+		        		console.log(QRCodetxt);
+		        		//jQuery.noConflict(); //将变量$的控制权转让
+		        		//弹窗显示二维码
+		        		$(function(){
+							$('#pop_up').fadeIn();
+							$("#myqrcodeimg").empty().qrcode({
+								render:"image",
+								ecLevel:"L",
+								size:300,
+								background:"#fff",
+								fill:"#000",
+								text:QRCodetxt
+							});
+			            });
+ 					
+ 					}
+		        }); 
+			
 			});
-		});
+		})    
+	);
+		
 	</script>
 	
 	
 	<script>
 	var that;
-    $('.delete_box').on('click',function(){
-            $(this).children('.delete_up').css(
+    $j('.delete_box').on('click',function(){
+            $j(this).children('.delete_up').css(
                 {
                     transition :'all 1s',
                     'transformOrigin':"0 5px" ,
@@ -146,21 +202,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 }
 
             );
-            $('.jd_win').show();
-            that = $(this);
+            $j('.jd_win').show();
+            that = $j(this);
     });
 
-    $('.cancle').on('click',function(){
-        $('.jd_win').hide();
-        $('.delete_up').css('transform','none');
+    $j('.cancle').on('click',function(){
+        $j('.jd_win').hide();
+        $j('.delete_up').css('transform','none');
         return;
     });
     
-    $('.submit').on('click',function(){
+    $j('.submit').on('click',function(){
         //异步提交到后台进行删除
         var booknum =  that.find("span.booknum").html();//获取子元素span标签下clas为booknum的值
         
-        $.ajax({    
+        $j.ajax({    
             type:'post',        
             url:'/library/show_shoppingcart_delete.action',    //servlet名
             data:"weid=" + "<%=request.getParameter("weid") %>" + "&bookno=" + booknum,   //参数 
@@ -170,7 +226,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             	console.log(booknum);
             	alert(booknum + "删除成功");
             	that.parent().parent().parent().parent().remove(); //删除节点
-        		$('.jd_win').hide();
+        		$j('.jd_win').hide();
             }    
         }); 
            
@@ -178,16 +234,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</script>
 
 <script type="text/javascript">
-	$(document).ready(function() { 
-		$('input[type=checkbox]').click(function() {
-			if ($("input[name=checkbox1]:checked").length > 2){
+	$j(document).ready(function() { 
+		$j('input[type=checkbox]').click(function() {
+			if ($j("input[name=checkbox1]:checked").length > 2){
       			//最多可以选择2个 
-      			$.toast("最多借两本哦！", "cancel");
+      			$j.toast("最多借两本哦！", "cancel");
 				return false;
 			}
       		return true; 
       	}); 
-	}) 
+	});
 </script>
 
 </body>
