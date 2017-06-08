@@ -142,6 +142,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		var QRCodetxt ="";//二维码内容
 		var bookno = new Array();
 		var noIndex = 0;
+		var stop;
+		
 		$j(document).ready((function(){
 			$j('#getQRCode').click(function(){
 				console.log("方法触发了");
@@ -180,7 +182,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								text:QRCodetxt
 							});
 			            });
- 					
+ 						stop =  setInterval(monitor,3000);//返回值为停止定时器的参数
  					}
 		        }); 
 			
@@ -190,6 +192,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 	</script>
 	
+	<script>
+		//定时触发监听器
+		var count = 1;
+		function monitor(){
+			$j.ajax({    
+            type:'post',        
+            url:'/library/listen_status.action',    //servlet名
+            data:"num=" + <%=request.getSession(false).getAttribute("subscribenum")%>,   //参数 
+            cache:false,    
+           // dataType:'json',    
+            success:function(data){ 
+            	//var obj = eval ("(" + data + ")");
+            	console.log("回调成功");
+            	if(count++ >= 20){
+            		window.clearInterval(stop);//停止触发
+            		count = 1;
+            		
+            	}
+            	if(data == "Y"){
+            		window.clearInterval(stop);//停止触发
+            		location.href = "/library/set_order.action";//成功跳转确认订单
+            	}
+        		console.log(count);
+            },
+            error:function(){
+            	console.log("回调失败");
+            }    
+        }); 
+		}
+	</script>
 	
 	<script>
 	var that;
