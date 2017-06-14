@@ -129,7 +129,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- 弹框图 -->
 	<div class="weui_msg_img hide" id='pop_up'>
 		<div class="weui_msg_com">
-			<div onclick="$('#pop_up').fadeOut();" class="weui_msg_close">
+			<div onclick="$('#pop_up').fadeOut();window.clearInterval(stop);" class="weui_msg_close">
 				<i class="icon icon-95"></i>
 			</div>
 			<div class="weui_msg_src" id="myqrcodeimg" style="padding:20px;">

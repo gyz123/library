@@ -442,4 +442,25 @@ public class SQLUtil {
 		return bookList;
 	}
 	
+	// 由weid获取用户id
+	public static String getUserId(String weid){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "select id from user where weid = '" + weid +"';";
+			ResultSet ret = s.executeQuery(query);
+			// 获取用户信息
+			while (ret.next()) {  
+				String id = ret.getString(1);
+				if(!id.isEmpty())  return id; 
+	           }
+	           con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }

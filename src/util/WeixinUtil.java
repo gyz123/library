@@ -36,7 +36,7 @@ import po.User;
 
 public class WeixinUtil {
 	//  ˝æ›ø‚≈‰÷√
-	public static final String MYSQL_DN = "127.0.0.1:3306";
+	public static final String MYSQL_DN = "127.0.0.1:3306/library";
 	public static final String MYSQL_NAME = "root";
 	public static final String MYSQL_PASSWORD = "root";
 	
