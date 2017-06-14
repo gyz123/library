@@ -15,6 +15,10 @@
 <link rel="stylesheet" href="css/weui3.css" />
 <link rel="stylesheet" type="text/css" href="css/weuix.min.css">
 
+<link rel="stylesheet" type="text/css" href="css/love_normalize.css" />
+<link rel="stylesheet" type="text/css" href="css/love_default.css">
+<link rel="stylesheet" type="text/css" href="css/love_style.css"/>
+
 <script src="js/zepto.min.js"></script>
 <script src="js/lazyimg.js"></script>
 <script>
@@ -162,7 +166,9 @@
 					<br><br>&nbsp;剩余量：${book.leftnum }</span>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<a><span class="icon icon-96 f-red" ></span></a>
+					<!-- <a><span class="icon icon-96 f-red" ></span></a> -->
+					<span class="heart " id="like1" rel="like" style="margin-left:0px;"></span>
+					<!-- <span class="likeCount" id="likeCount1">14</span> -->
 					<br>
 		</div>
 	</div>
@@ -281,7 +287,61 @@
     </section>
 	</c:if>
 
+	<script>
+	$(document).ready(function()
+	{
+    
+	$('body').on("click",'.heart',function()
+    {
+    	
+        var heart = $(this).attr("rel");
+       
+        if(heart === 'like'){      
+	        $(this).addClass("heartAnimation").attr("rel","unlike"); 
+        	
+        	$.ajax({    
+            type:'post',        
+            url:'/library/add_to_like.action',    //servlet名
+            data:"weid=" + "<%=request.getParameter("weid") %>" 
+            + "&bookno=" + booknum
+            + "&flag=" + "N",   //参数，flag=N从数据库中取消喜欢 
+            cache:false,    
+            //dataType:'json',    
+            success:function(data){ 
+            	console.log("取消喜欢成功");
+            },
+            error:function(){
+            	console.log("取消喜欢error");
+            }    
+        	}); 
+        }
+        else{
+    	    $(this).removeClass("heartAnimation").attr("rel","like");
+			$(this).css("background-position","left");
+			
+			$.ajax({    
+            type:'post',        
+            url:'/library/add_to_like.action',    //servlet名
+            data:"weid=" + "<%=request.getParameter("weid") %>" 
+            + "&bookno=" + booknum
+            + "&flag=" + "Y",   //参数，flag=Y从数据库中增加喜欢
+            cache:false,    
+            //dataType:'json',    
+            success:function(data){ 
+            	console.log("添加喜欢成功");
+            },
+            error:function(){
+            	console.log("添加喜欢error");
+            }    
+        	}); 
+        }
 
+		
+    });
+
+
+	});
+	</script>
 
 </body>
 </html>
