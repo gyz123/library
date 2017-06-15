@@ -16,7 +16,6 @@
 <link rel="stylesheet" type="text/css" href="css/weuix.min.css">
 <script src="js/zepto.min.js"></script>
 
-
 </head>
 
 <body ontouchstart style="background-color: #f8f8f8;">
@@ -29,15 +28,19 @@
 			和   <s:property value="#booklist[3].bookname"/>
 		如果是对列表进行操作，必须加#号；普通参数可以不加 --%>
 	
-	<a href="/library/back_to_main.action?weid=${weid }">
+	<%-- <a href="/library/back_to_main.action?weid=${weid }"> </a>  --%>
 	<div class="weui-header bg-blue" style="height:56px;background-color:#01164b">
-		<div class="weui-header-left">
+		<div class="weui-header-left" style="margin-top:6px;">
+			<a class="icon icon-109 f-white" 
+				href="/library/back_to_main.action?weid=${weid }">
+				&nbsp;&nbsp;&nbsp;
+			</a>
 		</div>
 		<h1 class="weui-header-title" style="margin-top:5px">
 			<span class="">超新星智能图书馆</span>
 		</h1>
 	</div>
-	</a>
+	
 	
 	<div class="weui_cells_title" style="margin-top:2%">
 		<div><span class="f10">当前类别 > ${cat }</span></div>

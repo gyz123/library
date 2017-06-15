@@ -29,6 +29,10 @@ public class BookInShoppingcart {
 	public void setPrice(String price) {
 		this.price = price;
 	}
-	
+	@Override
+	public String toString() {
+		return "BookInShoppingcart [bookno=" + bookno + ", bookname="
+				+ bookname + ", bookimg=" + bookimg + ", price=" + price + "]";
+	}
 	
 }

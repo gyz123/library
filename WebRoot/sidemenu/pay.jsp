@@ -12,7 +12,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width,initial-scale=1,user-scalable=0">
-<title>借阅支付</title>
+<title>支付</title>
 
 <link rel="stylesheet" href="css/weui.css" />
 <link rel="stylesheet" href="css/weui2.css" />
@@ -66,10 +66,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				href="javascript:" id="test" name="ajaxLoadId">确认订单</a>
 		</div>
 	</div>
+	
+	<%-- 支付测试按钮  
+	<a class="weui-form-preview-btn weui-form-preview-btn-primary"
+				href="/library/set_order.action">确认订单</a>
 
 	<form action="" method="post" >  
         <input type="button" value="确认支付" name="ajaxLoadId" id="test"/>  
     </form>  
+    --%>
+    
     <script type="text/javascript">  
     var basePath = "<%=basePath%>";  
     var openid = "<%=request.getParameter("openid")%>";

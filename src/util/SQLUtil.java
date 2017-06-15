@@ -4,9 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
+import po.Book;
 import po.BookDetailInfo;
 import po.BookInCategory;
 import po.Comment;
@@ -19,7 +22,7 @@ public class SQLUtil {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -33,7 +36,7 @@ public class SQLUtil {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 //		Connection con = getConnection();
 			Statement s = con.createStatement();
 			String query = "select * from user";
@@ -57,7 +60,7 @@ public class SQLUtil {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			String query = "insert into user (weid,wename,weimg) values ('" + openid + "','" 
 					+ nickname + "','" + headimg + "');";
@@ -74,7 +77,7 @@ public class SQLUtil {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			String query = "update user set username = '" + userName + "',idcard = '" + idCard + "',phone = '" 
 						+ phone + "' where weid = '" + weID + "';";
@@ -92,7 +95,7 @@ public class SQLUtil {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			String query = "select * from user";
 			ResultSet ret = s.executeQuery(query);
@@ -121,15 +124,19 @@ public class SQLUtil {
 	}
 	
 	// 返回单个用户的详细信息
-	public static UserDetailInfo querySingleUser(String wename){
+	public static UserDetailInfo querySingleUser(String type,String str){
 		UserDetailInfo user = new UserDetailInfo();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
-			String query = "select * from user where wename = '" + wename +"';";
-//			System.out.println(query);
+			String query = "";
+			if(type.equals("wename")){
+				query = "select * from user where wename = '" + str +"';";
+			}else if(type.equals("weid")){
+				query = "select * from user where weid = '" + str +"';";
+			}
 			ResultSet ret = s.executeQuery(query);
 			// 获取用户信息
 			while (ret.next()) {  
@@ -148,19 +155,43 @@ public class SQLUtil {
 	}
 	
 	
+	
+	
+	// 由weid获取用户id
+	public static String getUserId(String weid){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "select id from user where weid = '" + weid +"';";
+			ResultSet ret = s.executeQuery(query);
+			// 获取用户信息
+			while (ret.next()) {  
+				String id = ret.getString(1);
+				if(!id.isEmpty())  return id; 
+            }
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 	// 查找单类书籍（编号，书名，图片，作者，剩余，阅读量，评分）
 	public static ArrayList<BookInCategory> querySingleCat(String category,String pageNum,String target){
 		ArrayList<BookInCategory> bookList = new ArrayList<BookInCategory>();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			
 			String query = "select bookno,bookname,bookimg,author,leftnum,publisher,readingnum,score from book where category in " + category 
 					+ " ORDER BY " + target + " DESC"
 					+ " limit " + (5*((Integer.parseInt(pageNum))-1)) + ",5;";
-			System.out.println(query);
+//			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			// 将搜索到的9本书放入ArrayList中
 			while (ret.next()) {  
@@ -189,11 +220,11 @@ public class SQLUtil {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			
 			String query = "select * from book where bookno = " + bookNo +";";
-			System.out.println(query);
+//			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			// 获取书籍信息
 			while (ret.next()) {  
@@ -241,7 +272,7 @@ public class SQLUtil {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			String query = "select tag1,tag2,tag3 from booktag where bookno = " + bookno +";";
 			ResultSet ret = s.executeQuery(query);
@@ -267,13 +298,15 @@ public class SQLUtil {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			String query = "select bookcomment.bookno,bookcomment.comment,bookcomment.commentid,bookcomment.time," +
 					"user.weid,user.wename,user.weimg,bookcomment.goodnum " +
 					"from bookcomment,user " +
-//					"where bookcomment.weid = user.weid and bookcomment.bookno = " + bookno +";";
-					"where bookcomment.bookno = " + bookno +";";
+					"where bookcomment.weid = user.weid and bookcomment.bookno = '" + bookno 
+					+"' order by bookcomment.goodnum desc,bookcomment.time desc,bookcomment.commentid desc;";
+//					"where bookcomment.bookno = " + bookno +";";
+			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			while (ret.next()) {  
 				Comment comment = new Comment();
@@ -296,13 +329,34 @@ public class SQLUtil {
 	}
 
 	
+	// 写书评
+	public static void handleNewComment(String weid,String bookno,String comment){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			String time = df.format(new Date());
+			String query = "insert into bookcomment (weid,bookno,comment,time,goodnum) " +
+							"values ('" + weid + "','" + bookno + "','" + comment + "','" 
+									+ time + "','" + "0" + "');";
+			System.out.println(query);
+			s.executeUpdate(query);
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+		
+	
 	// 目录
 	public static HashMap<String,String> getBookOutline(String bookno){
 		HashMap<String,String> bookInfo = new HashMap<String,String>();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			String query = "select outline,bookname from book where bookno = " + bookno + ";";
 			ResultSet ret = s.executeQuery(query);
@@ -324,7 +378,7 @@ public class SQLUtil {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			
 			String query = "select bookno,bookname,bookimg,publisher,author,leftnum,readingnum,score from book " +
@@ -360,7 +414,7 @@ public class SQLUtil {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			
 			String query = "select * from book where bookname = '" + keyword +"';";
@@ -403,7 +457,7 @@ public class SQLUtil {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library", "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 
 			String query = "select * from book where category in "
@@ -442,25 +496,34 @@ public class SQLUtil {
 		return bookList;
 	}
 	
-	// 由weid获取用户id
-	public static String getUserId(String weid){
+	
+	// 获取相关书籍
+	public static ArrayList<Book> relativeBooks(String bookno,String category){
+		ArrayList<Book> books = new ArrayList<Book>();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
 					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
-			String query = "select id from user where weid = '" + weid +"';";
+			
+			String query = "select bookno,bookname,bookimg from book " +
+								"where category = '" + category +"' and bookno != " + bookno  +";";
 			ResultSet ret = s.executeQuery(query);
-			// 获取用户信息
+			// 获取书籍信息
 			while (ret.next()) {  
-				String id = ret.getString(1);
-				if(!id.isEmpty())  return id; 
-	           }
-	           con.close();
+				Book book = new Book();
+				book.setBookno(ret.getString(1));
+				book.setBookname(ret.getString(2));
+				book.setBookimg(ret.getString(3));
+				books.add(book);
+            }
+            con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		
+		return books;
 	}
 	
 }
+

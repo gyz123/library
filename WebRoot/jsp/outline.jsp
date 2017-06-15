@@ -19,16 +19,20 @@
   
 <body ontouchstart style="background-color: #ffffff;">
     
+    <div class="weui-header bg-blue" style="height:56px;background-color:#01164b">
+		<div class="weui-header-left" style="margin-top:6px;">
+			<a class="icon icon-109 f-white" 
+				href="/library/show_singleItem.action?weid=${weid }&bookno=${bookno}">&nbsp;&nbsp;&nbsp;</a>
+		</div>
+		<h1 class="weui-header-title" style="margin-top:16px">
+			<span class="f20">目录</span>
+		</h1>
+	</div>
+    
 	<div class="weui_article">
-            <h1>欢迎来到yoby开发的weui+</h1>
             <section>
-                <h2 class="title">小标题</h2>
                 <section>
-                    <h3>1.1 节标题</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                        consequat. Duis aute</p>
+                    <span style="font-size:18px">${outline }</span>
                 </section>
             </section>
         </div>

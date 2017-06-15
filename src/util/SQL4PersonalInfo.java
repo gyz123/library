@@ -13,7 +13,7 @@ import java.util.Map;
 
 import po.BookInCategory;
 import po.BookInShoppingcart;
-import po.BookWithouImg;
+import po.BookWithoutImg;
 import po.BorrowedBook;
 import po.PayList;
 import po.UserDetailInfo;
@@ -26,7 +26,7 @@ public class SQL4PersonalInfo {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			String query = "select * from user where weid = '" + openid + "'";
 			ResultSet ret = s.executeQuery(query);
@@ -55,19 +55,72 @@ public class SQL4PersonalInfo {
 	}
 	
 	
+	// 添加收藏
+	public static void addToLike(String weid,String bookno){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "insert into bookshelf (weid,bookno) " +
+								"values ('" + weid + "'," + bookno + ");";
+			s.executeUpdate(query);
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	// 取消收藏
+	public static void deleteLike(String weid,String bookno){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "delete from bookshelf where weid = '" + weid 
+									+ "' and bookno = " + bookno + ";";
+			s.executeUpdate(query);
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	// 判断是否已经收藏
+	public static String judgeLike(String weid,String bookno){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "select * from bookshelf where weid = '" + weid + "' and bookno =" + bookno + ";";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {  
+				return "Y";
+			}
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "N";
+	}
+	
+	
 	// 获取我的书架中收藏的书 (编号，书名，图片，出版社，作者，剩余量)
 	public static ArrayList<BookInCategory> queryMyBookshelf(String weid){
 		ArrayList<BookInCategory> bookList = new ArrayList<BookInCategory>();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			
 			String query = "select book.bookno,book.bookname,book.bookimg,book.publisher,book.author " +
 							"from bookshelf,book " +
 							"where book.bookno = bookshelf.bookno and weid = '" + weid + "';"; 
-			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			// 将搜索到的9本书放入ArrayList中
 			while (ret.next()) {  
@@ -93,12 +146,11 @@ public class SQL4PersonalInfo {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			
 			String query = "select bookno,bookname,borrowtime,returntime from borrow " +
-							"where returntime IS NOT NULL and weid = '" + weid + "';"; 
-			System.out.println(query);
+								"where returntime IS NOT NULL and weid = '" + weid + "';"; 
 			ResultSet ret = s.executeQuery(query);
 			// 将搜索到的9本书放入ArrayList中
 			while (ret.next()) {  
@@ -123,7 +175,7 @@ public class SQL4PersonalInfo {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			// 先判断用户是否已经预定
 			Boolean flag = true;
@@ -154,13 +206,13 @@ public class SQL4PersonalInfo {
 	}
 	
 	
-	// 添加书本到购物车（可添加同一本书多次到购物车）
+	// 添加书本到购物车（不可添加同一本书多次到购物车）
 	public static Boolean addToShoppingCart(String bookno,String weid){
 		Boolean whetherSuccess = false;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			// 先判断用户是否已经预定
 			Boolean flag = true;
@@ -193,13 +245,12 @@ public class SQL4PersonalInfo {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			
 			String query = "select book.bookno,book.bookname,book.bookimg,book.price " +
 							"from shoppingcart,book " +
 							"where book.bookno = shoppingcart.bookno and shoppingcart.weid = '" + weid + "';"; 
-			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			// 将搜索到的9本书放入ArrayList中
 			while (ret.next()) {  
@@ -223,10 +274,9 @@ public class SQL4PersonalInfo {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			String query = "delete from shoppingcart where weid = '" + weid + "' and bookno = " + bookno + ";";
-			System.out.println(query);
 			s.executeUpdate(query);
             con.close();
 		} catch (Exception e) {
@@ -277,7 +327,7 @@ public class SQL4PersonalInfo {
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 				Connection con = DriverManager.getConnection(
-						"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+						"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 				Statement s = con.createStatement();
 				
 				String query = "select category from book where bookno = " + bookNo +  ";";
@@ -397,12 +447,11 @@ public class SQL4PersonalInfo {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			
-			String query = "select bookno,bookname,borrowtime from borrow where weid = " + weid + 
-							" and returntime is null;"; 
-			System.out.println(query);
+			String query = "select bookno,bookname,borrowtime from borrow where weid = '" + weid + 
+							"' and returntime is null;"; 
 			ResultSet ret = s.executeQuery(query);
 			// 将搜索到的9本书放入ArrayList中
 			while (ret.next()) {  
@@ -420,29 +469,52 @@ public class SQL4PersonalInfo {
 	}
 	
 	
-	// 完成借阅
-	public static void addToBorrow(String weid,BookWithouImg book1,BookWithouImg book2){
+	// 续借
+	public static void setBorrowDate(String weid,String bookno){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			String time = df.format(new Date());
+			String query = "update borrow set borrowtime = '" + time + "' where weid = '" + weid + 
+							"' and bookno = " + bookno + " ;"; 
+			s.executeUpdate(query);
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	// 添加到已借阅
+	public static void addToBorrow(String weid,String subscribenum){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			// 标准化借书日期
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			String time = df.format(new Date());
-			// 添加到数据库中
-			String query = "insert into borrow (weid,bookno,bookname,borrowtime) values ('" + weid + "','" 
-					+ book1.getBookno() + "','" + book1.getBookname() + "','" + time + "');";
-			// 输出命令
-			System.out.println(query);  
-			s.executeUpdate(query);
-			
-			// 如果用户借了两本书，则执行
-			if(book2.getBookno() != null){
+			String query = "select bookno,bookname from paylist where subscribenum = '" + subscribenum + "';";
+			ResultSet ret = s.executeQuery(query);
+			ArrayList<BookWithoutImg> list = new ArrayList<BookWithoutImg>();
+			while (ret.next()) {  
+				BookWithoutImg book = new BookWithoutImg();
+				book.setBookno(ret.getString(1));
+				book.setBookname(ret.getString(2));
+				list.add(book);
+            }
+			Iterator<BookWithoutImg> iterator = list.iterator();
+			while(iterator.hasNext()){
+				BookWithoutImg book = (BookWithoutImg)iterator.next();
 				query = "insert into borrow (weid,bookno,bookname,borrowtime) values ('" + weid + "','" 
-						+ book2.getBookno() + "','" + book2.getBookname() + "','" + time + "');";
+						+ book.getBookno() + "','" + book.getBookname() + "','" + time + "');";
 				s.executeUpdate(query);
 			}
+			
             con.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -455,12 +527,11 @@ public class SQL4PersonalInfo {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			String query = "insert into paylist values ('" + list.getWeid() + "','" + list.getSubsribenum() + "','" 
 					+ list.getMoney() + "','" + list.getBookname() +  "','" + list.getBookno() + "','" 
 					+ list.getStatus() + "','" + list.getWhetherPay() + "');";
-			System.out.println(query);
 			s.executeUpdate(query);
 			con.close();
 		} catch (Exception e) {
@@ -480,7 +551,7 @@ public class SQL4PersonalInfo {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			String query = "select price,bookname from book where bookno = " + bookno + ";";
 			ResultSet ret = s.executeQuery(query);
@@ -498,17 +569,17 @@ public class SQL4PersonalInfo {
 	
 	
 	// 监听status状态
-	public static String judgeManagerConfirm(String subscribenum){
+	public static String judgeManagerConfirm(String weid){
 		String status = "";
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
-			String query = "select status from paylist where subscribenum = '" + subscribenum + "';";
+			String query = "select status,subscribenum from paylist where weid = '" + weid + "';";
 			ResultSet ret = s.executeQuery(query);
 			while (ret.next()) {  
-            	status = ret.getString(1);
+            	status = ret.getString(1);	// 不断刷新，得到最新订单的状态
             }
 			con.close();
 		} catch (Exception e) {
@@ -523,7 +594,7 @@ public class SQL4PersonalInfo {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			String query = "update paylist set status = 'Y' where subscribenum = '" + subscribenum + "';";
 			s.executeUpdate(query);
@@ -539,7 +610,7 @@ public class SQL4PersonalInfo {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			String query = "update paylist set whetherpay = 'Y' where subscribenum = '" + subscribenum + "';";
 			s.executeUpdate(query);
@@ -548,5 +619,58 @@ public class SQL4PersonalInfo {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	// 获取用户的当前订单号
+	public static String getSubscribeNum(String weid){
+		String num = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "select subscribenum from paylist " +
+								"where weid = '" + weid + "';";	
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {  
+            	num = ret.getString(1);	// 不断刷新，得到最新订单的状态
+            }
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return num;
+	}
+	
+	
+	// 返回用户确认订单
+	public static ArrayList<BookInShoppingcart> confirmOrder(String subscribenum){
+		ArrayList<BookInShoppingcart> list = new ArrayList<BookInShoppingcart>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "select book.bookno,book.bookname,book.bookimg,book.price " +
+							"from paylist,book " +
+							"where paylist.bookno=book.bookno and paylist.whetherpay = 'N' " +
+							"and paylist.subscribenum = '" + subscribenum + "';";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {  
+            	BookInShoppingcart book = new BookInShoppingcart();
+            	book.setBookno(ret.getString(1));
+            	book.setBookname(ret.getString(2));
+            	book.setBookimg(ret.getString(3));
+            	book.setPrice(ret.getString(4));
+            	list.add(book);
+            }
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
 	
 }

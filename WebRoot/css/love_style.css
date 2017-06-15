@@ -6,7 +6,7 @@ body{color: #333333;}
     }
     #container h3{font-family: "Microsoft YaHei";}
     .heart {
-	    background: url(../images/web_heart_animation.png);
+	    background: url(../image/web_heart_animation.png);
 	    background-position: left;
 	    background-repeat: no-repeat;
 	    height: 70px;
@@ -16,6 +16,7 @@ body{color: #333333;}
 	    /*left:-14px;*/
         background-size:2900%;
         bottom:-10px;
+        right:10px;
     }
     .heart:hover, .heart:focus{
     background-position: right;

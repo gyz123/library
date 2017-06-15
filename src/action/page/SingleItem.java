@@ -1,6 +1,6 @@
 package action.page;
 
-import java.io.UnsupportedEncodingException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -10,9 +10,11 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 
+import po.Book;
 import po.BookDetailInfo;
 import po.Comment;
 import util.SQL4PersonalInfo;
@@ -24,7 +26,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class SingleItem extends ActionSupport{
 	private static final long serialVersionUID=1L;
 	
-	// 待借清单
+	// 加入待借清单
 	public String addToShoppingCart() throws Exception{
 		System.out.println("执行SingleItem的addToShoppingCart方法");
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -71,8 +73,13 @@ public class SingleItem extends ActionSupport{
 		request.setCharacterEncoding("utf-8");
 		String weid = request.getParameter("weid");
 		String bookno = request.getParameter("bookno");
+		HttpSession session = request.getSession();
+		session.setAttribute("weid", weid);
+		session.setAttribute("commentbookno", bookno);
+		
 		ActionContext context = ActionContext.getContext();
 		context.put("weid", weid);
+		context.put("bookno", bookno);
 		ArrayList<Comment> list = SQLUtil.getBookComments(bookno);
 		context.put("commentlist", list);
 		
@@ -100,6 +107,29 @@ public class SingleItem extends ActionSupport{
 	}
 	
 	
+	// 用户添加评论
+	public void createNewComment() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		request.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("utf-8");
+		
+		String weid = request.getParameter("weid");
+		String bookno = (String) request.getSession().getAttribute("commentbookno");
+		String comment = request.getParameter("comment");
+		SQLUtil.handleNewComment(weid, bookno, comment);
+		
+//		PrintWriter pw = response.getWriter();
+//		pw.write("success");
+//		pw.flush();
+//		pw.close();
+		
+		String url = response.encodeURL("/library/get_book_comments?weid=" + weid + "&bookno=" + bookno);  
+		System.out.println("url:" + url);
+		response.sendRedirect(url);
+	}
+	
+	
 	// 目录
 	public String getBookOutline() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -110,10 +140,26 @@ public class SingleItem extends ActionSupport{
 		
 		ActionContext context = ActionContext.getContext();
 		context.put("weid", weid);
+		context.put("bookno",bookno);
 		context.put("outline", bookInfo.get("outline"));
 		context.put("bookname",bookInfo.get("bookname"));
 		
 		return "ok";
+	}
+	
+	
+	// 添加、取消收藏
+	public void addToLike() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String flag = request.getParameter("flag");
+		String bookno = request.getParameter("bookno");
+		String weid = request.getParameter("weid");
+		if(flag.equals("Y")){
+			SQL4PersonalInfo.addToLike(weid, bookno);
+		}else if(flag.equals("N")){
+			SQL4PersonalInfo.deleteLike(weid, bookno);
+		}
 	}
 	
 	
@@ -138,8 +184,20 @@ public class SingleItem extends ActionSupport{
         // 获取标签
         ArrayList<String> tags = SQLUtil.getBookTags(bookno);
         context.put("tags", tags);
+        // 获取相关书籍信息
+        ArrayList<Book> relativeBooks = SQLUtil.relativeBooks(bookno, book.getCategory());
+        int size = relativeBooks.size();
+        int a = (int)(Math.random()*size);
+        int b = (int)(Math.random()*size);
+        context.put("book1", relativeBooks.get(a));
+        context.put("book2", relativeBooks.get(b));
+        // 是否已被收藏
+        String likeFlag = SQL4PersonalInfo.judgeLike(weid, bookno);
+        System.out.println(likeFlag);
+        HttpSession session = request.getSession();
+        session.setAttribute("likeFlag", likeFlag);
         
 		return SUCCESS;
 	}
-
+	
 }
