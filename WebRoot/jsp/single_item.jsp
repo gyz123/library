@@ -15,6 +15,10 @@
 <link rel="stylesheet" href="css/weui3.css" />
 <link rel="stylesheet" type="text/css" href="css/weuix.min.css">
 
+<link rel="stylesheet" type="text/css" href="css/love_normalize.css" />
+<link rel="stylesheet" type="text/css" href="css/love_default.css">
+<link rel="stylesheet" type="text/css" href="css/love_style.css"/>
+
 <script src="js/zepto.min.js"></script>
 <script src="js/lazyimg.js"></script>
 <script>
@@ -114,55 +118,45 @@
 
 	});
 </script>
-<!--  
-<script>
-		$(document).on("click", "#reserveSuccess", function() {
-			$.toast("预定成功");
-			
-			//location.href = "/library/add_to_reserve.action?bookno=${book.bookno }&weid=${weid }";
-		});
-</script>
 
-<script>
-		$(document).on("click", "#addSuccess", function() {
-			$.toast("已加入购物车");
-			
-			//location.href = "/library/add_to_shoppingcart.action?bookno=${book.bookno }&weid=${weid }";
-		});
-</script>
--->
 
 </head>
 
 <body ontouchstart style="background-color: #ffffff;">
 
-	<a href="/library/back_to_main.action?weid=${weid }">
+	<%-- <a href="/library/back_to_main.action?weid=${weid }"></a>--%>
 	<div class="weui-header bg-blue" style="height:56px;background-color:#01164b">
-		<div class="weui-header-left">
+		<div class="weui-header-left" style="margin-top:6px;">
+			<a class="icon icon-109 f-white" 
+				href="/library/show_singleCat.action?weid=${weid }&pagenum=1&id=<%=request.getSession().getAttribute("cat") %>">
+				&nbsp;&nbsp;&nbsp;
+			</a>
 		</div>
 		<h1 class="weui-header-title" style="margin-top:5px">
 			<span class="">超新星智能图书馆</span>
 		</h1>
 	</div>
-	</a>
+	
 
 	<div style="height:16px;width:100%"></div>
 	<div class="weui_cell">
-		<div class="weui_cell_hd">
+		<div class="weui_cell_hd"> 
 			<img	
 			src="${book.bookimg }"
 			alt="" style="width:96px;margin-left:4px;display:block">
 		</div>
-		<div class="weui_cell_bd weui_cell_primary" style="margin-left:16px">
+		<div class="weui_cell_bd weui_cell_primary" style="margin-left:16px;margin-bottom:2pxs">
 			<span class="f24" >${book.bookname }</span>
-			<br><hr style="color:gray;width:100%;size:1px"><br>
+			<br><hr style="color:gray;width:100%;size:1px;margin-top:4px"><br>
 			<span class="f16" style="margin-left:4px">分类：${book.category }
 					<br><br>&nbsp;出版社：${book.publisher }
 					<br><br>&nbsp;版本：${book.version }
 					<br><br>&nbsp;剩余量：${book.leftnum }</span>
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<a><span class="icon icon-96 f-red" ></span></a>
+					<!-- <a><span class="icon icon-96 f-red" ></span></a> -->
+					<span class="heart " id="like1" rel="like" style="margin-left:0px;"></span>
+					<!-- <span class="likeCount" id="likeCount1">14</span> -->
 					<br>
 		</div>
 	</div>
@@ -170,7 +164,7 @@
 	<div style="height:16px;width:100%;background-color:#f8f8f8"></div>
 
 	<div class="weui_cell">
-		<div class="weui_cell_bd weui_cell_primary" style="margin-top:8px">
+		<div class="weui_cell_bd weui_cell_primary" style="margin-top:4px">
 			<span class="f16" style="margin-left:8px">
 				简介<br>
 				<div style="margin-top:8px; margin-left:8px"><span class="f14">${book.bookAbstract }</span></div>
@@ -178,8 +172,8 @@
 		</div>
 	</div>
 
-	<div class="weui_cell" style="height:2%">
-		<div class="weui_cell_bd weui_cell_primary" style="margin-top:8px">
+	<div class="weui_cell" style="height:4%">
+		<div class="weui_cell_bd weui_cell_primary" style="margin-top:16px">
 			<span class="f16" style="margin-left:8px">
 				<div style="margin-top:0px; margin-left:8px">
 				<span class="f16">标签</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -191,8 +185,9 @@
 		</div>
 	</div>
 
-	<div class="weui_cells weui_cells_access" style="margin-top:8px">
-		<a class="weui_cell " href="" style="height:24px">
+	<div class="weui_cells weui_cells_access" style="height:7%">
+		<a class="weui_cell " style="height:24px;margin-top:8px" 
+				href="/library/get_book_outline.action?weid=${weid }&bookno=${book.bookno}" >
 			<div class="weui_cell_bd weui_cell_primary">
 				<span class="f16" style="margin-left:8px">目录</span>
 			</div>
@@ -204,7 +199,7 @@
 
 
 	<div style="height:16px;width:100%;background-color:#f8f8f8"></div>
-	<div style="height:24px;width:100%;margin-left:24px;padding-top:12px">
+	<div style="height:40px;width:100%;margin-left:24px;padding-top:12px">
 		<span class="f16">导读</span>
 	</div>
 	<div class="weui_cell" >
@@ -218,8 +213,8 @@
 			style="position:relative; top:4px; left:6px">展开</a>
 	</div>
 	
-	<div class="weui_cells weui_cells_access" style="margin-top:8px">
-		<a class="weui_cell " style="height:24px" 
+	<div class="weui_cells weui_cells_access" style="height:44px;margin-top:4px">
+		<a class="weui_cell " style="" 
 				href="/library/get_book_comments.action?bookno=${book.bookno }&weid=${weid }" >
 			<div class="weui_cell_bd weui_cell_primary">
 				<span class="f16" style="margin-left:8px">评论</span>
@@ -233,22 +228,28 @@
 
 	<div style="height:16px;width:100%;background-color:#f8f8f8"></div>
 	
-	<div style="height:24px;width:100%;margin-left:16px;padding-top:12px">
+	<div style="height:40px;width:100%;margin-left:16px;padding-top:12px">
 		<span class="f16">相关推荐</span>
 	</div>
-	<div class="weui_cell">
-		<div class="weui_cell_hd" style="width:45%;text-align:center">
-			<img	
-			src="${book.bookimg }"
-			alt="" style="width:60%;margin-left:4px;display:block;padding-left:25%;padding-bottom:8px">
-			<span style="margin-top:8px"><p>${book.bookname }</p></span>
-		</div>
-		<div class="weui_cell_hd" style="width:45%;text-align:center">
-			<img	
-			src="${book.bookimg }"
-			alt="" style="width:60%;margin-left:4px;display:block;padding-left:25%;padding-bottom:8px">
-			<span><p>${book.bookname }</p></span>
-		</div>
+	<div class="weui_cell" style="height">
+		<a href="/library/show_singleItem.action?bookno=${book1.bookno }&amp;weid=${weid }"> 
+		<div class="weui_cell_hd" style="width: 50%; text-align: center; "> 
+			<img src="${book1.bookimg }" onerror="this.src='/library/image/default.png'" 
+					style="width: 100%; margin-left: 32px; display: block; padding-left: ; padding-bottom: 8px;"> 
+			<div style="width:100%;margin-top: 8px;margin-left:32px">
+			<span><p>${book1.bookname }</p></span> 
+			</div> 
+		</div> 
+		</a> 
+		<a href="/library/show_singleItem.action?bookno=${book2.bookno }&amp;weid=${weid }"> 
+		<div class="weui_cell_hd" style="width: 50%; text-align: center; "> 
+			<img src="${book2.bookimg }" onerror="this.src='/library/image/default.png'" 
+					style="width: 100%; margin-left: 32px; display: block; padding-left: ; padding-bottom: 8px;"> 
+			<div style="width:100%;margin-top:8px;margin-left:32px">
+			<span><p>${book2.bookname }</p></span> 
+			</div>
+		</div> 
+		</a> 
 	</div>
 	
 	<div style="height:51px"></div>
@@ -281,7 +282,66 @@
     </section>
 	</c:if>
 
+	<script>
+	$(document).ready(function()
+	{
+    
+		var likeFlag = "<%=request.getSession().getAttribute("likeFlag")%>";
+		if(likeFlag == 'Y'){
+			$(".heart").addClass("heartAnimation").attr("rel","unlike");
+			console.log("like");
+		}
+	$('body').on("click",'.heart',function()
+    {
+    	
+        var heart = $(this).attr("rel");
+       
+        if(heart === 'like'){      
+	        $(this).addClass("heartAnimation").attr("rel","unlike"); 
+        	
+        	$.ajax({    
+            type:'post',        
+            url:'/library/add_to_like.action',    //servlet名
+            data:"weid=" + "<%=request.getParameter("weid") %>" 
+            + "&bookno=" + "<%=request.getParameter("bookno") %>" 
+            + "&flag=" + "Y",   //参数，flag=N从数据库中取消喜欢 
+            cache:false,    
+            //dataType:'json',    
+            success:function(data){ 
+            	console.log("添加喜欢成功");
+            },
+            error:function(){
+            	console.log("添加喜欢error");
+            }    
+        	}); 
+        }
+        else{
+    	    $(this).removeClass("heartAnimation").attr("rel","like");
+			$(this).css("background-position","left");
+			
+			$.ajax({    
+            type:'post',        
+            url:'/library/add_to_like.action',    //servlet名
+            data:"weid=" + "<%=request.getParameter("weid") %>" 
+            + "&bookno=" + "<%=request.getParameter("bookno") %>" 
+            + "&flag=" + "N",   //参数，flag=Y从数据库中增加喜欢
+            cache:false,    
+            //dataType:'json',    
+            success:function(data){ 
+            	console.log("取消喜欢成功");
+            },
+            error:function(){
+            	console.log("取消喜欢error");
+            }    
+        	}); 
+        }
 
+		
+    });
+
+
+	});
+	</script>
 
 </body>
 </html>

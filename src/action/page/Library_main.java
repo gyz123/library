@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
@@ -36,7 +37,12 @@ public class Library_main extends ActionSupport{
         String weid = request.getParameter("weid");
         String catName = request.getParameter("id");
         String pageNum = request.getParameter("pagenum");
-        String target = request.getParameter("target");
+        String target = request.getParameter("target");	// 排序条件，默认按编号排序
+        
+        HttpSession session = request.getSession();
+		session.setAttribute("weid", weid);
+        session.setAttribute("cat", catName);
+		
         if(pageNum == null || pageNum.equals("0")){
         	pageNum = "1";
         }

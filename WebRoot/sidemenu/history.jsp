@@ -30,7 +30,11 @@
 
 <body ontouchstart style="background-color: #ffffff;">
 
-  <div class="weui_panel_bd" style="margin-top:16px; margin-bottom:16px">
+	<div class="weui_cells_title" style="background:#ffffff;margin-bottom:8px">
+		<span class="f14" >个人信息</span>
+	</div>
+  	<hr />
+  <div class="weui_panel_bd" style="margin-top:4px; margin-bottom:0px">
     <div class="weui_media_box weui_media_appmsg">
       <div class="weui_media_hd" style="margin-left:24px;margin-right:24px; height:64px">
         <img class="weui_media_appmsg_thumb" style="width:64px;height:64px" 
@@ -43,8 +47,10 @@
       </div>
     </div>
   </div>
-
-	<div class="weui_cells_title" style="background:#ffffff">
+	
+	<div style="height:12px;width:100%;background-color:#f8f8f8"></div>
+	
+	<div class="weui_cells_title" style="background:#ffffff;margin-bottom:8px">
 		<span class="f14" >阅读统计</span>
 	</div>
   <hr />
@@ -59,7 +65,8 @@
   <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 
   <div id="month" style="width: 80%;height:55%;margin-left:auto;margin-right:auto;"></div><!-- style="width: 600px;height:400px;" -->
-  <hr />
+  
+  
   <script type="text/javascript">
 //<![CDATA[
                 // 基于准备好的dom，初始化echarts实例
@@ -441,10 +448,13 @@
   //]]>
 </script>
   
-  
+    <div style="height:12px;width:100%;background-color:#f8f8f8"></div>
+
   	<div class="weui_cells_title">
 		<span class="f14">我读过的书</span>
 	</div>
+	<hr style="color:gray;width:100%;size:1px;margin-top:8px">
+	
 	<table class="weui-table weui-border-tb" style="margin-bottom:16px">
 		<thead>
 			<tr>
@@ -454,6 +464,17 @@
 			</tr>
 		</thead>
 		<tbody>
+			<c:forEach var="nowlist" items="${nowlist}">
+				<tr>
+					<td>${nowlist.bookname }</td>
+					<td>${nowlist.borrowtime }</td>
+					<td>
+					
+						<a href="/library/continue_reading.action?bookno=${nowlist.bookno }">续借</a> 
+						| 
+						<a href="">归还</a></td>
+				</tr>
+			</c:forEach>
 			<c:forEach var="booklist" items="${booklist}">
 				<tr>
 					<td>${booklist.bookname }</td>

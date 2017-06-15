@@ -506,61 +506,69 @@
 
 		<!-- 书籍分类  -->
 		<div class="weui_grids">
-			<a
-				href="/library/show_singleCat.action?id=wenxue&pagenum=1&weid=${weid }"
+			<a	href="/library/show_singleCat.action?id=wenxue&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/wenxue.svg" alt="文学">
 				</div>
-				<p class="weui_grid_label">文学</p> </a> <a
-				href="/library/show_singleCat.action?id=zhuanji&pagenum=1&weid=${weid }"
+				<p class="weui_grid_label">文学</p> 
+			</a> 
+			<a	href="/library/show_singleCat.action?id=zhuanji&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/zhuanji.svg" alt="传记">
 				</div>
-				<p class="weui_grid_label">传记</p> </a> <a
-				href="/library/show_singleCat.action?id=lishi&pagenum=1&weid=${weid }"
+				<p class="weui_grid_label">传记</p> 
+			</a> 
+			<a	href="/library/show_singleCat.action?id=lishi&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/lishi.svg" alt="历史">
 				</div>
-				<p class="weui_grid_label">历史</p> </a> <a
-				href="/library/show_singleCat.action?id=zhexue&pagenum=1&weid=${weid }"
+				<p class="weui_grid_label">历史</p> 
+			</a> 
+			<a	href="/library/show_singleCat.action?id=zhexue&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/zhexue.svg" alt="哲学">
 				</div>
-				<p class="weui_grid_label">哲学</p> </a> <a
-				href="/library/show_singleCat.action?id=ertong&pagenum=1&weid=${weid }"
+				<p class="weui_grid_label">哲学</p> 
+			</a> 
+			<a  href="/library/show_singleCat.action?id=ertong&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/ertong.svg" alt="儿童">
 				</div>
-				<p class="weui_grid_label">儿童</p> </a> <a
-				href="/library/show_singleCat.action?id=xiaoshuo&pagenum=1&weid=${weid }"
+				<p class="weui_grid_label">儿童</p> 
+			</a> 
+			<a	href="/library/show_singleCat.action?id=xiaoshuo&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/xiaoshuo.svg" alt="小说">
 				</div>
-				<p class="weui_grid_label">小说</p> </a> <a
-				href="/library/show_singleCat.action?id=xinli&pagenum=1&weid=${weid }"
+				<p class="weui_grid_label">小说</p> 
+			</a> 
+			<a	href="/library/show_singleCat.action?id=xinli&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/xinli.svg" alt="心理">
 				</div>
-				<p class="weui_grid_label">心理</p> </a> <a
-				href="/library/show_singleCat.action?id=shehui&pagenum=1&weid=${weid }"
+				<p class="weui_grid_label">心理</p> 
+			</a> 
+			<a	href="/library/show_singleCat.action?id=shehui&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/guanli.svg" alt="社会">
 				</div>
-				<p class="weui_grid_label">社会</p> </a> <a
-				href="/library/show_singleCat.action?id=keji&pagenum=1&weid=${weid }"
+				<p class="weui_grid_label">社会</p> 
+			</a> 
+			<a	href="/library/show_singleCat.action?id=keji&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/jisuanji.svg" alt="科技">
 				</div>
-				<p class="weui_grid_label">科技</p> </a>
+				<p class="weui_grid_label">科技</p> 
+			</a>
 		</div>
 	</div>
       </section>

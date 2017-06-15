@@ -57,15 +57,17 @@ $(function() {
 </head>
 
 <body ontouchstart style="">
-	<a href="/library/back_to_main.action?weid=${weid }">
+	<%-- <a href="/library/back_to_main.action?weid=${weid }"> </a>  --%>
 	<div class="weui-header bg-blue" style="height:56px;background-color:#01164b">
-		<div class="weui-header-left">
+		<div class="weui-header-left" style="margin-top:6px;">
+			<a class="icon icon-109 f-white" 
+				href="/library/back_to_main.action?weid=${weid }"> &nbsp;&nbsp;&nbsp;
+			</a>
 		</div>
 		<h1 class="weui-header-title" style="margin-top:5px">
 			<span class="">超新星智能图书馆</span>
 		</h1>
 	</div>
-	</a>
 
 	<div class="weui_cells_title">
 		<span class="f10">关键词 > ${keyword }</span>

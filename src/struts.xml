@@ -82,14 +82,22 @@
 			<result name="reg">/sidemenu/hintReg.jsp</result>
 		</action>
 		
-		<!-- 单本书籍，书评   -->
+		<!-- 单本书籍，查看书评   -->
 		<action name="get_book_comments" class="action.page.SingleItem" method="getBookComments">
 			<result name="ok">/jsp/remark.jsp</result>
+		</action>
+		
+		<!-- 单本书籍，写书评  -->
+		<action name="handle_comment" class="action.page.SingleItem" method="createNewComment">
 		</action>
 		
 		<!-- 单本书籍，目录 -->
 		<action name="get_book_outline" class="action.page.SingleItem" method="getBookOutline">
 			<result name="ok">/jsp/outline.jsp</result>
+		</action>
+		
+		<!-- 单本书籍，收藏   -->
+		<action name="add_to_like" class="action.page.SingleItem" method="addToLike">
 		</action>
 		
 		<!-- 显示搜索结果 -->
@@ -109,9 +117,13 @@
 			<result>/sidemenu/myBookshelf.jsp</result>
 		</action>
 		
-		<!-- 历史记录   -->
+		<!-- 历史记录，总览   -->
 		<action name="show_history" class="action.sidemenu.History">
 			<result>/sidemenu/history.jsp</result>
+		</action>
+		
+		<!-- 历史记录，续借 -->
+		<action name="continue_reading" class="action.sidemenu.History" method="continueReading">
 		</action>
 		
 		<!-- 我的借阅   -->
@@ -151,12 +163,17 @@
 		<action name="post_param" class="pay.action.PayAction" method="postParam">
 		</action>
 		
+		<!-- 异步处理  -->
 		<action name="pay_success" class="pay.action.PayAction" method="paySuccess">
 		</action>
 		
+		<!-- 支付成功   -->
+		<action name="set_order" class="pay.action.HandleOrder" method="success">
+		</action>
 		<action name="success_Back" class="pay.action.PayAction" method="successBack">
 			<result name="ok">/jsp/main.jsp</result>
 		</action>
+		
 		
 		
 		<!-- 管理员操作    -->

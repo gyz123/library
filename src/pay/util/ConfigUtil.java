@@ -16,7 +16,9 @@ public class ConfigUtil {
 	// 处理支付返回的信息
 	 public final static String NOTIFY_URL = "http://www.iotesta.com.cn/library/pay_success.action";
 	// 支付成功，返回首页
-	 public final static String SUCCESS_URL = "http://www.iotesta.com.cn/library/success_Back.action";
+//	 public final static String SUCCESS_URL = "http://www.iotesta.com.cn/library/success_Back.action";
+	 public final static String SUCCESS_URL = "http://www.iotesta.com.cn/library/set_order.action";
+	 
 	 // oauth2授权时回调action
 //	 public final static String REDIRECT_URI = "http://14.117.25.80:8016/GoMyTrip/a.jsp?port=8016";
 	 

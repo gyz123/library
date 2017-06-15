@@ -12,6 +12,7 @@ import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import net.sf.json.JSONObject;
 
@@ -49,7 +50,8 @@ public class PayAction extends ActionSupport{
 		parameters.put("notify_url", ConfigUtil.NOTIFY_URL);  // 改成自己的支付action
 		parameters.put("trade_type", "JSAPI");
 		// 此处需要获取用户的openid *****************************************************************************************
-		String openid = request.getParameter("openid");
+		HttpSession session = request.getSession();
+		String openid = (String) session.getAttribute("weid");
 		if(openid == null){
 			openid = "otE_a1Ep3DV9r4kbFu7LDTTXhK6A";  // 耿元哲的id，用于测定时使用
 		}
@@ -135,11 +137,10 @@ public class PayAction extends ActionSupport{
 	public String successBack() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
         request.setCharacterEncoding("UTF-8");
-        String subscribenum = request.getParameter("num");
-        SQL4PersonalInfo.setWhetherPay(subscribenum);
-        
+//        String subscribenum = request.getParameter("num");
+//        SQL4PersonalInfo.setWhetherPay(subscribenum);
         ActionContext context = ActionContext.getContext();
-		context.put("weid", request.getParameter("openid"));
+		context.put("weid", request.getParameter("weid"));
 		
 		return "ok";
 	}

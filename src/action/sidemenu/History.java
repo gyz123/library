@@ -3,12 +3,15 @@ package action.sidemenu;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -50,6 +53,9 @@ public class History extends ActionSupport{
 //		}
 //		
 		ActionContext context = ActionContext.getContext();
+		// 获取正在看的书
+		ArrayList<BorrowedBook> nowList = SQL4PersonalInfo.queryMyBorrow2(weid);
+		context.put("nowlist", nowList);
 		// 获取借过的书
 		ArrayList<BorrowedBook> bookList = SQL4PersonalInfo.queryMyBorrow(weid);
 		context.put("booklist", bookList);
@@ -132,5 +138,23 @@ public class History extends ActionSupport{
 		fw.close();
 	}
 	
+	
+	// 续借
+	public void continueReading() throws Exception{
+		System.out.println("执行History的continueReading方法");
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
+        
+		String weid = request.getParameter("weid");
+		String bookno = request.getParameter("bookno");
+		SQL4PersonalInfo.setBorrowDate(weid, bookno);
+		
+		PrintWriter pw = response.getWriter();
+		pw.write("success");
+		pw.flush();
+		pw.close();
+	}
 	
 }

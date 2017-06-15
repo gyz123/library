@@ -151,7 +151,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				$j('input:checkbox').each(function() { 
 					if ($j(this).prop('checked')) { 
 						bookno[noIndex++] = $j(this).val();
-						alert($j(this).val()); 
+						//alert($j(this).val()); 
 					} 
 				}); 
 				noIndex = 0;
@@ -194,25 +194,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<script>
 		//定时触发监听器
+		// ************此处有问题，不应该用session（数据时效性滞后）
 		var count = 1;
 		function monitor(){
 			$j.ajax({    
             type:'post',        
             url:'/library/listen_status.action',    //servlet名
-            data:"num=" + <%=request.getSession(false).getAttribute("subscribenum")%>,   //参数 
+            data:"weid=" + "<%=request.getParameter("weid")%>",   //参数 
             cache:false,    
            // dataType:'json',    
             success:function(data){ 
             	//var obj = eval ("(" + data + ")");
             	console.log("回调成功");
             	if(count++ >= 20){
-            		window.clearInterval(stop);//停止触发
             		count = 1;
-            		
-            	}
-            	if(data == "Y"){
+            		alert("二维码已经过期，请重新生成");
             		window.clearInterval(stop);//停止触发
-            		location.href = "/library/set_order.action";//成功跳转确认订单
+            	}
+            	if(data === "Y"){
+            		window.clearInterval(stop);//停止触发
+            		location.href = "/library/show_pay.action";//成功跳转确认订单
             	}
         		console.log(count);
             },

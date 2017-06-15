@@ -1,10 +1,10 @@
 package po;
 
-public class BookWithouImg {
+public class BookWithoutImg {
 	private String bookno;
 	private String bookname;
 	
-	public BookWithouImg(){
+	public BookWithoutImg(){
 	}
 	
 	public String getBookno() {
@@ -19,5 +19,12 @@ public class BookWithouImg {
 	public void setBookname(String bookname) {
 		this.bookname = bookname;
 	}
+
+	@Override
+	public String toString() {
+		return "BookWithoutImg [bookno=" + bookno + ", bookname=" + bookname
+				+ "]";
+	}
 	
 }
+

@@ -14,7 +14,7 @@ public class ConfirmPay extends ActionSupport{
 	public void setStatus() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		request.setCharacterEncoding("utf-8");
-		String subscribenum = request.getParameter("num");
+		String subscribenum = request.getParameter("num");	// 安卓端传来解析后的订单号
 		SQL4PersonalInfo.setManagerConfirm(subscribenum);
 	}
 	

@@ -44,7 +44,7 @@ public class SearchUser extends ActionSupport{
 	public String searchSingle() throws IOException{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String wename = request.getParameter("wename");
-		UserDetailInfo user = SQLUtil.querySingleUser(wename); // 获取用户信息
+		UserDetailInfo user = SQLUtil.querySingleUser("wename",wename); // 获取用户信息
 		// 返回数据
 		HttpServletResponse response = ServletActionContext.getResponse();
 		response.setCharacterEncoding("UTF-8");
