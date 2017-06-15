@@ -202,5 +202,14 @@
 		</action>
 			
 			
+		<!-- 推荐系统-->
+		<!-- 进入摇一摇界面 -->
+		<action name="shake" class="recom.util.RecomUtil">
+			<result>/jsp/shake.jsp</result>
+		</action>
+		
+		<!-- 推荐方法 -->
+		<action name="recommend" class="recom.util.RecomUtil" method="recomOutput">
+		</action>
 	</package>
 </struts>

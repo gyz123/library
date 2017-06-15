@@ -421,14 +421,15 @@
         <ul class="menu-section-list">
           <li><a href="/library/show_bookshelf.action?weid=${weid }">我的书架</a></li>
           <li><a href="/library/show_history.action?weid=${weid }">借阅历史</a></li>
-          <li><a href="/library/show_myborrow.action?weid=${weid }">我的借阅</a></li>
           <li><a href="/library/show_shoppingcart.action?weid=${weid }">购物车</a></li>
         </ul>
       </section>
 
       <section class="menu-section" style="background-color:#2B2F3E">
+      	
         <h3 class="menu-section-title">设置</h3>
         <ul class="menu-section-list">
+		  <li><a href="/library/shake.action?weid=${weid }">摇一摇</a></li>
           <li><a href="#">我的设置</a></li>
         </ul>
       </section>
