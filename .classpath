@@ -90,7 +90,6 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/xpp3_min-1.1.4c.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/xstream-1.4.4.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/slf4j-api-1.7.5.jar"/>
-	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/rt.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/bcprov-ext-jdk15on-149.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/bcprov-jdk15on-149.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
