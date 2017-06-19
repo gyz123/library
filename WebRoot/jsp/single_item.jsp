@@ -127,10 +127,18 @@
 	<%-- <a href="/library/back_to_main.action?weid=${weid }"></a>--%>
 	<div class="weui-header bg-blue" style="height:56px;background-color:#01164b">
 		<div class="weui-header-left" style="margin-top:6px;">
+			<c:if var="flag" test="${cat!=null }" scope="page">
 			<a class="icon icon-109 f-white" 
-				href="/library/show_singleCat.action?weid=${weid }&pagenum=1&id=<%=request.getSession().getAttribute("cat") %>">
+				href="/library/show_singleCat.action?weid=<%=request.getSession().getAttribute("weid") %>&pagenum=1&id=<%=request.getSession().getAttribute("cat") %>">
 				&nbsp;&nbsp;&nbsp;
 			</a>
+			</c:if>
+			<c:if var="flag" test="${cat==null }" scope="page">
+			<a class="icon icon-109 f-white" 
+				href="/library/back_to_main.action?weid=<%=request.getSession().getAttribute("weid") %>">
+				&nbsp;&nbsp;&nbsp;
+			</a>
+			</c:if>
 		</div>
 		<h1 class="weui-header-title" style="margin-top:5px">
 			<span class="">超新星智能图书馆</span>
