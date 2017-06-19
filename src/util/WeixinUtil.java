@@ -64,7 +64,7 @@ public class WeixinUtil {
 	private static final String payAction = DN + "/library/show_pay.action";
 	
 	private static final String GET_USER_ID = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
-	
+	private static final String GET_MATERIAL = "https://api.weixin.qq.com/cgi-bin/material/get_material?access_token=ACCESS_TOKEN";
 	/**
 	 * get«Î«Û
 	 * 
