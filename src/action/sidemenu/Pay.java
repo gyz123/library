@@ -14,6 +14,7 @@ import org.apache.struts2.ServletActionContext;
 import po.BookInShoppingcart;
 import po.PayList;
 import po.UserDetailInfo;
+import util.EncryptUtil;
 import util.SQL4PersonalInfo;
 import util.SQLUtil;
 
@@ -63,7 +64,9 @@ public class Pay extends ActionSupport{
 		HttpServletResponse response = ServletActionContext.getResponse();
 		response.setCharacterEncoding("utf-8");
 		PrintWriter pw = response.getWriter();
-		pw.write(sb.toString());
+		//Ω¯––AESº”√‹
+		String encryptResult = EncryptUtil.parseByte2HexStr(EncryptUtil.encrypt(sb.toString()));
+		pw.write(encryptResult);
 		pw.flush();
 		pw.close();
 	}
@@ -112,4 +115,5 @@ public class Pay extends ActionSupport{
 		return SUCCESS;
 	}
 	
+
 }
