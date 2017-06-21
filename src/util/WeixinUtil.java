@@ -291,7 +291,7 @@ public class WeixinUtil {
 		ViewButton button24 = new ViewButton();
 		button24.setName("JSSDK≤‚ ‘“≥√Ê");
 		button24.setType("view");
-		button24.setUrl(DN + "/library/JSConfigServlet");
+		button24.setUrl(DN + "/library/start_scan.action");
 		
 		
 		ClickButton button31 = new ClickButton();

@@ -155,8 +155,6 @@ public class SQLUtil {
 	}
 	
 	
-	
-	
 	// 由weid获取用户id
 	public static String getUserId(String weid){
 		try {

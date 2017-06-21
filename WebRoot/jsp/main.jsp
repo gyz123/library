@@ -430,6 +430,7 @@
         <h3 class="menu-section-title">设置</h3>
         <ul class="menu-section-list">
 		  <li><a href="/library/shake.action?weid=${weid }">摇一摇</a></li>
+		  <li><a href="/library/start_scan.action?weid=${weid }">扫一扫</a></li>
           <li><a href="#">我的设置</a></li>
         </ul>
       </section>

@@ -185,6 +185,9 @@ public class Library_main extends ActionSupport{
 		}
 		context.put("weid", weid);
 		
+		HttpSession session = request.getSession();
+		session.setAttribute("weid", weid);
+		
 		UserDetailInfo user = SQL4PersonalInfo.queryUser(weid);
 		if(user != null){
 			context.put("flag", true);
