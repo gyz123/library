@@ -8,7 +8,7 @@ public class DecryptTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String content = "test";  
+		String content = "testtesttesttesttesttesttesttesttesttest,01,02";  
 		String password = "12345678";  
 		//¼ÓÃÜ  
 		System.out.println("¼ÓÃÜÇ°£º" + content);  

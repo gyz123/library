@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 
-import po.UserDetailInfo;
 import util.SQLUtil;
 
 import com.opensymphony.xwork2.ActionSupport;
