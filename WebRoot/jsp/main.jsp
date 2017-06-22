@@ -422,6 +422,7 @@
           <li><a href="/library/show_bookshelf.action?weid=${weid }">我的书架</a></li>
           <li><a href="/library/show_history.action?weid=${weid }">借阅历史</a></li>
           <li><a href="/library/show_shoppingcart.action?weid=${weid }">购物车</a></li>
+          <li><a href="/library/initialWordPage.action?weid=${weid }">图书索引</a></li>
         </ul>
       </section>
 
@@ -489,17 +490,17 @@
 						src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
 						data-src="http://7xr193.com1.z0.glb.clouddn.com/1.jpg" alt="">
 				</a>
-					<div class="slide-desc">帅帅的轮播~</div></li>
+					<div class="slide-desc">帅帅的轮播~~</div></li>
 				<li><a href="#"> <img
 						src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
 						data-src="http://7xr193.com1.z0.glb.clouddn.com/2.jpg" alt="">
 				</a>
-					<div class="slide-desc">小柯的轮播~</div></li>
+					<div class="slide-desc">小柯的轮播~~</div></li>
 				<li><a href="#"> <img
 						src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
 						data-src="http://7xr193.com1.z0.glb.clouddn.com/3.jpg" alt="">
 				</a>
-					<div class="slide-desc">大师的轮播~</div></li>
+					<div class="slide-desc">大师的轮播~~</div></li>
 			</ul>
 			<div class="dot">
 				<span></span> <span></span> <span></span>
