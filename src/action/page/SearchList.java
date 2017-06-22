@@ -14,8 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 
+import pinyin.util.Chinese;
+import pinyin.util.ChineseUtil;
+import pinyin.util.KeywordUtil;
+import pinyin.util.PinyinUtils;
 import po.BookInCategory;
 import util.SQLUtil;
+import util.WeixinUtil;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -30,6 +35,7 @@ public class SearchList extends ActionSupport{
 		request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
         String keyword = URLDecoder.decode(request.getParameter("keyword"),"utf-8");//解决中文乱码问题
+        keyword = KeywordUtil.keywordToPinyin(keyword);//拼音分词
         System.out.println("keyword=" + keyword);
         StringBuffer sb = new StringBuffer();
 //      格式：['百度1', '百度2', '百度3', '百度4', '百度5', '百度6', '百度7','a4','b1','b2','b3','b4' ]
@@ -37,10 +43,14 @@ public class SearchList extends ActionSupport{
         try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN, WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
-			
-			String query = "select bookname from book " + "where bookname like '" + keyword +"%' limit " + " 0,5;";
+			String query = "select bookname from pinyin " + " where pinyin like '" + keyword + "%' limit " + " 0,5;";
+			System.out.println(query);
+//			Connection con = DriverManager.getConnection(
+//					"jdbc:mysql://127.0.0.1:3306/library" , "root", "root");
+//			Statement s = con.createStatement();
+//			String query = "select bookname from book " + "where bookname like '" + keyword +"%' limit " + " 0,5;";
 			ResultSet ret = s.executeQuery(query);
 			// 获取书籍信息
 			while (ret.next()) {  
@@ -88,7 +98,13 @@ public class SearchList extends ActionSupport{
         	keyword = "历史";
         }
         
-        ArrayList<BookInCategory> searchList = SQLUtil.querySingleBookFromSearch(keyword, pageNum);
+        String flag = "pinyin";
+        //keyword = KeywordUtil.keywordToPinyin(keyword);//拼音分词
+        if(ChineseUtil.isChinese(keyword)){
+        	flag = "chinese";
+        }
+        
+        ArrayList<BookInCategory> searchList = SQLUtil.querySingleBookFromSearch(flag,keyword, pageNum);
         ActionContext context = ActionContext.getContext();
         context.put("weid", weid);
         context.put("keyword",keyword);

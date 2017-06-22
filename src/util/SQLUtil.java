@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import pinyin.util.PinyinUtils;
 import po.Book;
 import po.BookDetailInfo;
 import po.BookInCategory;
@@ -371,17 +372,28 @@ public class SQLUtil {
 	
 	
 	// 依据关键词搜索书籍列表 (编号，书名，图片，出版社，作者，剩余量, 阅读量，评分)
-  	public static ArrayList<BookInCategory> querySingleBookFromSearch(String keyword,String pageNum){
+  	public static ArrayList<BookInCategory> querySingleBookFromSearch(String type,String keyword,String pageNum){
 		ArrayList<BookInCategory> bookSearchList = new ArrayList<BookInCategory>();
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
 					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
+			String query = "";
 			
-			String query = "select bookno,bookname,bookimg,publisher,author,leftnum,readingnum,score from book " +
-								"where bookname like '%" + keyword +"%' limit "
-								+ (5*((Integer.parseInt(pageNum))-1)) + ",5;";
+			if(type.equals("chinese")){
+				query = "select bookno,bookname,bookimg,publisher,author,leftnum,readingnum,score from book " +
+						"where bookname like '%" + keyword +"%' limit "
+						+ (5*((Integer.parseInt(pageNum))-1)) + ",5;";
+			}else if(type.equals("pinyin")){
+				keyword = PinyinUtils.split(keyword);//keyword拼音分词
+				query = "select book.bookno, book.bookname, book.bookimg, book.publisher, " +
+						"book.author, book.leftnum, book.readingnum, book.score " +
+						"from book,pinyin " +
+						"where book.bookno = pinyin.id and pinyin.pinyin like '%" + keyword +"%' limit "
+						+ (5*((Integer.parseInt(pageNum))-1)) + ",5;";
+			}
+			
 			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			// 获取书籍信息

@@ -34,7 +34,7 @@ public class PinyinUtils {
   
   
     public static void main(String[] args) {  
-        String str = "wohaoa";  
+        String str = "xiaowangzi";  
         System.out.println(PinyinUtils.split(str));  
     }  
 }
