@@ -364,6 +364,7 @@
 </script>
 
 <script>
+	//将关键词提交
 	function add(){
 		var keyword = document.getElementById("search").value;
 		var his = new History('library');

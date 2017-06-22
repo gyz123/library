@@ -8,8 +8,8 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
 
 public class Chinese {
 
-	private HanyuPinyinOutputFormat format = null;
-	private String[] pinyin;
+	private static HanyuPinyinOutputFormat format = null;
+	private static String[] pinyin;
 
 	public Chinese() {
 		format = new HanyuPinyinOutputFormat();
@@ -61,7 +61,9 @@ public class Chinese {
 		// TODO Auto-generated method stub
 		Chinese chinese = new Chinese();
 		String str = "生命不能承受之轻";
+		str = "1945年的恋人";
 		String pinYin = chinese.getStringPinYin(str);
 		System.out.println(pinYin);
+		
 	}
 }
