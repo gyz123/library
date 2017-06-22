@@ -267,11 +267,11 @@ public class WeixinUtil {
 		button13.setType("view");
 		button13.setUrl(url13);
 		
-		
+		//**********************출롤wifi
 		ViewButton button21 = new ViewButton();
-		button21.setName("index 女충");
+		button21.setName("출롤WIFI");
 		button21.setType("view");
-		button21.setUrl(DN + "/library/index.jsp");
+		button21.setUrl(DN + "/library/show_wifi.action");
 		
 		String url22 = SCOPE.replace("APPID", APPID).replace("REDIRECT_URI", payAction)
 				.replace("SCOPE", "snsapi_userinfo").replace("STATE", "123");

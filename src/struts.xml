@@ -224,5 +224,11 @@
 		<!--  -->
 		<action name="initialWord" class="action.sidemenu.InitialWord" method="SearchFirst">
 		</action>
+		
+		<!-- WIFI页面   -->
+		<action name="show_wifi" class="action.WifiAction">
+			<result>/sidemenu/wifi.jsp</result>
+		</action>
+		
 	</package>
 </struts>
