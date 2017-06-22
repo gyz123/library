@@ -215,5 +215,14 @@
 		<!-- 推荐方法 -->
 		<action name="recommend" class="recom.util.RecomUtil" method="recomOutput">
 		</action>
+		
+		<!-- 首字母搜索 -->
+		<!-- 进入首字母索引 -->
+		<action name="initialWordPage" class="action.sidemenu.InitialWord">
+			<result>/sidemenu/initialWord.jsp</result>
+		</action>
+		<!--  -->
+		<action name="initialWord" class="action.sidemenu.InitialWord" method="SearchFirst">
+		</action>
 	</package>
 </struts>

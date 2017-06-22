@@ -92,5 +92,8 @@
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/slf4j-api-1.7.5.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/bcprov-ext-jdk15on-149.jar"/>
 	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/bcprov-jdk15on-149.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/pinyin4j-2.5.0.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/taobao-sdk-java-auto_1455552377940-20160607-source.jar"/>
+	<classpathentry kind="lib" path="WebRoot/WEB-INF/lib/taobao-sdk-java-auto_1455552377940-20160607.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>

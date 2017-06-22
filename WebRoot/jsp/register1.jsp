@@ -29,6 +29,8 @@
 	
 	var wait = 60; //倒计时时间
 
+	var veriCode_back;
+	
 	function time(obj) {  
         if (wait == 0) {  
             obj.href = "javascript:getVeriCode();";
@@ -77,7 +79,8 @@
 					{ 
 						//alert(request.responseText); 
 						alert("验证码已发送，请注意查收");
-						//获取响应的报文，使用innerHTML向searchResult中插入,通过上边判断请求成功之后，在html中显示提示
+						//将验证码返回前台进行比对
+						veriCode_back = request.responseText;
 					} 
 					else
 				 	{
@@ -101,6 +104,13 @@
 		if (weID == "" || name == "" || IDNumber == "" || tel == ""
 				|| veriCode == "") {
 			alert("请填写完整信息");
+			return;
+		}
+		
+		if(veriCode != veriCode_back){
+			console.log("veriCode:" + veriCode);
+			console.log("veriCode_back:" + veriCode_back);
+			alert("验证码输入有误");
 			return;
 		}
 		
