@@ -83,25 +83,9 @@ public class WeixinServlet extends HttpServlet {
 				}else if(MessageUtil.MESSAGE_CLICK.equals(eventType)){
 					
 					String key = map.get("EventKey");
-					//报名
-					if(key.equals("33")){
-						boolean result1 = WeixinUtil.checkSubscribe(fromUserName);
-						
-						if(result1 == false){ // 未注册
-							message = MessageUtil.initText(toUserName, fromUserName, "你还未注册，无法报名" );
-						}else{
-							boolean result2 = WeixinUtil.checkBaoming(fromUserName);
-							
-							if(result2 == false){ //未报名
-								message = MessageUtil.initText(toUserName, fromUserName, "报名成功~");
-							}else{
-								message = MessageUtil.initText(toUserName, fromUserName, "你已经报过名，无需重复操作");
-							}
-						}
-					}
 					
 					//显示主菜单
-					else if(key.equals("11")){
+					if(key.equals("11")){
 						message = MessageUtil.initText(toUserName, fromUserName, MessageUtil.menuText());		
 					}
 							

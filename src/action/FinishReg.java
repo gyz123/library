@@ -8,15 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 
-import po.UserDetailInfo;
 import util.SQLUtil;
 import util.VericodeUtil;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.taobao.api.DefaultTaobaoClient;
-import com.taobao.api.TaobaoClient;
-import com.taobao.api.request.AlibabaAliqinFcSmsNumSendRequest;
-import com.taobao.api.response.AlibabaAliqinFcSmsNumSendResponse;
 
 public class FinishReg extends ActionSupport {
 	private static final long serialVersionUID = 1L;

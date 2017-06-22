@@ -267,11 +267,11 @@ public class WeixinUtil {
 		button13.setType("view");
 		button13.setUrl(url13);
 		
-		
+		//**********************免费wifi
 		ViewButton button21 = new ViewButton();
-		button21.setName("index 页面");
+		button21.setName("免费WIFI");
 		button21.setType("view");
-		button21.setUrl(DN + "/library/index.jsp");
+		button21.setUrl(DN + "/library/show_wifi.action");
 		
 		String url22 = SCOPE.replace("APPID", APPID).replace("REDIRECT_URI", payAction)
 				.replace("SCOPE", "snsapi_userinfo").replace("STATE", "123");
@@ -337,51 +337,6 @@ public class WeixinUtil {
 		return result;
 	}
 	
-	
-	// 判断注册
-	public static boolean checkSubscribe(String userid){
-		boolean flag = false;
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1/weixin", "root", "root");
-			Statement s = con.createStatement();
-			String query = "select * from users";
-			ResultSet ret = s.executeQuery(query);
-			while (ret.next()) {  
-            	String openid = ret.getString(1);  
-                if(openid.equals(userid)){
-                	flag = true;
-                	break;
-                }
-            }
-            ret.close();  
-            con.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return flag;
-	}
-	
-	
-	
-	// 添加新用户到数据库中
-	public static void addNewStu(User user){
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1/weixin", "root", "root");
-			Statement s = con.createStatement();
-			String query = "insert into users values ('" + user.getOpenID() + "','" + user.getNum()+ "','" + user.getName() + "','" + user.getTel() + "');";
-			s.executeUpdate(query);
-            con.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
 	// 网页授权获取openID
 	public static String getUserID(String code){
 		String userID = "";
@@ -397,46 +352,6 @@ public class WeixinUtil {
 		}
 		
 		return userID;
-	}
-	
-	
-	// 判断报名
-	public static boolean checkBaoming(String userid){
-		boolean flag = false;
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection(
-					"jdbc:mysql://127.0.0.1/weixin", "root", "root");
-			Statement s = con.createStatement();
-			String query = "select * from baoming";
-			ResultSet ret = s.executeQuery(query);
-			while (ret.next()) {  
-            	String openid = ret.getString(1);  
-                if(openid.equals(userid)){
-                	flag = true;
-                	break;
-                }
-            }
-			// 未在报名列表中，则处理报名请求
-			if(flag == false){
-				query = "select * from users";
-				ret = s.executeQuery(query);
-				while (ret.next()) {  
-	            	String openid = ret.getString(1);  
-	                if(openid.equals(userid)){
-	                	User stu = new User(ret.getString(1),ret.getString(2),ret.getString(3),ret.getString(4));
-	                	query = "insert into baoming values ('"+ stu.getOpenID() + "','" + stu.getNum() + "','" + stu.getName() + "','" + stu.getTel() + "');";
-	                	s.executeUpdate(query);
-	                }
-	            }
-			}
-			
-            ret.close();  
-            con.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return flag;
 	}
 	
 }
