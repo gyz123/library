@@ -17,6 +17,7 @@ import org.apache.struts2.ServletActionContext;
 import po.Book;
 import po.BookDetailInfo;
 import po.Comment;
+import recom.util.InterestUtil;
 import util.SQL4PersonalInfo;
 import util.SQLUtil;
 
@@ -148,7 +149,7 @@ public class SingleItem extends ActionSupport{
 	}
 	
 	
-	// 添加、取消收藏
+	// 添加、取消收藏,并增加或减少喜爱度
 	public void addToLike() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		request.setCharacterEncoding("utf-8");
@@ -157,8 +158,10 @@ public class SingleItem extends ActionSupport{
 		String weid = request.getParameter("weid");
 		if(flag.equals("Y")){
 			SQL4PersonalInfo.addToLike(weid, bookno);
+			InterestUtil.clickLike(weid, bookno, true);
 		}else if(flag.equals("N")){
 			SQL4PersonalInfo.deleteLike(weid, bookno);
+			InterestUtil.clickLike(weid, bookno, false);
 		}
 	}
 	
@@ -173,6 +176,8 @@ public class SingleItem extends ActionSupport{
         String weid = request.getParameter("weid");
         
         String bookno = request.getParameter("bookno");
+        //点击事件增加用户喜爱度
+        InterestUtil.clickBook(weid, bookno);
 		if(bookno == null){ 
 			bookno = "1";  // 测试用例：显示编号为1的书籍信息
 		}
