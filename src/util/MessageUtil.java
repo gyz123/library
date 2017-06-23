@@ -201,6 +201,17 @@ public class MessageUtil {
 	}
 	
 	
-	
+	public static String generateServiceMsg(String openid,String type,String content){
+		StringBuffer sb = new StringBuffer();
+		sb.append("{");
+		sb.append("\"touser\":\"").append(openid).append("\",");
+		sb.append("\"msgtype\":\"").append(type).append("\",");
+		sb.append("\"text\":");
+		sb.append("{");
+		sb.append("\"content\":\"").append(content).append("\"");
+		sb.append("}");
+		sb.append("}");
+		return sb.toString();
+	}
 	
 }
