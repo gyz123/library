@@ -65,6 +65,8 @@ public class WeixinUtil {
 	
 	private static final String GET_USER_ID = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
 	private static final String GET_MATERIAL = "https://api.weixin.qq.com/cgi-bin/material/get_material?access_token=ACCESS_TOKEN";
+	
+	private static final String POST_CusService_SEND = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=ACCESS_TOKEN";
 	/**
 	 * get«Î«Û
 	 * 
@@ -354,4 +356,15 @@ public class WeixinUtil {
 		return userID;
 	}
 	
+	
+	public static int Cus_Service(String access_token, String outStr){
+		int result = 0;
+		
+		String url = POST_CusService_SEND.replace("ACCESS_TOKEN", access_token);
+		JSONObject jsonObject = doPostStr(url, outStr);
+		if(jsonObject != null){
+			result = jsonObject.getInt("errcode");
+		}
+		return result;
+	}
 }

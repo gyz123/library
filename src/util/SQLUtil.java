@@ -535,5 +535,36 @@ public class SQLUtil {
 		return books;
 	}
 	
+	/**
+	 * 从bookno获取bookname
+	 * @param bookno
+	 * @return
+	 */
+	public static String getBookName(String bookno){
+		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			
+			String query = "select bookname from book " +
+								"where bookno = " + bookno  +";";
+			ResultSet ret = s.executeQuery(query);
+			// 获取书籍信息
+			String bookname = null;
+			while(ret.next()){
+				 bookname = ret.getString(1);
+			}
+			
+			con.close();
+			return bookname;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "";
+	}
+	
 }
 
