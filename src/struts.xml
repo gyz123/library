@@ -157,6 +157,11 @@
 		<action name="listen_status" class="action.sidemenu.Pay" method="listenStatus">
 		</action>
 		
+		<!-- 设置   -->
+		<action name="show_settings" class="action.sidemenu.Settings">
+			<result>/sidemenu/settings.jsp</result>			
+		</action>
+		
 		
 			
 		<!-- 微信支付 -->

@@ -122,7 +122,8 @@
    
   	<div class="weui_cells" style="margin-top:0px">
 		<div class="weui-header-left" style="height:36px;padding-top:18px;padding-left:12px">
-			<a class="icon icon-109 f-black">&nbsp;&nbsp;</a> 
+			<a class="icon icon-109 f-black" 
+			href="/library/back_to_main.action?weid=<%=request.getSession().getAttribute("weid") %>">&nbsp;&nbsp;</a> 
 			<span class="f18">推送设置</span>  
 		</div>
 	</div>

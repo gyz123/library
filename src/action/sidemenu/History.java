@@ -157,4 +157,10 @@ public class History extends ActionSupport{
 		pw.close();
 	}
 	
+	// ¹é»¹
+	public void returnBook(){
+		
+	}
+	
+	
 }

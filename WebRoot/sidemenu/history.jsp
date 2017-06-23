@@ -468,9 +468,9 @@
 				<tr>
 					<td>${nowlist.bookname }</td>
 					<td>${nowlist.borrowtime }</td>
-					<td>
+					<td >
 					
-						<a href="/library/continue_reading.action?bookno=${nowlist.bookno }">续借</a> 
+						<a onclick="javascript:location.href='/library/continue_reading.action?bookno=${nowlist.bookno }'">续借</a> 
 						| 
 						<a href="">归还</a></td>
 				</tr>
