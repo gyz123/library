@@ -12,7 +12,7 @@ public class TimerManager {
 
 	public TimerManager() {
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, 23); // 触发（时、分、秒）
+		calendar.set(Calendar.HOUR_OF_DAY, 6); // 触发（时、分、秒）
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		Date date = calendar.getTime(); // 第一次执行定时任务的时间

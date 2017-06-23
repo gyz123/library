@@ -21,7 +21,7 @@
 
 			if(t <= 0)
 			{
-				window.location.href="/library/back_to_main.action?weid=" + "<%=request.getParameter("weid") %>";
+				window.location.href="/library/back_to_main.action?weid=" + "<%=request.getSession(false).getAttribute("weid") %>";
 				//alert("时间到");
 			}
 			else{

@@ -62,40 +62,33 @@
 		<action name="show_singleCat" class="action.page.Library_main" method="enterWenxue">
 			<result name="ok">/jsp/single_cat.jsp</result>
 		</action>
-		
 		<!-- 单本书籍，显示  -->
 		<action name="show_singleItem" class="action.page.SingleItem">
 			<result>/jsp/single_item.jsp</result>
 		</action>
-		
 		<!-- 单本书籍，加入待借清单  -->
 		<action name="add_to_shoppingcart" class="action.page.SingleItem" method="addToShoppingCart">
 			<result name="ok">/sidemenu/addCart_success.jsp</result>
 			<result name="fail">/sidemenu/addCart_fail.jsp</result>
 			<result name="reg">/sidemenu/hintReg.jsp</result>
 		</action>
-		
 		<!-- 单本书籍，预定   -->
 		<action name="add_to_reserve" class="action.page.SingleItem" method="addToReserve">
 			<result name="ok">/sidemenu/reserve_success.jsp</result>
 			<result name="fail">/sidemenu/reserve_fail.jsp</result>
 			<result name="reg">/sidemenu/hintReg.jsp</result>
 		</action>
-		
 		<!-- 单本书籍，查看书评   -->
 		<action name="get_book_comments" class="action.page.SingleItem" method="getBookComments">
 			<result name="ok">/jsp/remark.jsp</result>
 		</action>
-		
 		<!-- 单本书籍，写书评  -->
 		<action name="handle_comment" class="action.page.SingleItem" method="createNewComment">
 		</action>
-		
 		<!-- 单本书籍，目录 -->
 		<action name="get_book_outline" class="action.page.SingleItem" method="getBookOutline">
 			<result name="ok">/jsp/outline.jsp</result>
 		</action>
-		
 		<!-- 单本书籍，收藏   -->
 		<action name="add_to_like" class="action.page.SingleItem" method="addToLike">
 		</action>
@@ -121,9 +114,11 @@
 		<action name="show_history" class="action.sidemenu.History">
 			<result>/sidemenu/history.jsp</result>
 		</action>
-		
 		<!-- 历史记录，续借 -->
 		<action name="continue_reading" class="action.sidemenu.History" method="continueReading">
+		</action>
+		<!-- 历史记录，还书二维码   -->
+		<action name="generate_return_code" class="action.sidemenu.History" method="returnBookCode">
 		</action>
 		
 		<!-- 我的借阅   -->
@@ -139,7 +134,6 @@
 		<action name="show_shoppingcart" class="action.sidemenu.ShoppingCart">
 			<result>/sidemenu/shoppingcart.jsp</result>
 		</action>
-		
 		<!-- 购物车，删除 -->
 		<action name="show_shoppingcart_delete" class="action.sidemenu.ShoppingCart" method="delete">
 		</action>
@@ -148,11 +142,9 @@
 		<action name="show_pay" class="action.sidemenu.Pay">
 			<result>/sidemenu/pay.jsp</result>
 		</action>
-		
 		<!-- 支付，生成二维码 -->
 		<action name="generate_code" class="action.sidemenu.Pay" method="generateCode">
 		</action>
-		
 		<!-- 支付，监听管理员是否确认   -->
 		<action name="listen_status" class="action.sidemenu.Pay" method="listenStatus">
 		</action>

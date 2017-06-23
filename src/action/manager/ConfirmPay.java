@@ -21,7 +21,14 @@ public class ConfirmPay extends ActionSupport{
 		byte[] decryptResult = EncryptUtil.decrypt(decryptFrom); 
 		String result = new String(decryptResult);
 		String[] datas = result.split(",");
-		SQL4PersonalInfo.setManagerConfirm(datas[0]);	// 提取订单号并设置
+		
+		String type = datas[0];
+		if(type.equals("borrow")){
+			SQL4PersonalInfo.setBorrowConfirm(datas[1]);	// 提取订单号并设置
+		}else if(type.equals("return")){
+			SQL4PersonalInfo.setReturnConfirm(datas[1], datas[2]);  // 提取weid和bookno
+		}
+			
 	}
 	
 }

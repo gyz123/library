@@ -18,6 +18,7 @@ import org.apache.struts2.ServletActionContext;
 import po.BorrowedBook;
 import po.UserDetailInfo;
 
+import util.EncryptUtil;
 import util.SQL4PersonalInfo;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -147,7 +148,7 @@ public class History extends ActionSupport{
 		request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
         
-		String weid = request.getParameter("weid");
+		String weid = request.getSession().getAttribute("weid").toString();
 		String bookno = request.getParameter("bookno");
 		SQL4PersonalInfo.setBorrowDate(weid, bookno);
 		
@@ -157,9 +158,51 @@ public class History extends ActionSupport{
 		pw.close();
 	}
 	
-	// 归还
-	public void returnBook(){
+	// 生成还书二维码
+	public void returnBookCode() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getSession().getAttribute("weid").toString();
+		String bookno = request.getParameter("bookno");
+		ActionContext context = ActionContext.getContext();
+		context.put("weid", weid);
 		
+		StringBuffer sb = new StringBuffer();
+		sb.append("return,");
+		sb.append(weid + ",");
+		sb.append(bookno);
+		
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("utf-8");
+		PrintWriter pw = response.getWriter();
+		//进行AES加密
+		String encryptResult = EncryptUtil.parseByte2HexStr(EncryptUtil.encrypt(sb.toString()));
+		pw.write(encryptResult);
+		pw.flush();
+		pw.close();
+	}
+	
+	// 监听归还状态
+	public void listenStatus() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getParameter("weid");
+		String bookno = request.getParameter("bookno");
+		
+		// 获取书本归还状态
+		String status = "N";
+		if(SQL4PersonalInfo.listenReturn(weid,bookno) != null){
+			status = "Y";
+		}
+		System.out.println("归还状态:" + status);
+		
+		// 返回状态给前台
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setCharacterEncoding("utf-8");
+		PrintWriter pw = response.getWriter();
+		pw.write(status);
+		pw.flush();
+		pw.close();
 	}
 	
 	

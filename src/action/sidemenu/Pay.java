@@ -43,6 +43,7 @@ public class Pay extends ActionSupport{
 			bookno1 = "1"; // 测试数据
 		}
 		StringBuffer sb = new StringBuffer();
+		sb.append("borrow,");	// 二维码类型：借阅
 		PayList list1 = SQL4PersonalInfo.setPayList(weid, bookno1, subscribenum);
 		sb.append(list1.getSubsribenum() + ",");	// 订单号
 		SQL4PersonalInfo.saveOrder(weid, list1);

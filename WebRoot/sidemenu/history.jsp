@@ -469,10 +469,10 @@
 					<td>${nowlist.bookname }</td>
 					<td>${nowlist.borrowtime }</td>
 					<td >
-					
-						<a onclick="javascript:location.href='/library/continue_reading.action?bookno=${nowlist.bookno }'">续借</a> 
+						<a href="/library/continue_reading.action?bookno=${nowlist.bookno }">续借</a> 
 						| 
-						<a href="">归还</a></td>
+						<a href="/library/continue_reading.action?bookno=${nowlist.bookno }">归还</a>
+					</td>
 				</tr>
 			</c:forEach>
 			<c:forEach var="booklist" items="${booklist}">
