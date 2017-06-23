@@ -26,7 +26,7 @@
 		<!-- 进入注册 -->
 		<action name="show_register" class="action.page.Register">
 			<result>/jsp/register1.jsp</result>
-			<result name="haveReg">/register/register_failure.html</result>
+			<result name="haveReg">/jsp/tips/register_failure.html</result>
 		</action>
 		
 		<!-- 处理注册  -->
@@ -34,15 +34,15 @@
 		</action>
 		
 		<action name="completeReg" class="action.FinishReg" method="CompleteReg">
-			<result>/register/register_success.html</result>
+			<result>/jsp/tips/register_success.html</result>
 		</action>
 		
 		<action name="regSuccess" class="action.FinishReg" method="RegSuccess">
-			<result>/register/register_success.html</result>
+			<result>/jsp/tips/register_success.html</result>
 		</action>
 		
 		<action name="regFailure" class="action.FinishReg" method="RegFailure">
-			<result>/register/register_failure.html</result>
+			<result>/jsp/tips/register_failure.html</result>
 		</action>
 		
 		
@@ -64,30 +64,30 @@
 		</action>
 		<!-- 单本书籍，显示  -->
 		<action name="show_singleItem" class="action.page.SingleItem">
-			<result>/jsp/single_item.jsp</result>
+			<result>/jsp/singlebook/single_item.jsp</result>
 		</action>
 		<!-- 单本书籍，加入待借清单  -->
 		<action name="add_to_shoppingcart" class="action.page.SingleItem" method="addToShoppingCart">
-			<result name="ok">/sidemenu/addCart_success.jsp</result>
-			<result name="fail">/sidemenu/addCart_fail.jsp</result>
-			<result name="reg">/sidemenu/hintReg.jsp</result>
+			<result name="ok">/jsp/tips/addCart_success.jsp</result>
+			<result name="fail">/jsp/tips/addCart_fail.jsp</result>
+			<result name="reg">/jsp/tips/hintReg.jsp</result>
 		</action>
 		<!-- 单本书籍，预定   -->
 		<action name="add_to_reserve" class="action.page.SingleItem" method="addToReserve">
-			<result name="ok">/sidemenu/reserve_success.jsp</result>
-			<result name="fail">/sidemenu/reserve_fail.jsp</result>
-			<result name="reg">/sidemenu/hintReg.jsp</result>
+			<result name="ok">/jsp/tips/reserve_success.jsp</result>
+			<result name="fail">/jsp/tips/reserve_fail.jsp</result>
+			<result name="reg">/jsp/tips/hintReg.jsp</result>
 		</action>
 		<!-- 单本书籍，查看书评   -->
 		<action name="get_book_comments" class="action.page.SingleItem" method="getBookComments">
-			<result name="ok">/jsp/remark.jsp</result>
+			<result name="ok">/jsp/singlebook/remark.jsp</result>
 		</action>
 		<!-- 单本书籍，写书评  -->
 		<action name="handle_comment" class="action.page.SingleItem" method="createNewComment">
 		</action>
 		<!-- 单本书籍，目录 -->
 		<action name="get_book_outline" class="action.page.SingleItem" method="getBookOutline">
-			<result name="ok">/jsp/outline.jsp</result>
+			<result name="ok">/jsp/singlebook/outline.jsp</result>
 		</action>
 		<!-- 单本书籍，收藏   -->
 		<action name="add_to_like" class="action.page.SingleItem" method="addToLike">
@@ -121,12 +121,7 @@
 		<action name="generate_return_code" class="action.sidemenu.History" method="returnBookCode">
 		</action>
 		
-		<!-- 我的借阅   -->
-		<action name="show_myborrow" class="action.sidemenu.Borrow">
-			<result>/sidemenu/borrow.jsp</result>
-		</action>
-		
-		<!-- 已经借阅的时间  -->
+		<!-- 我的借阅,已经借阅的时间  -->
 		<action name="cal_pasttime" class="action.sidemenu.Borrow" method="getPastTime">
 		</action>
 		
@@ -206,7 +201,7 @@
 		<!-- 推荐系统-->
 		<!-- 进入摇一摇界面 -->
 		<action name="shake" class="recom.util.RecomUtil">
-			<result>/jsp/shake.jsp</result>
+			<result>/sidemenu/shake.jsp</result>
 		</action>
 		
 		<!-- 推荐方法 -->
