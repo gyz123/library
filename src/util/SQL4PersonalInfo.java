@@ -590,7 +590,7 @@ public class SQL4PersonalInfo {
 	
 	
 	// 管理员确认订单
-	public static void setManagerConfirm(String subscribenum){
+	public static void setBorrowConfirm(String subscribenum){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
@@ -672,5 +672,47 @@ public class SQL4PersonalInfo {
 		return list;
 	}
 	
+	
+	// 管理员确认还书
+	public static void setReturnConfirm(String weid,String bookno){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			String time = df.format(new Date());
+			String query = "update borrow set returntime = '" + time +
+							"' where weid = '" + weid + "' and bookno = '"+ bookno + "';";
+			s.executeUpdate(query);
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	// 监听归还状态
+	public static String listenReturn(String weid,String bookno){
+		String status = "N";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "select returntime from borrow where weid = '" 
+									+ weid + "' and bookno = '"+ bookno + "';";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {  
+            	if(ret.getString(1) != null){
+            		status = "Y";
+            	}
+            }
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return status;
+	}
 	
 }

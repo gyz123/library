@@ -433,7 +433,7 @@
         <ul class="menu-section-list">
 		  <li><a href="/library/shake.action?weid=${weid }">摇一摇</a></li>
 		  <li><a href="/library/start_scan.action?weid=${weid }">扫一扫</a></li>
-          <li><a href="#">我的设置</a></li>
+          <li><a href="/library/show_settings.action?weid=${weid }">个人设置</a></li>
         </ul>
       </section>
 
@@ -466,7 +466,7 @@
 		<div class="weui_search_bar">
 			<!--输入框-->
 			<input type="text" size="50" class="search-input" id="search"
-				onkeyup="getMoreContents()" placeholder='关键字' onblur="keywordBlur()"
+				onkeyup="getMoreContents()" placeholder='关键字/拼音' onblur="keywordBlur()"
 				onfocus="getMoreContents()">
 			<button class="weui_btn weui_btn_mini weui_btn_default"
 				id="searchaction" onclick="add();">

@@ -1,6 +1,7 @@
 package servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -10,7 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.dom4j.DocumentException;
 
+import action.sidemenu.Borrow;
+
 import po.AccessToken;
+import po.ReturnRemindMes;
 import util.CheckUtil;
 import util.MessageUtil;
 import util.WeixinUtil;
@@ -98,6 +102,17 @@ public class WeixinServlet extends HttpServlet {
 				message = MessageUtil.initText(toUserName, fromUserName, label);
 			}
 			
+			// 客服接口
+			ArrayList<ReturnRemindMes> needRemind =  Borrow.needRemind();
+			AccessToken access_token = WeixinUtil.getAccessToken();
+			for (ReturnRemindMes returnRemindMes : needRemind) {
+				String weid = returnRemindMes.getWeid();
+				String messages = returnRemindMes.getMessage();
+				//String messageXML =  MessageUtil.initText(weid, "", message);
+				String JSONMessage = MessageUtil.generateServiceMsg(weid, "text", messages);
+				int errcode = WeixinUtil.Cus_Service(access_token.getToken(), JSONMessage);
+				System.out.println(errcode);
+			}
 			
 			out.print(message);
 			
