@@ -121,6 +121,15 @@
 		<action name="generate_return_code" class="action.sidemenu.History" method="returnBookCode">
 		</action>
 		
+		<!-- 历史记录，监听扫码后是否归还 -->
+		<action name="listen_return_status" class="action.sidemenu.History" method="listen_return_Status">
+		</action>
+		
+		<!-- 还书成功跳转 -->
+	    <action name="return_success" class="action.sidemenu.History" method="returnSuccess">
+			<result name="OK">/jsp/tips/returnSuccess.jsp</result>
+		</action>
+		
 		<!-- 我的借阅,已经借阅的时间  -->
 		<action name="cal_pasttime" class="action.sidemenu.Borrow" method="getPastTime">
 		</action>
