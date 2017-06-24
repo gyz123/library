@@ -6,9 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
 
-import po.Book;
-import po.BookInShoppingcart;
-import util.SQL4PersonalInfo;
+import po.book.Book;
+import po.book.BookInShoppingcart;
+import util.sql.SQL4PersonalInfo;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;

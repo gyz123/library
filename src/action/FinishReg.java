@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 
-import util.SQLUtil;
 import util.VericodeUtil;
+import util.sql.SQLUtil;
 
 import com.opensymphony.xwork2.ActionSupport;
 

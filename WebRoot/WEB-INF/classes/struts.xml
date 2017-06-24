@@ -143,14 +143,14 @@
 		</action>
 		
 		<!-- 支付，显示支付界面   -->
-		<action name="show_pay" class="action.sidemenu.Pay">
+		<action name="show_pay" class="action.pay.Pay">
 			<result>/sidemenu/pay.jsp</result>
 		</action>
 		<!-- 支付，生成二维码 -->
-		<action name="generate_code" class="action.sidemenu.Pay" method="generateCode">
+		<action name="generate_code" class="action.pay.Pay" method="generateCode">
 		</action>
 		<!-- 支付，监听管理员是否确认   -->
-		<action name="listen_status" class="action.sidemenu.Pay" method="listenStatus">
+		<action name="listen_status" class="action.pay.Pay" method="listenStatus">
 		</action>
 		
 		<!-- 设置   -->
@@ -161,17 +161,17 @@
 		
 			
 		<!-- 微信支付 -->
-		<action name="post_param" class="pay.action.PayAction" method="postParam">
+		<action name="post_param" class="action.pay.PayAction" method="postParam">
 		</action>
 		
 		<!-- 异步处理  -->
-		<action name="pay_success" class="pay.action.PayAction" method="paySuccess">
+		<action name="pay_success" class="action.pay.PayAction" method="paySuccess">
 		</action>
 		
 		<!-- 支付成功   -->
-		<action name="set_order" class="pay.action.HandleOrder" method="success">
+		<action name="set_order" class="action.pay.HandleOrder" method="success">
 		</action>
-		<action name="success_Back" class="pay.action.PayAction" method="successBack">
+		<action name="success_Back" class="action.pay.PayAction" method="successBack">
 			<result name="ok">/jsp/main.jsp</result>
 		</action>
 		
@@ -209,12 +209,12 @@
 			
 		<!-- 推荐系统-->
 		<!-- 进入摇一摇界面 -->
-		<action name="shake" class="recom.util.RecomUtil">
+		<action name="shake" class="util.recommend.RecomUtil">
 			<result>/sidemenu/shake.jsp</result>
 		</action>
 		
 		<!-- 推荐方法 -->
-		<action name="recommend" class="recom.util.RecomUtil" method="recomOutput">
+		<action name="recommend" class="util.recommend.RecomUtil" method="recomOutput">
 		</action>
 		
 		<!-- 首字母搜索 -->
@@ -227,7 +227,7 @@
 		</action>
 		
 		<!-- WIFI页面   -->
-		<action name="show_wifi" class="action.WifiAction">
+		<action name="show_wifi" class="action.sidemenu.WifiAction">
 			<result>/sidemenu/wifi.jsp</result>
 		</action>
 		

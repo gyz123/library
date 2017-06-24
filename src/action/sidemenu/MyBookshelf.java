@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
 
-import po.BookInCategory;
-import util.SQL4PersonalInfo;
+import po.book.BookInCategory;
+import util.sql.SQL4PersonalInfo;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;

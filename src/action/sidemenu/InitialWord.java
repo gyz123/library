@@ -13,14 +13,14 @@ import net.sf.json.JSONArray;
 
 import org.apache.struts2.ServletActionContext;
 
-import util.SQL4PersonalInfo;
 import util.SearchFirstUtil;
+import util.sql.SQL4PersonalInfo;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
-import po.BookInCategory;
-import po.BorrowedBook;
+import po.book.BookInCategory;
+import po.book.BorrowedBook;
 
 public class InitialWord extends ActionSupport {
 
