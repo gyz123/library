@@ -7,9 +7,9 @@ import net.sf.json.JSONObject;
 
 import org.apache.struts2.ServletActionContext;
 
-import po.UserDetailInfo;
-import util.SQLUtil;
-import util.WeixinUtil;
+import po.user.UserDetailInfo;
+import util.sql.SQLUtil;
+import util.weixin.WeixinUtil;
 
 import com.opensymphony.xwork2.ActionSupport;
 

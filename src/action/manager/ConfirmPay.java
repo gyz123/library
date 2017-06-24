@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.ServletActionContext;
 
 import util.EncryptUtil;
-import util.SQL4PersonalInfo;
+import util.sql.SQL4PersonalInfo;
 
 import com.opensymphony.xwork2.ActionSupport;
 

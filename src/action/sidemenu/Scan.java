@@ -7,9 +7,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 
-import util.CheckUtil;
-import util.PastUtil;
-import util.WeixinUtil;
+import util.weixin.CheckUtil;
+import util.weixin.PastUtil;
+import util.weixin.WeixinUtil;
 
 import com.opensymphony.xwork2.ActionSupport;
 

@@ -15,11 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 
-import po.BorrowedBook;
-import po.UserDetailInfo;
+import po.book.BorrowedBook;
+import po.user.UserDetailInfo;
 
 import util.EncryptUtil;
-import util.SQL4PersonalInfo;
+import util.sql.SQL4PersonalInfo;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;

@@ -14,12 +14,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 
-import po.Book;
-import po.BookDetailInfo;
 import po.Comment;
-import recom.util.InterestUtil;
-import util.SQL4PersonalInfo;
-import util.SQLUtil;
+import po.book.Book;
+import po.book.BookDetailInfo;
+import util.recommend.InterestUtil;
+import util.sql.SQL4PersonalInfo;
+import util.sql.SQLUtil;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;

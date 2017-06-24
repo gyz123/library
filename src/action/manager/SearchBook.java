@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 
-import po.Book;
-import po.BookDetailInfo;
-import util.SQLUtil;
+import po.book.Book;
+import po.book.BookDetailInfo;
+import util.sql.SQLUtil;
 
 import com.opensymphony.xwork2.ActionSupport;
 

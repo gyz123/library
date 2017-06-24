@@ -13,11 +13,11 @@ import org.dom4j.DocumentException;
 
 import action.sidemenu.Borrow;
 
-import po.AccessToken;
-import po.ReturnRemindMes;
-import util.CheckUtil;
-import util.MessageUtil;
-import util.WeixinUtil;
+import po.message.ReturnRemindMes;
+import po.user.AccessToken;
+import util.weixin.CheckUtil;
+import util.weixin.MessageUtil;
+import util.weixin.WeixinUtil;
 
 public class WeixinServlet extends HttpServlet {
 

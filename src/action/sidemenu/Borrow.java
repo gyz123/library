@@ -12,12 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
 
-import po.BorrowedBook;
-import po.ReturnRemind;
-import po.ReturnRemindMes;
-import util.SQL4PersonalInfo;
-import util.SQLUtil;
-import util.WeixinUtil;
+import po.book.BorrowedBook;
+import po.message.ReturnRemind;
+import po.message.ReturnRemindMes;
+import util.sql.SQL4PersonalInfo;
+import util.sql.SQLUtil;
+import util.weixin.WeixinUtil;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;

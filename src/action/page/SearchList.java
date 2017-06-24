@@ -14,13 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 
-import pinyin.util.Chinese;
-import pinyin.util.ChineseUtil;
-import pinyin.util.KeywordUtil;
-import pinyin.util.PinyinUtils;
-import po.BookInCategory;
-import util.SQLUtil;
-import util.WeixinUtil;
+import po.book.BookInCategory;
+import util.pinyin.Chinese;
+import util.pinyin.ChineseUtil;
+import util.pinyin.KeywordUtil;
+import util.pinyin.PinyinUtils;
+import util.sql.SQLUtil;
+import util.weixin.WeixinUtil;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;

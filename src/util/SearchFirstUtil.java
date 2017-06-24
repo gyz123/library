@@ -9,8 +9,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import po.Book;
-import po.BookInCategory;
+import po.book.Book;
+import po.book.BookInCategory;
+import util.weixin.WeixinUtil;
 
 public class SearchFirstUtil {
 

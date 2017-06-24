@@ -11,13 +11,13 @@ import net.sf.json.JSONObject;
 
 import org.apache.struts2.ServletActionContext;
 
-import po.Book;
-import po.BookInCategory;
-import po.UserDetailInfo;
+import po.book.Book;
+import po.book.BookInCategory;
+import po.user.UserDetailInfo;
 
-import util.SQL4PersonalInfo;
-import util.SQLUtil;
-import util.WeixinUtil;
+import util.sql.SQL4PersonalInfo;
+import util.sql.SQLUtil;
+import util.weixin.WeixinUtil;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -129,7 +129,7 @@ public class Library_main extends ActionSupport{
        	}
        	// 计算机
        	else if(catName.equals("keji")){
-       		bookList = SQLUtil.querySingleCat("('计算机')", pageNum, target);
+       		bookList = SQLUtil.querySingleCat("('计算机','科技','互联网')", pageNum, target);
        		context.put("catid","keji");
        		context.put("cat", "科技");
        		context.put("booklist", bookList);

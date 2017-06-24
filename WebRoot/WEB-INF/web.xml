@@ -32,6 +32,6 @@
   
   <!-- 初始化项目时触发 -->
   <listener>  
-	  <listener-class>remind.RemindInit</listener-class>  
+	  <listener-class>util.remind.RemindInit</listener-class>  
 	</listener>  
 </web-app>
