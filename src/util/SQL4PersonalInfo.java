@@ -694,7 +694,7 @@ public class SQL4PersonalInfo {
 	
 	// ¼àÌý¹é»¹×´Ì¬
 	public static String listenReturn(String weid,String bookno){
-		String status = "N";
+		String status = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(

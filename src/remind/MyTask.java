@@ -19,8 +19,9 @@ public class MyTask extends TimerTask{
 			String weid = returnRemindMes.getWeid();
 			String message = returnRemindMes.getMessage();
 			//String messageXML =  MessageUtil.initText(weid, "", message);
-			String JSONMessage = MessageUtil.generateServiceMsg(weid, "text", message);
+			String JSONMessage = MessageUtil.generateServiceMsg("otE_a1OD_NOC7jvIz_vIe5heSIAA", "text", message);
 			int errcode = WeixinUtil.Cus_Service(access_token.getToken(), JSONMessage);
+			System.out.println("”√ªßweid£∫" + returnRemindMes.getWeid());
 			System.out.println(errcode);
 		}
 	}

@@ -15,6 +15,9 @@
 <link rel="stylesheet" type="text/css" href="css/weuix.min.css">
 
   <script src="js/jquery-3.1.1.min.js"></script>
+  <script>
+		var $j = jQuery.noConflict(); //自定义一个比较短的快捷方式
+	</script>
   <!-- 引入 ECharts 文件 -->
   <script src="js/echarts.js" charset="utf-8"></script>
   <!-- 引入 shine 主题 -->
@@ -77,16 +80,16 @@
 
         myChart1.showLoading();
 
-        $.getJSON("category.json", function(data) {
+        $j.getJSON("category.json", function(data) {
           myChart1.hideLoading();
         // 填入数据
         myChart1.setOption({
           title:{
             text: '阅读分布',
-            left: '40%',
+            left: '25%',
                 textStyle:{//标题样式
                   fontSize: 30,
-                  color : '#408829'
+                  color : '#2FC9DA'
                 }
               },
               graphic: {
@@ -153,7 +156,7 @@
 
         myChart2.showLoading();
 
-        $.getJSON("year.json", function(data) {
+        $j.getJSON("year.json", function(data) {
           myChart2.hideLoading();
             // 填入数据
             myChart2.setOption({
@@ -171,7 +174,7 @@
               left: '20%',
                 textStyle:{//标题样式
                   fontSize: 30,
-                  color : '#408829'
+                  color : '#2FC9DA'
                 }
               },
               grid: {
@@ -192,7 +195,7 @@
                axisLabel: {
                 textStyle:{//坐标轴样式
                   fontSize: 12,
-                  color : '#408829',
+                  color : '#90979c',
                   fontWeight : 'bold'
                 }
               }
@@ -204,7 +207,7 @@
              axisLabel: {
                 textStyle:{//坐标轴样式
                   fontSize: 15,
-                  color : '#408829',
+                  color : '#90979c',
                   fontWeight : 'bold'
                 }
               }
@@ -255,16 +258,16 @@
 
         myChart3.showLoading();
 
-        $.getJSON("month.json", function(data) {
+        $j.getJSON("month.json", function(data) {
           myChart3.hideLoading();
             var year = data.year;//"2015";
             var option = {
                // backgroundColor: "#ffffff",//#344b58
                "title": {
-                "text": year + "年每月借书统计",
+                "text": year + "年借书统计",
                 x: "4%",
                 textStyle: {
-                  color: '#408829',
+                  color: '#2FC9DA',
                   fontSize: '30'
                 },
 
@@ -460,7 +463,8 @@
 			<tr>
 				<th><span>书名</span></th>
 				<th>借阅日期</th>
-				<th>归还日期</th>
+				<th>是否续借</th>
+				<th>是否归还</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -468,10 +472,11 @@
 				<tr>
 					<td>${nowlist.bookname }</td>
 					<td>${nowlist.borrowtime }</td>
-					<td >
-						<a href="/library/continue_reading.action?bookno=${nowlist.bookno }">续借</a> 
-						| 
-						<a href="/library/continue_reading.action?bookno=${nowlist.bookno }">归还</a>
+					<td class="continue" style="color:#90979c;" value="${nowlist.bookno }">
+						续借
+					</td>
+					<td class="return" style="color:#2FC9DA;" value="${nowlist.bookno }">
+						归还
 					</td>
 				</tr>
 			</c:forEach>
@@ -479,12 +484,125 @@
 				<tr>
 					<td>${booklist.bookname }</td>
 					<td>${booklist.borrowtime }</td>
+					<td>已归还</td>
 					<td>${booklist.returntime }</td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
 	
-
+	<!-- 弹框图 -->
+	<div class="weui_msg_img hide" id='pop_up'>
+		<div class="weui_msg_com">
+			<div onclick="$('#pop_up').fadeOut();window.clearInterval(stop);" class="weui_msg_close">
+				<i class="icon icon-95"></i>
+			</div>
+			<div class="weui_msg_src" id="myqrcodeimg" style="padding:20px;">
+			</div>
+			<p class="f-blue f15">请出示此二维码给管理员</p>
+		</div>
+	</div>   
+	
+	<script src="js/zepto.min.js"></script>
+	<script src="js/qrcode.js"></script>
+	<script>
+		var QRCodetxt ="";//二维码内容
+		var stop;
+		
+		//continue_reading
+		$j(document).ready((function(){
+			$j('.continue').click(function(){
+				console.log("continue方法触发了");
+				var bookno = $(this).attr("value");
+				console.log(bookno);
+				
+				//异步请求生成订单
+				$j.ajax({    
+		            type:'post',        
+		            url:'/library/continue_reading.action',    //servlet名
+		            data:"bookno=" + bookno,
+		            cache:false,    
+		            //dataType:'json',
+		            success:function(data){
+		        		alert("续借成功");
+		        		location.reload();//刷新页面
+ 					},
+ 					error:function(data){
+ 						alert("续借失败");
+ 					}
+		        });
+		        
+			});
+			
+			$j('.return').click(function(){
+				console.log("return方法触发了");
+				var bookno = $(this).attr("value");
+				console.log(bookno);
+				
+				//异步请求生成还书二维码
+				$j.ajax({    
+		            type:'post',        
+		            url:'/library/generate_return_code.action',    //servlet名
+		            data:"bookno=" + bookno,
+		            cache:false,    
+		            //dataType:'json',
+		            success:function(data){
+		        		
+		        		QRCodetxt = data;
+		        		console.log(QRCodetxt);
+		        		//jQuery.noConflict(); //将变量$的控制权转让
+		        		//弹窗显示二维码
+		        		$(function(){
+							$('#pop_up').fadeIn();
+							$("#myqrcodeimg").empty().qrcode({
+								render:"image",
+								ecLevel:"L",
+								size:300,
+								background:"#fff",
+								fill:"#000",
+								text:QRCodetxt
+							});
+			            });
+ 						stop =  setInterval(monitor,3000);//返回值为停止定时器的参数
+ 					}
+		        });
+				
+			});
+		})    
+	);
+		
+	</script>
+	
+	<script>
+		//定时触发监听器
+		// ************此处有问题，不应该用session（数据时效性滞后）
+		var count = 1;
+		function monitor(){
+			$j.ajax({    
+            type:'post',        
+            url:'/library/listen_return_status.action',    //servlet名
+            data:"weid=" + "<%=request.getParameter("weid")%>",   //参数 
+            cache:false,    
+           // dataType:'json',    
+            success:function(data){ 
+            	//var obj = eval ("(" + data + ")");
+            	console.log("回调成功");
+            	if(count++ >= 20){
+            		count = 1;
+            		alert("二维码已经过期，请重新生成");
+            		window.clearInterval(stop);//停止触发
+            	}
+            	if(data === "Y"){
+            		window.clearInterval(stop);//停止触发
+            		location.href = "/library/return_success.action";//成功跳转确认订单
+            	}
+        		console.log(count);
+            },
+            error:function(){
+            	console.log("回调失败");
+            }    
+        }); 
+		}
+	</script>
 </body>
 </html>

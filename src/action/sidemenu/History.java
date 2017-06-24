@@ -153,7 +153,7 @@ public class History extends ActionSupport{
 		SQL4PersonalInfo.setBorrowDate(weid, bookno);
 		
 		PrintWriter pw = response.getWriter();
-		pw.write("success");
+		pw.write("续借成功");
 		pw.flush();
 		pw.close();
 	}
@@ -183,7 +183,7 @@ public class History extends ActionSupport{
 	}
 	
 	// 监听归还状态
-	public void listenStatus() throws Exception{
+	public void listen_return_Status() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		request.setCharacterEncoding("utf-8");
 		String weid = request.getParameter("weid");
@@ -205,5 +205,8 @@ public class History extends ActionSupport{
 		pw.close();
 	}
 	
+	public String returnSuccess(){
+		return "OK";
+	}
 	
 }
