@@ -202,15 +202,15 @@ public class Borrow extends ActionSupport{
 			String weid;
 			int lefttime;
 			String message;
-			if(time < 17){
+			if(time < 23){
 				//return null;
-			}else if(time <21 && time >= 17){
+			}else if(time <30 && time >= 23){
 				ReturnRemindMes one = new ReturnRemindMes();
 				bookname = returnRemind.getBookname();
 				weid = returnRemind.getWeid();
 				lefttime = 30 - time;
 				message = "亲爱的用户您好，您在借的《" + bookname + "》将在" + lefttime + "日后超期";
-				
+				System.out.println(returnRemind.getBorrowtime());
 				one.setWeid(weid);
 				one.setMessage(message);
 				needRemind.add(one);
