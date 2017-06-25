@@ -148,10 +148,10 @@ public class MessageUtil {
 		NewsMessage newsMessage = new NewsMessage();
 		
 		News news = new News();
-		news.setTitle("IMOOC介绍");
-		news.setDescription("这是一个学习交流的地方");
-		news.setPicUrl("http://www.iotesta.cn/Weixin/image/picture.jpg");  
-		news.setUrl("www.imooc.com");
+		news.setTitle("每日一发--" + "好书推荐");
+		news.setDescription("芒果街上的小屋");
+		news.setPicUrl("http://apis.juhe.cn/goodbook/img/06c4cdda88badf94acbbd5df889edf86.jpg");  
+		news.setUrl("http://www.iotesta.com.cn/library/show_singleItem.action?bookno=647");
 		
 		newsList.add(news);
 		
@@ -200,7 +200,13 @@ public class MessageUtil {
 		return message;
 	}
 	
-	
+	/**
+	 * 客服接口发送文本消息
+	 * @param openid 用户id
+	 * @param type 消息类型
+	 * @param content 消息内容
+	 * @return
+	 */
 	public static String generateServiceMsg(String openid,String type,String content){
 		StringBuffer sb = new StringBuffer();
 		sb.append("{");
@@ -213,5 +219,30 @@ public class MessageUtil {
 		sb.append("}");
 		return sb.toString();
 	}
-	
+
+	/**
+	 * 客服接口发送图文消息
+	 * @param openid 用户id
+	 * @param type 消息类型
+	 * @param news 图文消息实体
+	 * @return
+	 */
+	public static String generateServiceImgTxtMsg(String openid,String type,News news){
+		StringBuffer sb = new StringBuffer();
+		sb.append("{");
+		sb.append("\"touser\":\"").append(openid).append("\",");
+		sb.append("\"msgtype\":\"").append(type).append("\",");
+		sb.append("\"news\":");
+		sb.append("{");
+		sb.append("\"articles\":[");
+		sb.append("{");
+		sb.append("\"title\":\"").append(news.getTitle()).append("\",");
+		sb.append("\"description\":\"").append(news.getDescription()).append("\",");
+		sb.append("\"url\":\"").append(news.getUrl()).append("\",");
+		sb.append("\"picurl\":\"").append(news.getPicUrl()).append("\"");
+		sb.append("}]");
+		sb.append("}");
+		sb.append("}");
+		return sb.toString();
+	}
 }

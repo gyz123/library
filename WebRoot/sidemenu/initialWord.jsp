@@ -30,15 +30,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <body>
 	<header>图书索引
-		 <div class="weui_search_bar" style="position:absolute;top:11%;z-index:1;margin-left:50%;background-color:#2FC9DA;"> 
+		 <!-- <div class="weui_search_bar" style="position:absolute;top:11%;z-index:1;margin-left:50%;background-color:#2FC9DA;">--> 
 				<!--输入框-->
-				<input type="text" size="50" class="search-input" id="search"
+				<!-- <input type="text" size="50" class="search-input" id="search"
 					 placeholder='输入ISBN' style="z-index:50">
 				<button class="weui_btn weui_btn_mini weui_btn_default"
 					id="searchaction" onclick="searchISBN();" style="z-index:50">
 					<i class="icon icon-4"></i>
 				</button>
-			</div>
+			</div>  -->
 	</header>
 	
 	<div id="item-container">
