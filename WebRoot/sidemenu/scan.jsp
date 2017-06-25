@@ -23,9 +23,10 @@
   
 <body>
 	<div class="wxapi_container">
-		<div class="lbox_close wxapi_form">
-			<h3 id="menu-scan">微信扫一扫</h3>
-			<button class="btn btn_primary" id="scanQRCode0">scanQRCode(微信处理结果)</button>
+		<div class="lbox_close wxapi_form" style="margin-top:0px">
+			<div>
+				<span class="f18">微信扫一扫</span>
+			</div>
 			<button class="btn btn_primary" id="scanQRCode1">scanQRCode(直接返回结果)</button>
 		</div>
 	</div>
@@ -41,7 +42,6 @@
       nonceStr: '<%=request.getAttribute("nonceStr")%>',
       signature: '<%=request.getAttribute("signature")%>',
       jsApiList: [
-        'checkJsApi',
         'scanQRCode',
       ]
   });
@@ -54,12 +54,15 @@
 		};
 		
 		// 需要处理
+		var QRCodetxt ="";
 		document.querySelector('#scanQRCode1').onclick = function() {
 			wx.scanQRCode({
 				needResult : 1,
 				desc : 'scanQRCode desc',
 				success : function(res) {
-					alert(JSON.stringify(res));
+					// alert(JSON.stringify(res));
+					QRCodetxt = JSON.stringify(res);
+					location.href = "/library/verify_code.action?QRCodetxt=" + QRCodetxt;
 				}
 			});
 		};

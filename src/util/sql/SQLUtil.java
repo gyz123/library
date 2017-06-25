@@ -393,6 +393,10 @@ public class SQLUtil {
 						"from book,pinyin " +
 						"where book.bookno = pinyin.id and pinyin.pinyin like '%" + keyword +"%' limit "
 						+ (5*((Integer.parseInt(pageNum))-1)) + ",5;";
+			}else if(type.equals("isbn")){
+				query = "select bookno,bookname,bookimg,publisher,author,leftnum,readingnum,score from book " +
+						"where isbn = '" + keyword +"' limit "
+						+ (5*((Integer.parseInt(pageNum))-1)) + ",5;";
 			}
 			
 			System.out.println(query);

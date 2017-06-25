@@ -97,11 +97,14 @@ public class SearchList extends ActionSupport{
         if(keyword == null){
         	keyword = "¿˙ ∑";
         }
+        String numRegex = "[0-9]{8,}";
         
         String flag = "pinyin";
         //keyword = KeywordUtil.keywordToPinyin(keyword);//∆¥“Ù∑÷¥ 
         if(ChineseUtil.isChinese(keyword)){
         	flag = "chinese";
+        }if(keyword.matches(numRegex)){
+        	flag = "isbn";
         }
         
         ArrayList<BookInCategory> searchList = SQLUtil.querySingleBookFromSearch(flag,keyword, pageNum);

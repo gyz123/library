@@ -265,7 +265,7 @@
 	<c:if var="flag" test="${book.leftnum > 0 }" scope="page">
 	<section class="weui-menu" style="">
         <div class="weui-menu-inner" >
-            <a href="/library/add_to_reserve.action?bookno=${book.bookno }&weid=${weid }" 
+            <a href="/library/add_to_reserve.action?bookno=${book.bookno }&weid=${weid }&orderFlag=yes" 
             			style="display:block;padding-top:12px" id="reserveSuccess">
             	我要预定
             </a>
@@ -282,7 +282,7 @@
 	<c:if var="flag" test="${book.leftnum == 0 }" scope="page">
 	<section class="weui-menu" style="">
         <div class="weui-menu-inner" >
-            <a href="/library/add_to_reserve.action?bookno=${book.bookno }&weid=${weid }" 
+            <a href="/library/add_to_reserve.action?bookno=${book.bookno }&weid=${weid }&orderFlag=no" 
             			style="display:block;padding-top:12px" id="reserveSuccess">
             	我要预定
             </a>

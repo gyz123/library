@@ -1,6 +1,5 @@
 package action.page;
 
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,6 +16,7 @@ import org.apache.struts2.ServletActionContext;
 import po.Comment;
 import po.book.Book;
 import po.book.BookDetailInfo;
+import po.user.UserDetailInfo;
 import util.recommend.InterestUtil;
 import util.sql.SQL4PersonalInfo;
 import util.sql.SQLUtil;
@@ -53,18 +53,30 @@ public class SingleItem extends ActionSupport{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		request.setCharacterEncoding("utf-8");
 		String weid = request.getParameter("weid");
-		System.out.println(weid);
 		String bookno = request.getParameter("bookno");
+		String orderFlag = request.getParameter("orderFlag");
 		ActionContext context = ActionContext.getContext();
-        context.put("weid", weid);
-        if(weid.isEmpty() || weid.equals("null")){
-			return "reg";	
+		context.put("weid", weid);
+		context.put("bookno", bookno);
+		if(orderFlag.equals("yes")){
+			UserDetailInfo user = SQLUtil.querySingleUser("weid", weid);
+			context.put("user", user);
+			return "order";
+		}else{
+			if(weid.isEmpty() || weid.equals("null")){
+				return "reg";	
+			}
+			Boolean flag = SQL4PersonalInfo.addToReserve(weid, bookno);
+			if(flag){
+				return "ok";
+			}
+			return "fail";
 		}
-		Boolean flag = SQL4PersonalInfo.addToReserve(weid, bookno);
-		if(flag){
-			return "ok";
-		}
-		return "fail";
+	}
+	
+	// 预定成功跳转
+	public String setOrderSuccess(){
+		return "ok";
 	}
 	
 	

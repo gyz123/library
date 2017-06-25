@@ -2,6 +2,7 @@ package action.page;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,8 @@ import po.user.UserDetailInfo;
 
 import util.sql.SQL4PersonalInfo;
 import util.sql.SQLUtil;
+import util.weixin.CheckUtil;
+import util.weixin.PastUtil;
 import util.weixin.WeixinUtil;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -198,6 +201,24 @@ public class Library_main extends ActionSupport{
 			context.put("flag", false);	// 说明用户还没有注册
 			System.out.println("未注册:"  + " " + weid);
 		}
+		
+		// ************************
+		Map<String,String> map = PastUtil.getParam(WeixinUtil.APPID, WeixinUtil.APPSECRET, request);		
+		String noncestr = map.get("nonceStr");
+		String jsapi_ticket = map.get("jsapi_ticket");
+		String timestamp = map.get("timestamp");
+		String url = map.get("url");
+		System.out.println(map.toString());
+		// 生成签名
+		String signature = CheckUtil.generateSignature(noncestr, jsapi_ticket, timestamp, url);
+		
+		// 设置参数
+		request.setAttribute("appId", WeixinUtil.APPID);
+		request.setAttribute("timeStamp", timestamp);
+		request.setAttribute("nonceStr", noncestr);
+		request.setAttribute("signature", signature);
+		request.setAttribute("url", url);
+		
 		
 		return SUCCESS;
 	}

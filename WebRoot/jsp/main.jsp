@@ -373,6 +373,103 @@
 		"&weid=" + "<%=request.getParameter("weid")%>";
 	}
 </script>
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/icon.css">
+<script type="text/javascript">
+    wx.config({
+    	debug: false,
+    	appId: '<%=request.getAttribute("appId")%>',
+    	timestamp: '<%=request.getAttribute("timeStamp")%>',
+    	nonceStr: '<%=request.getAttribute("nonceStr")%>',
+    	signature: '<%=request.getAttribute("signature")%>',
+    	jsApiList: [
+    	'checkJsApi',
+    	'translateVoice',
+    	'startRecord',
+    	'stopRecord',
+    	'onRecordEnd',
+    	'scanQRCode',
+    	]
+    });
+</script>
+
+<script type="text/javascript">
+	//步骤四：通过ready接口处理成功验证
+	wx.ready(function() {
+		// 3 智能接口
+		var voice = {
+			localId : '',
+			serverId : ''
+		};
+
+		$('#talk_btn').on('touchstart', function(event){
+			console.log("手指按下了");
+			event.preventDefault();
+			START = new Date().getTime();
+
+			recordTimer = setTimeout(function(){
+				wx.startRecord({
+					success: function(){
+						localStorage.rainAllowRecord = 'true';
+					},
+					cancel: function () {
+						alert('用户拒绝授权录音');
+					}
+				});
+			},300);
+		});
+
+		$('#talk_btn').on('touchend', function(event){
+			console.log("手指松开了");
+			event.preventDefault();
+			END = new Date().getTime();
+
+			if((END - START) < 300){
+				END = 0;
+				START = 0;
+        	//小于300ms，不录音
+        	clearTimeout(recordTimer);
+        }else{
+        	wx.stopRecord({
+        		success: function (res) {
+        			voice.localId = res.localId;
+        			if (voice.localId == '') {
+        				alert('请先使用 startRecord 接口录制一段声音');
+        				return;
+        			}
+        			wx.translateVoice({
+        				localId : voice.localId,
+        				complete : function(res) {
+        					if (res.hasOwnProperty('translateResult')) {
+        						//alert('识别结果：' + res.translateResult);
+        						var str = res.translateResult;
+        						
+        						$("#search").attr("value", str.substring(0,str.length-1));
+        					} else {
+        						alert('无法识别');
+        					}
+        				}
+        			});
+        			//uploadVoice();
+        		},
+        		fail: function (res) {
+        			alert(JSON.stringify(res));
+        		}
+        	});
+        }
+       // alert("手指松开了");
+    });
+
+});
+
+	wx.error(function(res) {
+		alert(res.errMsg);
+	});
+</script>
+
+
 </head>
 
 <body>
@@ -468,6 +565,10 @@
 			<input type="text" size="50" class="search-input" id="search"
 				onkeyup="getMoreContents()" placeholder='关键字/拼音' onblur="keywordBlur()"
 				onfocus="getMoreContents()">
+			<button id="talk_btn" ontouchstart = "return false;" 
+					class="weui_btn weui_btn_mini weui_btn_default">
+				<i class="icon icon-44"></i>
+			</button>
 			<button class="weui_btn weui_btn_mini weui_btn_default"
 				id="searchaction" onclick="add();">
 				<i class="icon icon-4"></i>

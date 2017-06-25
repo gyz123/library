@@ -77,6 +77,11 @@
 			<result name="ok">/jsp/tips/reserve_success.jsp</result>
 			<result name="fail">/jsp/tips/reserve_fail.jsp</result>
 			<result name="reg">/jsp/tips/hintReg.jsp</result>
+			<result name="order">/jsp/complete_order.jsp</result>
+		</action>
+		<!-- 单本书籍，预定成功  -->
+		<action name="order_success" class="action.page.SingleItem" method="setOrderSuccess">
+			<result name="ok">/jsp/tips/setOrder_success.jsp</result>
 		</action>
 		<!-- 单本书籍，查看书评   -->
 		<action name="get_book_comments" class="action.page.SingleItem" method="getBookComments">
@@ -175,9 +180,12 @@
 			<result name="ok">/jsp/main.jsp</result>
 		</action>
 		
-		<!-- 扫一扫 -->
+		<!-- 扫一扫，显示  -->
 		<action name="start_scan" class="action.sidemenu.Scan">
 			<result>/sidemenu/scan.jsp</result>
+		</action>
+		<!-- 扫一扫，识别二维码  -->
+		<action name="verify_code" class="action.sidemenu.Scan" method="handleCodeScan">
 		</action>
 		
 		

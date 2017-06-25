@@ -16,6 +16,22 @@ import com.opensymphony.xwork2.ActionSupport;
 public class Scan extends ActionSupport{
 	private static final long serialVersionUID=1L;
 	
+	// 识别二维码
+	public void handleCodeScan() throws Exception{
+		System.out.println("执行了Scan的handleCodeScan方法");
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String bookno = decodeString(request.getParameter("QRCodetxt"));
+		String weid = request.getSession(false).getAttribute("weid").toString();
+		HttpServletResponse response = ServletActionContext.getResponse();
+        response.setCharacterEncoding("utf-8");
+		String url = response.encodeURL("/library/add_to_shoppingcart.action?weid=" + weid + "&bookno=" + bookno);  
+		response.sendRedirect(url);
+		return ;
+	}
+	
+	
+	// 显示扫一扫
 	@Override
 	public String execute() throws Exception {
 		HttpServletRequest req = ServletActionContext.getRequest();
@@ -42,4 +58,15 @@ public class Scan extends ActionSupport{
 		return SUCCESS;
 	}
 
+	//{"resultStr":"http://qm.qq.com/cgi-bin/qm/qr?k=9GIwDKDm9sMEf_dNiQokQKdhP5fSYY6s",
+	//"errMsg":"scanQRCode:ok"}
+	private String decodeString(String message){
+		String[] datas = message.split(",");
+		String[] temp = datas[0].split("\":\"");
+		StringBuffer sb = new StringBuffer(temp[1]);
+		sb.deleteCharAt(sb.length()-1);
+		System.out.println(sb.toString());
+		return sb.toString();
+	}
+	
 }
