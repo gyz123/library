@@ -377,6 +377,9 @@
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
 <link rel="stylesheet" type="text/css" href="css/icon.css">
+<script>
+	var $j = jQuery.noConflict(); //自定义一个比较短的快捷方式
+</script>
 <script type="text/javascript">
     wx.config({
     	debug: false,
@@ -404,7 +407,7 @@
 			serverId : ''
 		};
 
-		$('#talk_btn').on('touchstart', function(event){
+		$j('#talk_btn').on('touchstart', function(event){
 			console.log("手指按下了");
 			event.preventDefault();
 			START = new Date().getTime();
@@ -421,7 +424,7 @@
 			},300);
 		});
 
-		$('#talk_btn').on('touchend', function(event){
+		$j('#talk_btn').on('touchend', function(event){
 			console.log("手指松开了");
 			event.preventDefault();
 			END = new Date().getTime();
@@ -446,7 +449,7 @@
         						//alert('识别结果：' + res.translateResult);
         						var str = res.translateResult;
         						
-        						$("#search").attr("value", str.substring(0,str.length-1));
+        						$j("#search").attr("value", str.substring(0,str.length-1));
         					} else {
         						alert('无法识别');
         					}
@@ -562,15 +565,15 @@
 	<div id="mocha">
 		<div class="weui_search_bar">
 			<!--输入框-->
-			<input type="text" size="50" class="search-input" id="search"
+			<input type="text" size="50" class="search-input " id="search" 
 				onkeyup="getMoreContents()" placeholder='关键字/拼音' onblur="keywordBlur()"
 				onfocus="getMoreContents()">
-			<button id="talk_btn" ontouchstart = "return false;" 
-					class="weui_btn weui_btn_mini weui_btn_default">
+			<button class="weui_btn weui_btn_mini weui_btn_default "
+					id="talk_btn" ontouchstart = "return false;" style="height:32px">
 				<i class="icon icon-44"></i>
 			</button>
 			<button class="weui_btn weui_btn_mini weui_btn_default"
-				id="searchaction" onclick="add();">
+				id="searchaction" onclick="add();" style="margin-top:0px">
 				<i class="icon icon-4"></i>
 			</button>
 

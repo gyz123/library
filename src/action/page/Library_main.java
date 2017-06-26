@@ -159,6 +159,23 @@ public class Library_main extends ActionSupport{
 			System.out.println("未注册:"  + " " + weid);
 		}
 		
+		// ************************
+		Map<String,String> map = PastUtil.getParam(WeixinUtil.APPID, WeixinUtil.APPSECRET, request);		
+		String noncestr = map.get("nonceStr");
+		String jsapi_ticket = map.get("jsapi_ticket");
+		String timestamp = map.get("timestamp");
+		String url = map.get("url");
+		System.out.println(map.toString());
+		// 生成签名
+		String signature = CheckUtil.generateSignature(noncestr, jsapi_ticket, timestamp, url);
+		
+		// 设置参数
+		request.setAttribute("appId", WeixinUtil.APPID);
+		request.setAttribute("timeStamp", timestamp);
+		request.setAttribute("nonceStr", noncestr);
+		request.setAttribute("signature", signature);
+		request.setAttribute("url", url);
+		
 		return "ok";
 	}
 	
