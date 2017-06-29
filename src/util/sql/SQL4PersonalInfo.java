@@ -151,7 +151,8 @@ public class SQL4PersonalInfo {
 			Statement s = con.createStatement();
 			
 			String query = "select bookno,bookname,borrowtime,returntime from borrow " +
-								"where returntime IS NOT NULL and weid = '" + weid + "';"; 
+								"where returntime IS NOT NULL and weid = '" + weid + "'" +
+								" order by borrowtime desc;"; 
 			ResultSet ret = s.executeQuery(query);
 			// 将搜索到的9本书放入ArrayList中
 			while (ret.next()) {  
@@ -452,7 +453,8 @@ public class SQL4PersonalInfo {
 			Statement s = con.createStatement();
 			
 			String query = "select bookno,bookname,borrowtime from borrow where weid = '" + weid + 
-							"' and returntime is null;"; 
+							"' and returntime is null " +
+							"order by borrowtime desc;"; 
 			ResultSet ret = s.executeQuery(query);
 			// 将搜索到的9本书放入ArrayList中
 			while (ret.next()) {  

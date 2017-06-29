@@ -27,12 +27,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body ontouchstart class="page-bg">
     <div class="page-hd">
 	    <h1 class="page-hd-title">
-	      摇一摇
+	      摇一摇，随机推荐好书
 	    </h1>
-    	<p class="page-hd-desc">摇一摇效果</p>
+    	<p class="page-hd-desc">摇动你的手机吧~</p>
   	</div>
   <audio  id="musicBox"  src="http://weixin.yoby123.cn/weui/c/v4.mp3"></audio>
-  <img alt="摇一摇" src="images/1.jpg" style="height:100px;width:100px;" id="shakeImg">
+  <img alt="摇一摇" src="images/2.gif" style="height:320px;width:80%;margin-left:10%" id="shakeImg">
   </body>
 </html>
 <script>

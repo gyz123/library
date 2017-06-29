@@ -13,6 +13,7 @@ import net.sf.json.JSONObject;
 import org.apache.struts2.ServletActionContext;
 
 import po.book.Book;
+import po.book.BookDetailInfo;
 import po.book.BookInCategory;
 import po.user.UserDetailInfo;
 
@@ -145,6 +146,9 @@ public class Library_main extends ActionSupport{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		request.setCharacterEncoding("utf-8");
 		String weid = request.getParameter("weid");
+		if(weid == null || weid.isEmpty()){
+			weid = request.getSession(false).getAttribute("weid").toString();
+		}
 		ActionContext context = ActionContext.getContext();
 		context.put("weid", weid);
 		
@@ -220,24 +224,44 @@ public class Library_main extends ActionSupport{
 		}
 		
 		// ************************
-		Map<String,String> map = PastUtil.getParam(WeixinUtil.APPID, WeixinUtil.APPSECRET, request);		
-		String noncestr = map.get("nonceStr");
-		String jsapi_ticket = map.get("jsapi_ticket");
-		String timestamp = map.get("timestamp");
-		String url = map.get("url");
-		System.out.println(map.toString());
-		// 生成签名
-		String signature = CheckUtil.generateSignature(noncestr, jsapi_ticket, timestamp, url);
-		
-		// 设置参数
-		request.setAttribute("appId", WeixinUtil.APPID);
-		request.setAttribute("timeStamp", timestamp);
-		request.setAttribute("nonceStr", noncestr);
-		request.setAttribute("signature", signature);
-		request.setAttribute("url", url);
-		
+//		Map<String,String> map = PastUtil.getParam(WeixinUtil.APPID, WeixinUtil.APPSECRET, request);		
+//		String noncestr = map.get("nonceStr");
+//		String jsapi_ticket = map.get("jsapi_ticket");
+//		String timestamp = map.get("timestamp");
+//		String url = map.get("url");
+//		System.out.println(map.toString());
+//		// 生成签名
+//		String signature = CheckUtil.generateSignature(noncestr, jsapi_ticket, timestamp, url);
+//		
+//		// 设置参数
+//		request.setAttribute("appId", WeixinUtil.APPID);
+//		request.setAttribute("timeStamp", timestamp);
+//		request.setAttribute("nonceStr", noncestr);
+//		request.setAttribute("signature", signature);
+//		request.setAttribute("url", url);
+//		
 		
 		return SUCCESS;
 	}
+	
+	
+	public String enterAnno() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
+        
+        ArrayList<BookDetailInfo> bookList = new ArrayList<BookDetailInfo>();
+        BookDetailInfo book = SQLUtil.querySingleBookFromCat("2");
+        bookList.add(book);
+        book = SQLUtil.querySingleBookFromCat("142");
+        bookList.add(book);
+        book = SQLUtil.querySingleBookFromCat("184");
+        bookList.add(book);
+        ActionContext context = ActionContext.getContext();
+        context.put("booklist", bookList);
+		return "ok";
+	}
+	
 
 }

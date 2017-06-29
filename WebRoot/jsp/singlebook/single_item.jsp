@@ -195,6 +195,18 @@
 
 	<div class="weui_cells weui_cells_access" style="height:7%">
 		<a class="weui_cell " style="height:24px;margin-top:8px" 
+				href="/library/get_book_xu.action?weid=${weid }&bookno=${book.bookno}" >
+			<div class="weui_cell_bd weui_cell_primary">
+				<span class="f16" style="margin-left:8px">序言</span>
+			</div>
+			<div class="weui_cell_ft">
+				<span class="f16 f-gray">点此查看</span>
+			</div> 
+		</a>
+	</div>
+
+	<div class="weui_cells weui_cells_access" style="height:7%;margin-top:-1px">
+		<a class="weui_cell " style="height:24px;margin-top:8px" 
 				href="/library/get_book_outline.action?weid=${weid }&bookno=${book.bookno}" >
 			<div class="weui_cell_bd weui_cell_primary">
 				<span class="f16" style="margin-left:8px">目录</span>
@@ -273,7 +285,7 @@
         <div class="weui-menu-inner" >
             <a href="/library/add_to_shoppingcart.action?bookno=${book.bookno }&weid=${weid }" 
             			style="display:block;padding-top:12px" id="addSuccess">
-            	加入购物车
+            	加入待借清单
             </a>
         </div>
     </section>

@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width,initial-scale=1,user-scalable=0">
-<title>借阅历史</title>
+<title>我的借阅</title>
 
 <link rel="stylesheet" href="css/weui.css" />
 <link rel="stylesheet" href="css/weui2.css" />
@@ -590,11 +590,11 @@
             	if(count++ >= 20){
             		count = 1;
             		alert("二维码已经过期，请重新生成");
-            		window.clearInterval(stop);//停止触发
+            		window.clearInterval(stop); //停止触发
             	}
-            	if(data === "Y"){
-            		window.clearInterval(stop);//停止触发
-            		location.href = "/library/return_success.action";//成功跳转确认订单
+            	if(count === 5){
+            		window.clearInterval(stop); //停止触发
+            		location.href = "/library/return_success.action"; //成功跳转确认订单
             	}
         		console.log(count);
             },

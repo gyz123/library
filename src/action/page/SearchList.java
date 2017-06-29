@@ -103,7 +103,8 @@ public class SearchList extends ActionSupport{
         //keyword = KeywordUtil.keywordToPinyin(keyword);//∆¥“Ù∑÷¥ 
         if(ChineseUtil.isChinese(keyword)){
         	flag = "chinese";
-        }if(keyword.matches(numRegex)){
+        }
+        if(keyword.matches(numRegex)){
         	flag = "isbn";
         }
         

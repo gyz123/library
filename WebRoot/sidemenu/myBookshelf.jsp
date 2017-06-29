@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta name="viewport"
 	content="width=device-width,initial-scale=1,user-scalable=0">
-<title>我的书架</title>
+<title>我的收藏</title>
 
 <link rel="stylesheet" href="css/weui.css" />
 <link rel="stylesheet" href="css/weui2.css" />

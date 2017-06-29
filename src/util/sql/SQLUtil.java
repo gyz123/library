@@ -395,6 +395,31 @@ public class SQLUtil {
 		return bookInfo;
 	}
 
+	
+	// 序言
+	public static HashMap<String, String> getBookXu(String bookno) {
+		HashMap<String, String> bookInfo = new HashMap<String, String>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://"
+					+ WeixinUtil.MYSQL_DN, WeixinUtil.MYSQL_NAME,
+					WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "select xu,bookname from book where bookno = "
+					+ bookno + ";";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {
+				bookInfo.put("xu", ret.getString(1));
+				bookInfo.put("bookname", ret.getString(2));
+			}
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bookInfo;
+	}
+	
+	
 	// 依据关键词搜索书籍列表 (编号，书名，图片，出版社，作者，剩余量, 阅读量，评分)
 	public static ArrayList<BookInCategory> querySingleBookFromSearch(
 			String type, String keyword, String pageNum) {
@@ -605,7 +630,6 @@ public class SQLUtil {
 	 * @return 返回图书url
 	 */
 	public static String getBookPicUrl(String bookno) {
-
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://"
@@ -630,5 +654,49 @@ public class SQLUtil {
 
 		return "";
 	}
-
+	
+	// 依据bookname获取bookno
+	public static String getBooknoByBookname(String bookname){
+		String bookno = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://"
+					+ WeixinUtil.MYSQL_DN, WeixinUtil.MYSQL_NAME,
+					WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "select bookno from book " + "where bookname = '" + bookname + "';";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {
+				bookno = ret.getString(1);
+				break;
+			}
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bookno;
+	}
+	
+	// 根据isbn搜索bookno
+	public static String getBooknoByISBN(String isbn){
+		String bookno = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://"
+					+ WeixinUtil.MYSQL_DN, WeixinUtil.MYSQL_NAME,
+					WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "select bookno from book where isbn = '" + isbn + "';";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {
+				bookno = ret.getString(1);
+				break;
+			}
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bookno;
+	}
+	
 }

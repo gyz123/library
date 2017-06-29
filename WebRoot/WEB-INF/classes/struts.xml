@@ -58,6 +58,11 @@
 			<result name="ok">/jsp/main.jsp</result>
 		</action>
 		
+		<!-- 进入公告   -->
+		<action name="enter_anno" class="action.page.Library_main" method="enterAnno">
+			<result name="ok">/jsp/announcement.jsp</result>
+		</action>
+		
 		<!-- 单类书籍 -->
 		<action name="show_singleCat" class="action.page.Library_main" method="enterWenxue">
 			<result name="ok">/jsp/single_cat.jsp</result>
@@ -93,6 +98,10 @@
 		<!-- 单本书籍，目录 -->
 		<action name="get_book_outline" class="action.page.SingleItem" method="getBookOutline">
 			<result name="ok">/jsp/singlebook/outline.jsp</result>
+		</action>
+		<!-- 单本书籍，序言   -->
+		<action name="get_book_xu" class="action.page.SingleItem" method="getBookXu">
+			<result name="ok">/jsp/singlebook/xu.jsp</result>
 		</action>
 		<!-- 单本书籍，收藏   -->
 		<action name="add_to_like" class="action.page.SingleItem" method="addToLike">

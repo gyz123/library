@@ -5,8 +5,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.apache.struts2.ServletActionContext;
 
+import util.sql.SQLUtil;
 import util.weixin.CheckUtil;
 import util.weixin.PastUtil;
 import util.weixin.WeixinUtil;
@@ -21,12 +24,34 @@ public class Scan extends ActionSupport{
 		System.out.println("执行了Scan的handleCodeScan方法");
 		HttpServletRequest request = ServletActionContext.getRequest();
 		request.setCharacterEncoding("utf-8");
-		String bookno = decodeString(request.getParameter("QRCodetxt"));
-		String weid = request.getSession(false).getAttribute("weid").toString();
 		HttpServletResponse response = ServletActionContext.getResponse();
         response.setCharacterEncoding("utf-8");
-		String url = response.encodeURL("/library/add_to_shoppingcart.action?weid=" + weid + "&bookno=" + bookno);  
-		response.sendRedirect(url);
+        
+		String weid = request.getSession(false).getAttribute("weid").toString();
+		String QRCodeTxt = request.getParameter("QRCodetxt");
+		System.out.println("扫描结果为：" + QRCodeTxt);
+		
+		String str = decodeJSON(QRCodeTxt);
+		String bookno = "";
+		String regexISBN = "[0-9]{8,}";
+		String regexBookno = "[0-9]{1,4}";
+		
+		if(str.matches(regexBookno)){
+			bookno = str;
+			System.out.println("用户扫码书籍二维码：" + bookno);
+			String url = response.encodeURL("/library/add_to_shoppingcart.action?weid=" + weid + "&bookno=" + bookno);  
+			response.sendRedirect(url);
+		}else{
+			String[] datas = str.split(",");
+			if(datas[1].matches(regexISBN)){
+				System.out.println("用户扫码ISBN：" + datas[1]);
+				bookno = SQLUtil.getBooknoByISBN(datas[1]);
+				String url = response.encodeURL("/library/show_singleItem.action?weid=" + weid + "&bookno=" + bookno);  
+				response.sendRedirect(url);
+			}else{
+				return ;
+			}
+		}
 		return ;
 	}
 	
@@ -58,15 +83,12 @@ public class Scan extends ActionSupport{
 		return SUCCESS;
 	}
 
-	//{"resultStr":"http://qm.qq.com/cgi-bin/qm/qr?k=9GIwDKDm9sMEf_dNiQokQKdhP5fSYY6s",
-	//"errMsg":"scanQRCode:ok"}
-	private String decodeString(String message){
-		String[] datas = message.split(",");
-		String[] temp = datas[0].split("\":\"");
-		StringBuffer sb = new StringBuffer(temp[1]);
-		sb.deleteCharAt(sb.length()-1);
-		System.out.println(sb.toString());
-		return sb.toString();
+	
+
+	// 解析json
+	private String decodeJSON(String json){
+		JSONObject jsonObject = JSONObject.fromObject(json);
+		return jsonObject.getString("resultStr");
 	}
 	
 }

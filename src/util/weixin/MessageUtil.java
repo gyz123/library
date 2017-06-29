@@ -20,6 +20,8 @@ import po.message.ImageMessage;
 import po.message.News;
 import po.message.NewsMessage;
 import po.message.TextMessage;
+import util.recommend.DailyPush;
+import util.sql.SQLUtil;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -98,13 +100,13 @@ public class MessageUtil {
 	}
 	
 	
-	// 主菜单
+	// 主菜单(关注公众号发送)
 	public static String menuText(){
 		StringBuffer sb = new StringBuffer();
-		sb.append("欢迎关注~\n\n");
-		sb.append("1.课程介绍\n");
-		sb.append("2.慕课网介绍\n");
-		sb.append("回复?调出此菜单");
+		sb.append("欢迎关注超新星移动图书馆~\n\n");
+		sb.append("你可以输入感兴趣的书籍名，");
+		sb.append("或者在菜单中进入在线图书馆。");
+		sb.append("输入“帮助”或者“help”可再次查看此提示。");
 		return sb.toString();
 	}
 	
@@ -166,6 +168,40 @@ public class MessageUtil {
 		return message;
 	}
 	
+	/** 
+	 * 组装图文消息
+	 * @param toUserName 公众号
+	 * @param fromUserName 用户id
+	 * @param news 书本信息
+	 * @return
+	 */
+	public static String initNewsMessage(String toUserName,String fromUserName,News news){
+		String message = null;
+		List<News> newsList = new ArrayList<News>();
+		NewsMessage newsMessage = new NewsMessage();
+		newsList.add(news);
+		// 设置图文消息参数
+		newsMessage.setFromUserName(toUserName);
+		newsMessage.setToUserName(fromUserName);
+		newsMessage.setCreateTime(String.valueOf(new Date().getTime()));
+		newsMessage.setMsgType(MESSAGE_NEWS);
+		newsMessage.setArticles(newsList);
+		newsMessage.setArticleCount(newsList.size());
+		
+		message = newsMessageToXml(newsMessage);
+		return message;
+	}
+	
+	// 生成图文消息
+	public static News generateBookSearch(String bookno,String fromUserName){
+		News news = new News();
+		news.setTitle("《" + SQLUtil.getBookName(bookno) + "》");
+		news.setDescription("点击进入浏览书籍详细信息");
+		news.setPicUrl(SQLUtil.getBookPicUrl(bookno));  
+		news.setUrl("http://www.iotesta.com.cn/library/show_singleItem.action?bookno=" + bookno + "&weid=" + fromUserName);
+		return news;
+	}
+	
 	
 	/**
 	 * 图片转XML
@@ -177,6 +213,7 @@ public class MessageUtil {
 		xstream.alias("xml", imageMessage.getClass());
 		return xstream.toXML(imageMessage);
 	}
+	
 	
 	/**
 	 * 组装图片消息
@@ -220,6 +257,7 @@ public class MessageUtil {
 		return sb.toString();
 	}
 
+	
 	/**
 	 * 客服接口发送图文消息
 	 * @param openid 用户id
@@ -245,4 +283,30 @@ public class MessageUtil {
 		sb.append("}");
 		return sb.toString();
 	}
+	
+	
+	/** 
+	 * 自动回复
+	 * @param content 用户发送来的消息
+	 * @param fromUserName 公众号
+	 * @param toUserName 用户id
+	 * @return
+	 */
+	public static String handleUserMsg(String toUserName,String fromUserName,String content){
+		if(content.equals("帮助") || content.equals("help")){
+			return menuText();
+		}else{
+			String bookno = SQLUtil.getBooknoByBookname(content);
+			System.out.println("得到的content:" + content + ";bookno为：" + bookno);
+			if(!bookno.isEmpty()){
+				return bookno;
+			}else{
+				return "您输入的指令暂不支持！感谢您对超新星图书馆的关注！您可以输入“帮助”或者“help”了解相关服务";
+			}
+		}
+	}
+	
+	
+	
+	
 }

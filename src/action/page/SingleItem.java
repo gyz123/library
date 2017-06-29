@@ -161,6 +161,24 @@ public class SingleItem extends ActionSupport{
 	}
 	
 	
+	// 查看书籍序言
+	public String getBookXu() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getParameter("weid");
+		String bookno = request.getParameter("bookno");
+		HashMap<String,String> bookInfo = SQLUtil.getBookXu(bookno);
+		
+		ActionContext context = ActionContext.getContext();
+		context.put("weid", weid);
+		context.put("bookno",bookno);
+		context.put("xu", bookInfo.get("xu"));
+		context.put("bookname",bookInfo.get("bookname"));
+		
+		return "ok";
+	}
+	
+	
 	// 添加、取消收藏,并增加或减少喜爱度
 	public void addToLike() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -212,6 +230,7 @@ public class SingleItem extends ActionSupport{
         String likeFlag = SQL4PersonalInfo.judgeLike(weid, bookno);
         System.out.println(likeFlag);
         HttpSession session = request.getSession();
+        session.setAttribute("weid", weid);
         session.setAttribute("likeFlag", likeFlag);
         
 		return SUCCESS;

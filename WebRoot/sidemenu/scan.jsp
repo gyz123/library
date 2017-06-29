@@ -1,33 +1,32 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ taglib prefix="s" uri="/struts-tags"%>
-<%@ taglib  uri= "http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
+<title>扫一扫测试</title>
 <meta name="viewport"
-	content="width=device-width,initial-scale=1,user-scalable=0">
-<title>扫一扫</title>
-
-<link rel="stylesheet" href="css/weui.css" />
-<link rel="stylesheet" href="css/weui2.css" />
-<link rel="stylesheet" href="css/weui3.css" />
-<link rel="stylesheet" type="text/css" href="css/weuix.min.css">
-
-<script src="js/zepto.min.js"></script>
-<script src="js/jquery-1.11.3.js"></script>
-<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
-<link rel="stylesheet" 	href="http://demo.open.weixin.qq.com/jssdk/css/style.css?ts=1420774989">
+	content="width=device-width, initial-scale=1, user-scalable=0">
+<link rel="stylesheet"
+	href="http://demo.open.weixin.qq.com/jssdk/css/style.css?ts=1420774989">
 </head>
-  
-<body>
+
+<body style="background-color:#ffffff">
 	<div class="wxapi_container">
-		<div class="lbox_close wxapi_form" style="margin-top:0px">
-			<div>
-				<span class="f18">微信扫一扫</span>
+		
+		<div class="lbox_close wxapi_form">
+			<h3 id="menu-basic" style="display:none">基础接口</h3>
+			<button class="btn btn_primary" id="checkJsApi" style="display:none">checkJsApi</button>
+
+			<h3 id="menu-scan" style="display:none">微信扫一扫</h3>
+			<div style="margin-top:24px;margin-bottom:16px">
+				<span class="f16" style="margin-left:16px">
+					悄悄告诉你~<br>&nbsp;&nbsp;&nbsp;&nbsp;扫描书后的二维码可以直接加入购物车哦
+				</span>
 			</div>
-			<button class="btn btn_primary" id="scanQRCode1">scanQRCode(直接返回结果)</button>
+			<button class="btn btn_primary" id="scanQRCode0" style="display:none">scanQRCode(微信处理结果)</button>
+			<button class="btn btn_primary" id="scanQRCode1">扫一扫</button>
+
 		</div>
 	</div>
 </body>
@@ -35,6 +34,7 @@
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
  
+    //步骤三：通过config接口注入权限验证配置
   wx.config({
       debug: false,
       appId: '<%=request.getAttribute("appId")%>',
@@ -42,17 +42,30 @@
       nonceStr: '<%=request.getAttribute("nonceStr")%>',
       signature: '<%=request.getAttribute("signature")%>',
       jsApiList: [
+        'checkJsApi',
         'scanQRCode',
       ]
   });
 </script>
 <script> 
+
+//步骤四：通过ready接口处理成功验证
 	wx.ready(function() {
-		// 直接跳转
+		// 1 判断当前版本是否支持指定 JS 接口，支持批量判断
+		document.querySelector('#checkJsApi').onclick = function() {
+			wx.checkJsApi({
+				jsApiList : [ 'getNetworkType', 'previewImage' ],
+				success : function(res) {
+					alert(JSON.stringify(res));
+				}
+			});
+		};
+
+		// 9 微信原生接口
+		// 9.1.1 扫描二维码并返回结果
 		document.querySelector('#scanQRCode0').onclick = function() {
 			wx.scanQRCode();
 		};
-		
 		// 需要处理
 		var QRCodetxt ="";
 		document.querySelector('#scanQRCode1').onclick = function() {
@@ -60,7 +73,7 @@
 				needResult : 1,
 				desc : 'scanQRCode desc',
 				success : function(res) {
-					// alert(JSON.stringify(res));
+					//alert(JSON.stringify(res));  EAN_13,9787 EAN_1
 					QRCodetxt = JSON.stringify(res);
 					location.href = "/library/verify_code.action?QRCodetxt=" + QRCodetxt;
 				}
@@ -81,4 +94,6 @@
 		alert(res.errMsg);
 	});
 </script>
+
+
 </html>

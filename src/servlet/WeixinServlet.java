@@ -13,6 +13,7 @@ import org.dom4j.DocumentException;
 
 import action.sidemenu.Borrow;
 
+import po.message.News;
 import po.message.ReturnRemindMes;
 import po.user.AccessToken;
 import util.weixin.CheckUtil;
@@ -48,8 +49,8 @@ public class WeixinServlet extends HttpServlet {
 		
 		try {
 			Map<String, String> map = MessageUtil.xmlToMap(req);
-			String fromUserName = map.get("FromUserName");//用户weid
-			String toUserName = map.get("ToUserName");//我们的微信号
+			String fromUserName = map.get("FromUserName"); // 用户weid
+			String toUserName = map.get("ToUserName"); // 我们的微信号
 			System.out.println("fromusername:" + fromUserName);
 			System.out.println("tousername:" + toUserName);
 			String msgType = map.get("MsgType");
@@ -58,28 +59,20 @@ public class WeixinServlet extends HttpServlet {
 			
 			//***************************************************************
 			AccessToken token = WeixinUtil.getAccessToken();  //获取access_token
-			
 			String message = null;
 			
+			
 			// 判断消息类型
-//			if(MessageUtil.MESSAGE_TEXT.equals(msgType)){
-//				if("1".equals(content)){
-//					message = MessageUtil.initText(toUserName, fromUserName, MessageUtil.firstMenu());
-//				}
-//				else if ("2".equals(content)){
-//					message = MessageUtil.initNewsMessage(toUserName, fromUserName);
-//				}
-//				else if ("3".equals(content)){
-//					message = MessageUtil.initImageMessage(toUserName, fromUserName);
-//				}
-//				else if ("?".equals(content) || "？".equals(content)){
-//					message = MessageUtil.initText(toUserName, fromUserName, MessageUtil.menuText());
-//				}else if("查询ID".equals(content) || "查询id".equals(content)){
-//					message = MessageUtil.initText(toUserName, fromUserName, fromUserName);
-//				}else{
-//					message = MessageUtil.initText(toUserName, fromUserName,content);
-//				}
-//			}
+			if(MessageUtil.MESSAGE_TEXT.equals(msgType)){
+				String msgBack = MessageUtil.handleUserMsg(toUserName, fromUserName, content);
+				String numRegex = "[0-9]{1,}";
+				if(msgBack.matches(numRegex)){
+					News news = MessageUtil.generateBookSearch(msgBack,fromUserName);
+					message = MessageUtil.initNewsMessage(toUserName, fromUserName, news);
+				}else{
+					message = MessageUtil.initText(toUserName, fromUserName, msgBack);
+				}
+			}
 			if(MessageUtil.MESSAGE_EVENT.equals(msgType)){
 				String eventType  = map.get("Event");
 				
@@ -94,7 +87,6 @@ public class WeixinServlet extends HttpServlet {
 					}
 				}else if(MessageUtil.MESSAGE_SCANCODE.equals(eventType)){
 					String key = map.get("EventKey");
-//					message = MessageUtil.initText(toUserName, fromUserName, key);
 				}
 			}
 			else if(MessageUtil.MESSAGE_LOCATION.equals(msgType)){

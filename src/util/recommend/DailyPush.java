@@ -40,8 +40,8 @@ public class DailyPush {
 	public static void recomBookDaily(int bookno, String weid){
 		String bookNo = String.valueOf(bookno);
 		BookDetailInfo book = SQLUtil.querySingleBookFromCat(bookNo);
-		String bookname = book.getBookname();//"如果没有遇见你";
-		String bookimg = book.getBookimg();//"http://apis.juhe.cn/goodbook/img/ab7f47d54f7cc742642c6cb058207acd.jpg";
+		String bookname = book.getBookname(); // "如果没有遇见你";
+		String bookimg = book.getBookimg(); // "http://apis.juhe.cn/goodbook/img/ab7f47d54f7cc742642c6cb058207acd.jpg";
 		String url = "http://www.iotesta.com.cn/library/show_singleItem.action?bookno="+bookno;
 		String myabstract = book.getBookAbstract();//"法国畅销天王米索最新力作：《如果没有遇见你》";
 		DailyPush.sendImgTxtMsg(weid, bookno, bookname, bookimg, url, myabstract);
