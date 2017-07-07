@@ -19,7 +19,8 @@
 		var $j = jQuery.noConflict(); //自定义一个比较短的快捷方式
 	</script>
   <!-- 引入 ECharts 文件 -->
-  <script src="js/echarts.js" charset="utf-8"></script>
+  <!-- <script src="js/echarts.js" charset="utf-8"></script> -->
+  <script src="https://cdn.bootcss.com/echarts/3.6.2/echarts.js"></script>
   <!-- 引入 shine 主题 -->
   <!-- <script src="theme/shine.js"></script> -->
   <title>借阅历史</title>

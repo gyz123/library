@@ -257,7 +257,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             //dataType:'json',    
             success:function(data){ 
             	console.log(booknum);
-            	alert(booknum + "删除成功");
+            	alert("删除成功");
             	that.parent().parent().parent().parent().remove(); //删除节点
         		$j('.jd_win').hide();
             }    
@@ -271,7 +271,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$j('input[type=checkbox]').click(function() {
 			if ($j("input[name=checkbox1]:checked").length > 2){
       			//最多可以选择2个 
-      			$j.toast("最多借两本哦！", "cancel");
+      			//$j.toast("最多借两本哦！", "cancel");
+				alert("最多借两本哦！");
 				return false;
 			}
       		return true; 

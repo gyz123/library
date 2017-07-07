@@ -30,7 +30,7 @@ public class Borrow extends ActionSupport{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		String bookno = request.getParameter("bookno");
 		String borrowtime = "";
-		
+		String returntime = "";
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
@@ -105,6 +105,7 @@ public class Borrow extends ActionSupport{
 	public static ArrayList<ReturnRemind> getAllBorrow(){
 //		HttpServletRequest request = ServletActionContext.getRequest();
 //		String bookno = request.getParameter("bookno");
+		String returntime = "";
 		String borrowtime = "";
 		String weid = "";
 		int bookno;
@@ -117,13 +118,14 @@ public class Borrow extends ActionSupport{
 					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			
-			String query = "select weid,bookno,borrowtime from borrow"; 
+			String query = "select weid,bookno,borrowtime,returntime from borrow"; 
 			ResultSet ret = s.executeQuery(query);
 			while (ret.next()) {  
 				ReturnRemind borrow = new ReturnRemind();
 				weid = ret.getString(1);
 				bookno = ret.getInt(2);
 				borrowtime = ret.getString(3);
+				returntime = ret.getString(4);
 				counttime = getCountTime(borrowtime);
 				
 				borrow.setWeid(weid);
@@ -131,6 +133,7 @@ public class Borrow extends ActionSupport{
 				borrow.setBorrowtime(borrowtime);
 				borrow.setCounttime(counttime);
 				borrow.setBookname(SQLUtil.getBookName(String.valueOf(bookno)));
+				borrow.setReturntime(returntime);
 				
 				borrows.add(borrow);
             }

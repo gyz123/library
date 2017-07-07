@@ -41,14 +41,14 @@ public class WeixinUtil {
 	public static final String MYSQL_PASSWORD = "root";
 	
 	// 测试号的数据
-	public static final String APPID = "wx6b71cb3f69dd9a86";
-	public static final String APPSECRET = "f02adc4026d13796f35169b778b4e9ef";
-	public static final String DN = "http://www.iotesta.cn";
+//	public static final String APPID = "wx6b71cb3f69dd9a86";
+//	public static final String APPSECRET = "f02adc4026d13796f35169b778b4e9ef";
+//	public static final String DN = "http://www.iotesta.cn";
 	
 	// 老马的数据
-//	public static final String APPID = "wxde3504dfb219fc20";
-//	public static final String APPSECRET = "1824588d88f3251162b7ba687776b855";
-//	public static final String DN = "http://www.iotesta.com.cn";
+	public static final String APPID = "wxde3504dfb219fc20";
+	public static final String APPSECRET = "1824588d88f3251162b7ba687776b855";
+	public static final String DN = "http://www.iotesta.com.cn";
 
 	private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	private static final String UPLOAD_URL = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE";
@@ -277,7 +277,7 @@ public class WeixinUtil {
 		
 		String url22 = DN + "/library";
 		ViewButton button22 = new ViewButton();
-		button22.setName("支付测试");
+		button22.setName("常见问题");
 		button22.setType("view");
 		button22.setUrl(url22);
 		
@@ -285,7 +285,7 @@ public class WeixinUtil {
 		String url23 = SCOPE.replace("APPID", APPID).replace("REDIRECT_URI", registerAction)
 				.replace("SCOPE", "snsapi_userinfo").replace("STATE", "123");
 		ViewButton button23 = new ViewButton();
-		button23.setName("详细信息注册");
+		button23.setName("注册");
 		button23.setType("view");
 		button23.setUrl(url23);
 		
@@ -296,12 +296,12 @@ public class WeixinUtil {
 		
 		
 		ClickButton button31 = new ClickButton();
-		button31.setName("扫码事件");
+		button31.setName("最新动态");
 		button31.setType("scancode_push");
 		button31.setKey("31");
 		
 		ClickButton button32 = new ClickButton();
-		button32.setName("地理位置");
+		button32.setName("资源动态");
 		button32.setType("location_select");
 		button32.setKey("32");
 		
@@ -312,18 +312,18 @@ public class WeixinUtil {
 		
 		
 		Button button1 = new Button();
-		button1.setName("主菜单");
+		button1.setName("图书馆");
 		button1.setSub_button(new Button[]{button11,button12,button13});
 		
 		Button button2 = new Button();
-		button2.setName("url跳转");
-		button2.setSub_button(new Button[]{button21,button22,button23,button24});
+		button2.setName("动态");
+		button2.setSub_button(new Button[]{button31, button32});
 		
 		Button button3 = new Button();
-		button3.setName("更多功能");
-		button3.setSub_button(new Button[]{button31,button32,button33});
+		button3.setName("服务");
+		button3.setSub_button(new Button[]{button23,button21,button22});
 		
-		menu.setButton(new Button[]{button1,button2,button3});		
+		menu.setButton(new Button[]{button13,button2,button3});		
 		return menu;
 	}
 	

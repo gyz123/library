@@ -50,6 +50,6 @@ public class DailyPush {
 	public static void main(String[] args) {
 		int bookno = (int)(Math.random()*600);
 		System.out.println(bookno);
-		recomBookDaily(bookno,"otE_a1OD_NOC7jvIz_vIe5heSIAA");
+		recomBookDaily(bookno,"otE_a1Ep3DV9r4kbFu7LDTTXhK6A");
 	}
 }

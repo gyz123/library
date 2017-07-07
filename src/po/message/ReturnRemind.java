@@ -6,6 +6,7 @@ public class ReturnRemind {
 	private int bookno;
 	private String bookname;
 	private String borrowtime;
+	private String returntime;
 	private int counttime;
 	
 	public String getWeid() {
@@ -31,6 +32,12 @@ public class ReturnRemind {
 	}
 	public void setBorrowtime(String borrowtime) {
 		this.borrowtime = borrowtime;
+	}
+	public String getReturntime() {
+		return returntime;
+	}
+	public void setReturntime(String returntime) {
+		this.returntime = returntime;
 	}
 	public int getCounttime() {
 		return counttime;
