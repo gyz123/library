@@ -40,7 +40,6 @@
 					alt="" style="width:72px;margin-right:8px;display:block;margin-right:16px">
 			</div>
 			<div class="weui_cell_bd weui_cell_primary">
-
 				<div><span class="f24">${booklist.bookname}</span></div>
 				<div style="margin-top:16px"><span class="f14">${booklist.publisher}</span></div>
 				<div style="margin-top:4px"><span class="f14">作者：${booklist.author}</span>&nbsp;&nbsp;&nbsp;
