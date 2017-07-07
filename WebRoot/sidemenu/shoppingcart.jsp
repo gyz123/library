@@ -80,11 +80,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="info_box" style="padding-top:20px">
 						<span class="p_name f20" style="padding-top:4px;margin-bottom:4px">${booklist.bookname } </span>
 						<span class="p_price f14" style="margin-top:8px">预定金额： &yen;${booklist.price/100.0 }</span>
+						
 						<div class="p_opition">
 							<div class="delete_box f_right">
 								<span class="delete_up"></span> 
 								<span class="delete_down"></span>
-								
+								<span class="booknum" style="display:none;">${booklist.bookno }</span>
 							</div>
 						</div>
 					</div>

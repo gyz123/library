@@ -279,6 +279,7 @@ public class SQL4PersonalInfo {
 					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 			String query = "delete from shoppingcart where weid = '" + weid + "' and bookno = " + bookno + ";";
+			System.out.println(query);
 			s.executeUpdate(query);
             con.close();
 		} catch (Exception e) {
