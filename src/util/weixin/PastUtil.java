@@ -27,7 +27,7 @@ public class PastUtil {
      * @param url    当前网页的URL，不包含#及其后面部分
      * @return
      */
-    public static Map getParam(String appId,String appSecret,HttpServletRequest request){
+    public static Map getParam(String appId,String appSecret,HttpServletRequest request,String url){
 //    	servlet.getServletContext().getResourceAsStream("/WEB-INF/classes/info.properties");
 //    	Long nowtime = System.currentTimeMillis();
     	
@@ -45,7 +45,7 @@ public class PastUtil {
             }
         }
          
-        String url = getUrl(request);
+       // String url = getUrl(request);
          
         Map<String, String> params = sign(jsapi_ticket, url);
         params.put("appid", appId);

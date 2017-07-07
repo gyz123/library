@@ -30,22 +30,46 @@
 		</div>
 	</div>
 </body>
-
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<script>
+	var $j = jQuery.noConflict(); //自定义一个比较短的快捷方式
+</script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
- 
-    //步骤三：通过config接口注入权限验证配置
-  wx.config({
-      debug: false,
-      appId: '<%=request.getAttribute("appId")%>',
-      timestamp: <%=request.getAttribute("timeStamp")%>,
-      nonceStr: '<%=request.getAttribute("nonceStr")%>',
-      signature: '<%=request.getAttribute("signature")%>',
-      jsApiList: [
-        'checkJsApi',
-        'scanQRCode',
-      ]
-  });
+
+  
+  $j(document).ready((function(){
+			//异步请求jsapi
+				$j.ajax({    
+		            type:'post',        
+		            url:'/library/get_jssdk.action',    //servlet名
+		            data:"url=" + encodeURIComponent(location.href.split('#')[0]),  //参数 
+		            cache:false,    
+		            //dataType:'json',
+		            success:function(data){
+		        	
+						var jsonObj = jQuery.parseJSON(data);//将json字符串解析成json对象
+						console.log(jsonObj[0].url)
+						//验证
+						wx.config({
+					    	debug: false,
+					    	appId: jsonObj[0].appid,
+					    	timestamp: jsonObj[0].timestamp,
+					    	nonceStr: jsonObj[0].nonceStr,
+					    	signature: jsonObj[0].signature,
+					    	jsApiList: [
+						        'checkJsApi',
+						        'scanQRCode',
+						      ]
+					    });
+ 					},
+ 					error:function(){
+ 						console.log("ajax请求失败");
+ 					}
+		        }); 
+
+		})    
+	);
 </script>
 <script> 
 

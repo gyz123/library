@@ -63,12 +63,12 @@ public class Scan extends ActionSupport{
 		req.setCharacterEncoding("utf-8");
 		HttpServletResponse resp = ServletActionContext.getResponse();
 		resp.setCharacterEncoding("utf-8");
-		
-		Map<String,String> map = PastUtil.getParam(WeixinUtil.APPID, WeixinUtil.APPSECRET, req);		
+		String url = req.getParameter("url");
+		Map<String,String> map = PastUtil.getParam(WeixinUtil.APPID, WeixinUtil.APPSECRET, req, url);		
 		String noncestr = map.get("nonceStr");
 		String jsapi_ticket = map.get("jsapi_ticket");
 		String timestamp = map.get("timestamp");
-		String url = map.get("url");
+		//String url = map.get("url");
 		System.out.println(map.toString());
 		// Éú³ÉÇ©Ãû
 		String signature = CheckUtil.generateSignature(noncestr, jsapi_ticket, timestamp, url);

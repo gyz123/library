@@ -1,5 +1,7 @@
 package action.page;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.struts2.ServletActionContext;
@@ -163,22 +166,22 @@ public class Library_main extends ActionSupport{
 			System.out.println("未注册:"  + " " + weid);
 		}
 		
-		// ************************
-		Map<String,String> map = PastUtil.getParam(WeixinUtil.APPID, WeixinUtil.APPSECRET, request);		
-		String noncestr = map.get("nonceStr");
-		String jsapi_ticket = map.get("jsapi_ticket");
-		String timestamp = map.get("timestamp");
-		String url = map.get("url");
-		System.out.println(map.toString());
-		// 生成签名
-		String signature = CheckUtil.generateSignature(noncestr, jsapi_ticket, timestamp, url);
-		
-		// 设置参数
-		request.setAttribute("appId", WeixinUtil.APPID);
-		request.setAttribute("timeStamp", timestamp);
-		request.setAttribute("nonceStr", noncestr);
-		request.setAttribute("signature", signature);
-		request.setAttribute("url", url);
+//		// ************************
+//		Map<String,String> map = PastUtil.getParam(WeixinUtil.APPID, WeixinUtil.APPSECRET, request, url);		
+//		String noncestr = map.get("nonceStr");
+//		String jsapi_ticket = map.get("jsapi_ticket");
+//		String timestamp = map.get("timestamp");
+//		String url = map.get("url");
+//		System.out.println(map.toString());
+//		// 生成签名
+//		String signature = CheckUtil.generateSignature(noncestr, jsapi_ticket, timestamp, url);
+//		
+//		// 设置参数
+//		request.setAttribute("appId", WeixinUtil.APPID);
+//		request.setAttribute("timeStamp", timestamp);
+//		request.setAttribute("nonceStr", noncestr);
+//		request.setAttribute("signature", signature);
+//		request.setAttribute("url", url);
 		
 		return "ok";
 	}
@@ -263,5 +266,43 @@ public class Library_main extends ActionSupport{
 		return "ok";
 	}
 	
-
+	/**
+	 * 首页ajax动态请求jssdk
+	 * @throws IOException 
+	 */
+	public void jssdkConfig() throws IOException{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		request.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding("utf-8");
+		PrintWriter out = response.getWriter();
+		
+		//String url = map.get("url");
+		String url = request.getParameter("url");//从前台传来
+		
+		// ************************
+		Map<String,String> map = PastUtil.getParam(WeixinUtil.APPID, WeixinUtil.APPSECRET, request, url);		
+		String noncestr = map.get("nonceStr");
+		String jsapi_ticket = map.get("jsapi_ticket");
+		String timestamp = map.get("timestamp");
+		
+		System.out.println(url);
+		System.out.println(map.toString());
+		
+		map.remove("url");
+		map.put("url", url);
+		// 生成签名
+		String signature = CheckUtil.generateSignature(noncestr, jsapi_ticket, timestamp, url);
+				
+		// 设置参数
+//		request.setAttribute("appId", WeixinUtil.APPID);
+//		request.setAttribute("timeStamp", timestamp);
+//		request.setAttribute("nonceStr", noncestr);
+//		request.setAttribute("signature", signature);
+//		request.setAttribute("url", url);
+		
+		out.write(JSONArray.fromObject(map).toString());
+		out.flush();
+		out.close();
+	}
 }

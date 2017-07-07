@@ -63,6 +63,10 @@
 			<result name="ok">/jsp/announcement.jsp</result>
 		</action>
 		
+		<!-- jssdk动态获取 -->
+		<action name="get_jssdk" class="action.page.Library_main" method="jssdkConfig">
+		</action>
+		
 		<!-- 单类书籍 -->
 		<action name="show_singleCat" class="action.page.Library_main" method="enterWenxue">
 			<result name="ok">/jsp/single_cat.jsp</result>

@@ -1,5 +1,5 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ taglib  uri= "http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -21,7 +21,6 @@
 <link rel="stylesheet" href="css/index.css">
 
 <style type="text/css">
-
 #mydiv {
 	position: absolute;
 	margin: auto 0px;
@@ -39,13 +38,22 @@
 </style>
 
 <style type="text/css">
-.slideout-menu { left: auto; }
-.btn-hamburger { left: auto; right: 12px;}
-.box { height: 1500px; }
+.slideout-menu {
+	left: auto;
+}
+
+.btn-hamburger {
+	left: auto;
+	right: 12px;
+}
+
+.box {
+	height: 1500px;
+}
 </style>
 
 <style type="text/css">
-#mocha-stats{
+#mocha-stats {
 	display: none;
 }
 </style>
@@ -381,21 +389,45 @@
 	var $j = jQuery.noConflict(); //自定义一个比较短的快捷方式
 </script>
 <script type="text/javascript">
-    wx.config({
-    	debug: false,
-    	appId: '<%=request.getAttribute("appId")%>',
-    	timestamp: '<%=request.getAttribute("timeStamp")%>',
-    	nonceStr: '<%=request.getAttribute("nonceStr")%>',
-    	signature: '<%=request.getAttribute("signature")%>',
-    	jsApiList: [
-    	'checkJsApi',
-    	'translateVoice',
-    	'startRecord',
-    	'stopRecord',
-    	'onRecordEnd',
-    	'scanQRCode',
-    	]
-    });
+
+		//console.log(encodeURIComponent(location.href.split('#')[0]));
+		$j(document).ready((function(){
+			//异步请求jsapi
+				$j.ajax({    
+		            type:'post',        
+		            url:'/library/get_jssdk.action',    //servlet名
+		            data:"url=" + encodeURIComponent(location.href.split('#')[0]),  //参数 
+		            cache:false,    
+		            //dataType:'json',
+		            success:function(data){
+		        	
+						var jsonObj = jQuery.parseJSON(data);//将json字符串解析成json对象
+						console.log(jsonObj[0].url)
+						//验证
+						wx.config({
+					    	debug: false,
+					    	appId: jsonObj[0].appid,
+					    	timestamp: jsonObj[0].timestamp,
+					    	nonceStr: jsonObj[0].nonceStr,
+					    	signature: jsonObj[0].signature,
+					    	jsApiList: [
+					    	'checkJsApi',
+					    	'translateVoice',
+					    	'startRecord',
+					    	'stopRecord',
+					    	'onRecordEnd',
+					    	'scanQRCode',
+					    	]
+					    });
+ 					},
+ 					error:function(){
+ 						console.log("ajax请求失败");
+ 					}
+		        }); 
+
+		})    
+	);
+    
 </script>
 
 <script type="text/javascript">
@@ -460,6 +492,7 @@
         		fail: function (res) {
         			//alert(JSON.stringify(res));
         			alert("出错啦...");
+        			console.log(JSON.stringify(res));
         		}
         	});
         }
@@ -479,98 +512,93 @@
 <body>
 
 	<!--侧边栏-->
-	<nav id="menu" class="menu" style="position:absolute;left:0;width:300px;background-color:#2B2F3E;">
-        <header class="menu-header" style="background-color:#2B2F3E;margin-right:20px; ">
-
-          <c:if var="flag" test="${flag == true }" scope="page">
-          <div class="weui_panel_bd">
-                <div class="weui_media_box weui_media_appmsg" style="margin-left:0px;">
-                    <div class="weui_media_hd" >
-                        <img class="circle" src="${user.headimgurl }" alt=""
-                        	style="width:64px; height:64px; margin-top:16px ">
-                    </div>
-                    <div class="weui_media_bd" style="margin-left:4px">
-                    	<br><br>
-                        <span style="font-family:'微软雅黑'; font-size:20px" class="f-white">
-                        	${user.nickname }
-                        </span>
-                    </div>
-                </div>
-          </div>
-          </c:if>
-          
-          <c:if var="flag" test="${flag == false }" scope="page">
-          <div class="weui_panel_bd">
-                <a href="javascript:void(0);" class="weui_media_box weui_media_appmsg" style="margin-left:0px;">
-                    <div class="weui_media_hd" >
-                        <img class="circle" src="" alt=""
-                        	style="width:64px; height:64px; margin-top:16px ">
-                    </div>
-                    <div class="weui_media_bd" style="margin-left:4px">
-                    	<br><br>
-                        <span style="font-family:'微软雅黑'; font-size:20px" class="f-white">
-                        	游客账号
-                        </span>
-                    </div>
-                </a>
-          </div>
-          </c:if>
-          
-        </header>	
-
-      <section class="menu-section" style="background-color:#2B2F3E">
-        <h3 class="menu-section-title">我的图书馆</h3>
-        <ul class="menu-section-list">
-          <li><a href="/library/show_bookshelf.action?weid=${weid }">我的收藏</a></li>
-          <li><a href="/library/show_history.action?weid=${weid }">我的借阅</a></li>
-          <li><a href="/library/show_shoppingcart.action?weid=${weid }">待借清单</a></li>
-          <li><a href="/library/initialWordPage.action?weid=${weid }">图书索引</a></li>
-        </ul>
-      </section>
-
-      <section class="menu-section" style="background-color:#2B2F3E">
-      	
-        <h3 class="menu-section-title">设置</h3>
-        <ul class="menu-section-list">
-		  <li><a href="/library/shake.action?weid=${weid }">摇一摇</a></li>
-		  <li><a href="/library/start_scan.action?weid=${weid }">扫一扫</a></li>
-          <li><a href="/library/show_settings.action?weid=${weid }">个人设置</a></li>
-        </ul>
-      </section>
-
-      
-    </nav>
-
-	<main id="panel" class="panel" style="position:position:absolute;top:0;padding:0px;">
-		<header class="panel-header" style="display:none;">
-        	<button class="btn-hamburger js-slideout-toggle"></button>
-        	<h1 class="title" style="display:none"></h1>
-		</header>
-		<!-- 标题栏   -->
-			<div class="weui-header bg-blue" style="height:78px;background-color:#01164b">
-				<div class="weui-header-left">
-					<a class=" f-white">
-						<div class="weui-avatar-circle">
-							<img src="/library/image/myicon/book.svg" class="weui-avatar-url">
-						</div> </a>
+	<nav id="menu" class="menu"
+		style="position:absolute;left:0;width:300px;background-color:#2B2F3E;">
+	<header class="menu-header"
+		style="background-color:#2B2F3E;margin-right:20px; "> <c:if
+		var="flag" test="${flag == true }" scope="page">
+		<div class="weui_panel_bd">
+			<div class="weui_media_box weui_media_appmsg"
+				style="margin-left:0px;">
+				<div class="weui_media_hd">
+					<img class="circle" src="${user.headimgurl }" alt=""
+						style="width:64px; height:64px; margin-top:16px ">
 				</div>
-				<h1 class="weui-header-title" style="margin-top:15px">
-						<span style="font-family:''; font-size:">
-                        	超新星智能图书馆
-                        </span>
-				</h1>
+				<div class="weui_media_bd" style="margin-left:4px">
+					<br>
+					<br> <span style="font-family:'微软雅黑'; font-size:20px"
+						class="f-white"> ${user.nickname } </span>
+				</div>
 			</div>
- <section>
-    <h2 class="box-title" style="display:none;"></h2>
-        
+		</div>
+	</c:if> <c:if var="flag" test="${flag == false }" scope="page">
+		<div class="weui_panel_bd">
+			<a href="javascript:void(0);"
+				class="weui_media_box weui_media_appmsg" style="margin-left:0px;">
+				<div class="weui_media_hd">
+					<img class="circle" src="" alt=""
+						style="width:64px; height:64px; margin-top:16px ">
+				</div>
+				<div class="weui_media_bd" style="margin-left:4px">
+					<br>
+					<br> <span style="font-family:'微软雅黑'; font-size:20px"
+						class="f-white"> 游客账号 </span>
+				</div> </a>
+		</div>
+	</c:if> </header> <section class="menu-section" style="background-color:#2B2F3E">
+	<h3 class="menu-section-title">我的图书馆</h3>
+	<ul class="menu-section-list">
+		<li><a href="/library/show_bookshelf.action?weid=${weid }">我的收藏</a>
+		</li>
+		<li><a href="/library/show_history.action?weid=${weid }">我的借阅</a>
+		</li>
+		<li><a href="/library/show_shoppingcart.action?weid=${weid }">待借清单</a>
+		</li>
+		<li><a href="/library/initialWordPage.action?weid=${weid }">图书索引</a>
+		</li>
+	</ul>
+	</section> <section class="menu-section" style="background-color:#2B2F3E">
+
+	<h3 class="menu-section-title">设置</h3>
+	<ul class="menu-section-list">
+		<li><a href="/library/shake.action?weid=${weid }">摇一摇</a>
+		</li>
+		<li><a href="/library/start_scan.action?weid=${weid }">扫一扫</a>
+		</li>
+		<li><a href="/library/show_settings.action?weid=${weid }">个人设置</a>
+		</li>
+	</ul>
+	</section> </nav>
+
+	<main id="panel" class="panel"
+		style="position:position:absolute;top:0;padding:0px;"> <header
+		class="panel-header" style="display:none;">
+	<button class="btn-hamburger js-slideout-toggle"></button>
+	<h1 class="title" style="display:none"></h1>
+	</header> <!-- 标题栏   -->
+	<div class="weui-header bg-blue"
+		style="height:78px;background-color:#01164b">
+		<div class="weui-header-left">
+			<a class=" f-white">
+				<div class="weui-avatar-circle">
+					<img src="/library/image/myicon/book.svg" class="weui-avatar-url">
+				</div> </a>
+		</div>
+		<h1 class="weui-header-title" style="margin-top:15px">
+			<span style="font-family:''; font-size:"> 超新星智能图书馆 </span>
+		</h1>
+	</div>
+	<section>
+	<h2 class="box-title" style="display:none;"></h2>
+
 	<div id="mocha">
 		<div class="weui_search_bar">
 			<!--输入框-->
-			<input type="text" size="50" class="search-input " id="search" 
-				onkeyup="getMoreContents()" placeholder='关键字/拼音/ISBN' onblur="keywordBlur()"
-				onfocus="getMoreContents()">
+			<input type="text" size="50" class="search-input " id="search"
+				onkeyup="getMoreContents()" placeholder='关键字/拼音/ISBN'
+				onblur="keywordBlur()" onfocus="getMoreContents()">
 			<button class="weui_btn weui_btn_mini weui_btn_default "
-					id="talk_btn" ontouchstart = "return false;" style="height:32px">
+				id="talk_btn" ontouchstart="return false;" style="height:32px">
 				<i class="icon icon-44"></i>
 			</button>
 			<button class="weui_btn weui_btn_mini weui_btn_default"
@@ -592,27 +620,18 @@
 		<!-- 轮播  -->
 		<div class="slide" id="slide1" style="position:relative;z-index:0;">
 			<ul>
-				<li><a href="#"> 
-					<img
+				<li><a href="#"> <img
 						src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
-						data-src="/library/image/announcement/1.jpg" alt="">
-					</a>
-					<div class="slide-desc">清明假期闭馆通知</div>
-				</li>
-				<li><a href="#"> 
-					<img
+						data-src="/library/image/announcement/1.jpg" alt=""> </a>
+					<div class="slide-desc">清明假期闭馆通知</div></li>
+				<li><a href="#"> <img
 						src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
-						data-src="/library/image/announcement/2.jpg" alt="">
-					</a>
-					<div class="slide-desc">图书馆借书流程及守则</div>
-				</li>
-				<li><a href="/library/enter_anno.action?weid=${weid }"> 
-					<img
+						data-src="/library/image/announcement/2.jpg" alt=""> </a>
+					<div class="slide-desc">图书馆借书流程及守则</div></li>
+				<li><a href="/library/enter_anno.action?weid=${weid }"> <img
 						src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
-						data-src="/library/image/announcement/3.jpg" alt="">
-					</a>
-					<div class="slide-desc">每日好书推荐</div>
-				</li>
+						data-src="/library/image/announcement/3.jpg" alt=""> </a>
+					<div class="slide-desc">每日好书推荐</div></li>
 			</ul>
 			<div class="dot">
 				<span></span> <span></span> <span></span>
@@ -621,89 +640,80 @@
 
 		<!-- 书籍分类  -->
 		<div class="weui_grids">
-			<a	href="/library/show_singleCat.action?id=wenxue&pagenum=1&weid=${weid }"
+			<a
+				href="/library/show_singleCat.action?id=wenxue&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/wenxue.svg" alt="文学">
 				</div>
-				<p class="weui_grid_label">文学</p> 
-			</a> 
-			<a	href="/library/show_singleCat.action?id=zhuanji&pagenum=1&weid=${weid }"
+				<p class="weui_grid_label">文学</p> </a> <a
+				href="/library/show_singleCat.action?id=zhuanji&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/zhuanji.svg" alt="传记">
 				</div>
-				<p class="weui_grid_label">传记</p> 
-			</a> 
-			<a	href="/library/show_singleCat.action?id=lishi&pagenum=1&weid=${weid }"
+				<p class="weui_grid_label">传记</p> </a> <a
+				href="/library/show_singleCat.action?id=lishi&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/lishi.svg" alt="历史">
 				</div>
-				<p class="weui_grid_label">历史</p> 
-			</a> 
-			<a	href="/library/show_singleCat.action?id=zhexue&pagenum=1&weid=${weid }"
+				<p class="weui_grid_label">历史</p> </a> <a
+				href="/library/show_singleCat.action?id=zhexue&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/zhexue.svg" alt="哲学">
 				</div>
-				<p class="weui_grid_label">哲学</p> 
-			</a> 
-			<a  href="/library/show_singleCat.action?id=ertong&pagenum=1&weid=${weid }"
+				<p class="weui_grid_label">哲学</p> </a> <a
+				href="/library/show_singleCat.action?id=ertong&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/ertong.svg" alt="儿童">
 				</div>
-				<p class="weui_grid_label">儿童</p> 
-			</a> 
-			<a	href="/library/show_singleCat.action?id=xiaoshuo&pagenum=1&weid=${weid }"
+				<p class="weui_grid_label">儿童</p> </a> <a
+				href="/library/show_singleCat.action?id=xiaoshuo&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/xiaoshuo.svg" alt="小说">
 				</div>
-				<p class="weui_grid_label">小说</p> 
-			</a> 
-			<a	href="/library/show_singleCat.action?id=xinli&pagenum=1&weid=${weid }"
+				<p class="weui_grid_label">小说</p> </a> <a
+				href="/library/show_singleCat.action?id=xinli&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/xinli.svg" alt="心理">
 				</div>
-				<p class="weui_grid_label">心理</p> 
-			</a> 
-			<a	href="/library/show_singleCat.action?id=shehui&pagenum=1&weid=${weid }"
+				<p class="weui_grid_label">心理</p> </a> <a
+				href="/library/show_singleCat.action?id=shehui&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/guanli.svg" alt="社会">
 				</div>
-				<p class="weui_grid_label">社会</p> 
-			</a> 
-			<a	href="/library/show_singleCat.action?id=keji&pagenum=1&weid=${weid }"
+				<p class="weui_grid_label">社会</p> </a> <a
+				href="/library/show_singleCat.action?id=keji&pagenum=1&weid=${weid }"
 				class="weui_grid js_grid">
 				<div class="weui_grid_icon">
 					<img src="/library/image/myicon/jisuanji.svg" alt="科技">
 				</div>
-				<p class="weui_grid_label">科技</p> 
-			</a>
+				<p class="weui_grid_label">科技</p> </a>
 		</div>
 	</div>
-      </section>
-
-    </main>
+	</section> </main>
 
 
 
 
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/1.13.0/mocha.min.js"></script>
-    <script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/mocha/1.13.0/mocha.min.js"></script>
+	<script>
       //mocha.setup('bdd');
       var exports = null;
       // function assert(expr, msg) {
       //   if (!expr) throw new Error(msg || 'failed');
       // }
     </script>
-    <script src="js/slideout.js"></script>
-    <script src="js/test.js"></script>
-    <script>
+	<script src="js/slideout.js"></script>
+	<script src="js/test.js"></script>
+	<script>
       window.onload = function() {
         document.querySelector('.js-slideout-toggle').addEventListener('click', function() {
           slideout.toggle();
