@@ -13,6 +13,8 @@
 <link rel="stylesheet" href="css/weui3.css" />
 <link rel="stylesheet" type="text/css" href="css/weuix.min.css">
 
+
+
 <script src="js/zepto.min.js"></script>
 <script src="js/picker.js"></script>
 <script >
@@ -138,7 +140,7 @@
                 </div>
 			</div>
 			<div class="weui_cell_ft">
-				<input class="weui_switch" type="checkbox" checked />
+				<input class="weui_switch" type="checkbox" id="check0" />
 			</div>
 		</div>
 	</div>
@@ -170,13 +172,13 @@
 		<div class="weui_cell weui_cell_switch" style="height:40px">
 			<div class="weui_cell_hd weui_cell_primary">声音提示</div>
 			<div class="weui_cell_ft">
-				<input class="weui_switch" type="checkbox" checked />
+				<input class="weui_switch" type="checkbox" id="check1_1" />
 			</div>
 		</div>
 		<div class="weui_cell weui_cell_switch" style="height:40px">
 			<div class="weui_cell_hd weui_cell_primary">震动提示</div>
 			<div class="weui_cell_ft">
-				<input class="weui_switch" type="checkbox" checked />
+				<input class="weui_switch" type="checkbox" id="check1_2" />
 			</div>
 		</div>
 	</div>
@@ -190,28 +192,155 @@
 		<div class="weui_cell weui_cell_switch" style="height:40px">
 			<div class="weui_cell_hd weui_cell_primary">兴趣书籍</div>
 			<div class="weui_cell_ft">
-				<input class="weui_switch" type="checkbox" checked />
+				<input class="weui_switch" type="checkbox" id="check2_1" />
 			</div>
 		</div>
 		<div class="weui_cell weui_cell_switch" style="height:40px">
 			<div class="weui_cell_hd weui_cell_primary">精选好书</div>
 			<div class="weui_cell_ft">
-				<input class="weui_switch" type="checkbox" checked />
+				<input class="weui_switch" type="checkbox" id="check2_2"/>
 			</div>
 		</div>
 		<div class="weui_cell weui_cell_switch" style="height:40px">
 			<div class="weui_cell_hd weui_cell_primary">系统通知</div>
 			<div class="weui_cell_ft">
-				<input class="weui_switch" type="checkbox" checked />
+				<input class="weui_switch" type="checkbox" id="check2_3" />
 			</div>
 		</div>
 		<div class="weui_cell weui_cell_switch" style="height:40px">
 			<div class="weui_cell_hd weui_cell_primary">相关热评</div>
 			<div class="weui_cell_ft">
-				<input class="weui_switch" type="checkbox" checked />
+				<input class="weui_switch" type="checkbox" id="check2_4" checked/>
 			</div>
 		</div>
 	</div>
 	
+	<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+	<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+	<script>
+		var $j = jQuery.noConflict(); //自定义一个比较短的快捷方式
+	</script>
+	<script>
+		
+		$j(document).ready(function(){
+			//cookie初始化
+			if($j.cookie("check0") == "unchecked"){
+				$j('#check0').removeAttr("checked");
+			}else{
+				$j('#check0').prop("checked", true);
+				$j('#check0').attr("checked", true);
+			}
+			
+			if($j.cookie("check1_1") == "unchecked"){
+				$j('#check1_1').removeAttr("checked");
+			}else{
+				$j('#check1_1').prop("checked", true);
+				$j('#check1_1').attr("checked", true);
+			}
+			
+			if($j.cookie("check1_2") == "unchecked"){
+				$j('#check1_2').removeAttr("checked");
+			}else{
+				$j('#check1_2').prop("checked", true);
+				$j('#check1_2').attr("checked", true);
+			}
+			
+			if($j.cookie("check2_1") == "unchecked"){
+				$j('#check2_1').removeAttr("checked");
+			}else{
+				$j('#check2_1').prop("checked", true);
+				$j('#check2_1').attr("checked", true);
+			}
+			
+			if($j.cookie("check2_2") == "unchecked"){
+				$j('#check2_2').removeAttr("checked");
+			}else{
+				$j('#check2_2').prop("checked", true);
+				$j('#check2_2').attr("checked", true);
+			}
+			
+			if($j.cookie("check2_3") == "unchecked"){
+				$j('#check2_3').removeAttr("checked");
+			}else{
+				$j('#check2_3').prop("checked", true);
+				$j('#check2_3').attr("checked", true);
+			}
+			
+			if($j.cookie("check2_4") == "unchecked"){
+				$j('#check2_4').removeAttr("checked");
+			}else{
+				$j('#check2_4').prop("checked", true);
+				$j('#check2_4').attr("checked", true);
+			}
+			
+			
+			//点击存储cookie
+			$j('#check0').click(function(){
+				var status = $j('#check0').attr("checked");
+				if(status == "checked"){
+					$j.cookie("check0","unchecked",{expires:7,path:'/'});
+				}else{
+					$j.cookie("check0","checked",{expires:7,path:'/'});
+				}
+
+		  	});
+		  	
+		  	$j('#check1_1').click(function(){
+		  		var status = $j('#check1_1').attr("checked");
+				if(status == "checked"){
+					$j.cookie("check1_1","unchecked",{expires:7,path:'/'});
+				}else{
+					$j.cookie("check1_1","checked",{expires:7,path:'/'});
+				}
+				
+		  	});
+		  	
+		  	$j('#check1_2').click(function(){
+				var status = $j('#check1_2').attr("checked");
+				if(status == "checked"){
+					$j.cookie("check1_2","unchecked",{expires:7,path:'/'});
+				}else{
+					$j.cookie("check1_2","checked",{expires:7,path:'/'});
+				}
+		  	});
+		  	
+		  	$j('#check2_1').click(function(){
+				var status = $j('#check2_1').attr("checked");
+				if(status == "checked"){
+					$j.cookie("check2_1","unchecked",{expires:7,path:'/'});
+				}else{
+					$j.cookie("check2_1","checked",{expires:7,path:'/'});
+				}
+		  	});
+		  	
+		  	$j('#check2_2').click(function(){
+				var status = $j('#check2_2').attr("checked");
+				if(status == "checked"){
+					$j.cookie("check2_2","unchecked",{expires:7,path:'/'});
+				}else{
+					$j.cookie("check2_2","checked",{expires:7,path:'/'});
+				}
+		  	});
+		  	
+		  	$j('#check2_3').click(function(){
+				var status = $j('#check2_3').attr("checked");
+				if(status == "checked"){
+					$j.cookie("check2_3","unchecked",{expires:7,path:'/'});
+				}else{
+					$j.cookie("check2_3","checked",{expires:7,path:'/'});
+				}
+		  	});
+		  	
+		  	$j('#check2_4').click(function(){
+				var status = $j('#check2_4').attr("checked");
+				if(status == "checked"){
+					$j.cookie("check2_4","unchecked",{expires:7,path:'/'});
+				}else{
+					$j.cookie("check2_4","checked",{expires:7,path:'/'});
+				}
+		  	});
+		});
+		
+	</script>
 </body>
 </html>

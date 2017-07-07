@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>扫一扫测试</title>
+<title>扫一扫</title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, user-scalable=0">
 <link rel="stylesheet"
