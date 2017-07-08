@@ -294,6 +294,11 @@ public class WeixinUtil {
 		button24.setType("view");
 		button24.setUrl(DN + "/library/start_scan.action");
 		
+		//地图
+		ViewButton button25 = new ViewButton();
+		button25.setName("地图");
+		button25.setType("view");
+		button25.setUrl(MapUtil.MarkLocation());
 		
 		ClickButton button31 = new ClickButton();
 		button31.setName("最新动态");
@@ -321,7 +326,7 @@ public class WeixinUtil {
 		
 		Button button3 = new Button();
 		button3.setName("服务");
-		button3.setSub_button(new Button[]{button23,button21,button22});
+		button3.setSub_button(new Button[]{button23,button21,button22,button25});
 		
 		menu.setButton(new Button[]{button13,button2,button3});		
 		return menu;
