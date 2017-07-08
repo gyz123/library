@@ -92,6 +92,19 @@ public class WeixinServlet extends HttpServlet {
 			else if(MessageUtil.MESSAGE_LOCATION.equals(msgType)){
 				String label = map.get("Label");
 				message = MessageUtil.initText(toUserName, fromUserName, label);
+			}else if(MessageUtil.MESSAGE_VOICE.equals(msgType)){
+				//声音搜索
+				String voiceContent = map.get("Recognition");//微信语音识别接口
+				voiceContent = voiceContent.substring(0, voiceContent.length()-1);
+				System.out.println(voiceContent);
+				String msgBack = MessageUtil.handleUserMsg(toUserName, fromUserName, voiceContent);
+				String numRegex = "[0-9]{1,}";
+				if(msgBack.matches(numRegex)){
+					News news = MessageUtil.generateBookSearch(msgBack,fromUserName);
+					message = MessageUtil.initNewsMessage(toUserName, fromUserName, news);
+				}else{
+					message = MessageUtil.initText(toUserName, fromUserName, msgBack);
+				}
 			}
 			
 			// 客服接口
