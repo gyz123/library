@@ -276,9 +276,24 @@
 			var time1 = decodeURI(decodeURI($j.cookie("time1")));
 			var time2 = decodeURI(decodeURI($j.cookie("time2")));
 			var time3 = decodeURI(decodeURI($j.cookie("time3")));
-			$j("#time1").attr("value", time1);
-			$j("#time2").attr("value", time2);
-			$j("#time3").attr("value", time3);
+			if(time1 == "undefined"){
+				$j("#time1").attr("value", "上午 00：00");
+			}else{
+				$j("#time1").attr("value", time1);
+			}
+			
+			if(time2 == "undefined"){
+				$j("#time2").attr("value", "上午 00：00");
+			}else{
+				$j("#time2").attr("value", time2);
+			}
+			
+			if(time3 == "undefined"){
+				$j("#time3").attr("value", "每天一次");
+			}else{
+				$j("#time3").attr("value", time3);
+			}
+			
 			
 			//点击存储cookie
 			$j('#check0').click(function(){
@@ -353,15 +368,24 @@
 	</script>
 	
 	<script>
-		window.onbeforeunload=function(){
-			var time1 = document.getElementById("time1").value;
-			var time2 = document.getElementById("time2").value;
-			var time3 = document.getElementById("time3").value;
+		
+		var time1 = document.getElementById("time1");
+		var time2 = document.getElementById("time2");
+		var time3 = document.getElementById("time3");
 			
-			setCookie("time1", time1, "d7");
-			setCookie("time2", time2, "d7");
-			setCookie("time3", time3, "d7");
-		}
+		time1.addEventListener("change", function(){
+			setCookie("time1", time1.value, "d7");
+		});
+		
+		time2.addEventListener("change", function(){
+			setCookie("time2", time2.value, "d7");
+		});
+		
+		time3.addEventListener("change", function(){
+			setCookie("time3", time3.value, "d7");
+		});
+		
+	
 		
 		//程序代码
 		function setCookie(name,value,time){
@@ -371,7 +395,7 @@
 			document.cookie = name + "="+ encodeURI(encodeURI(value)) + ";expires=" + exp.toGMTString() + ";path=" + '/';
 		}
 		function getsec(str){
-		    alert(str);
+		    //alert(str);
 		    var str1=str.substring(1,str.length)*1; 
 		    var str2=str.substring(0,1); 
 		    if (str2=="s"){
