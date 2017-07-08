@@ -215,7 +215,7 @@
 		</div>
 	</div>
 	
-	<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
 	<script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 	<script>
 		var $j = jQuery.noConflict(); //自定义一个比较短的快捷方式
@@ -273,6 +273,12 @@
 				$j('#check2_4').attr("checked", true);
 			}
 			
+			var time1 = decodeURI(decodeURI($j.cookie("time1")));
+			var time2 = decodeURI(decodeURI($j.cookie("time2")));
+			var time3 = decodeURI(decodeURI($j.cookie("time3")));
+			$j("#time1").attr("value", time1);
+			$j("#time2").attr("value", time2);
+			$j("#time3").attr("value", time3);
 			
 			//点击存储cookie
 			$j('#check0').click(function(){
@@ -339,8 +345,49 @@
 					$j.cookie("check2_4","checked",{expires:7,path:'/'});
 				}
 		  	});
+		  	
+		  
 		});
 		
+		
 	</script>
+	
+	<script>
+		window.onbeforeunload=function(){
+			var time1 = document.getElementById("time1").value;
+			var time2 = document.getElementById("time2").value;
+			var time3 = document.getElementById("time3").value;
+			
+			setCookie("time1", time1, "d7");
+			setCookie("time2", time2, "d7");
+			setCookie("time3", time3, "d7");
+		}
+		
+		//程序代码
+		function setCookie(name,value,time){
+			var strsec = getsec(time);
+			var exp = new Date();
+			exp.setTime(exp.getTime() + strsec*1);
+			document.cookie = name + "="+ encodeURI(encodeURI(value)) + ";expires=" + exp.toGMTString() + ";path=" + '/';
+		}
+		function getsec(str){
+		    alert(str);
+		    var str1=str.substring(1,str.length)*1; 
+		    var str2=str.substring(0,1); 
+		    if (str2=="s"){
+		    return str1*1000;
+		    }else if (str2=="h"){
+		    return str1*60*60*1000;
+		    }else if (str2=="d"){
+		    return str1*24*60*60*1000;
+		    }
+		}
+		//这是有设定过期时间的使用示例：
+		//s20是代表20秒
+		//h是指小时，如12小时则是：h12
+		//d是天数，30天则：d30
+	</script>
+	
+	
 </body>
 </html>
