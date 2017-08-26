@@ -1,11 +1,19 @@
 package action.page;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 
 import po.Comment;
+import po.ComparePriceEntity;
 import po.book.Book;
 import po.book.BookDetailInfo;
 import po.user.UserDetailInfo;
@@ -233,7 +242,100 @@ public class SingleItem extends ActionSupport{
         session.setAttribute("weid", weid);
         session.setAttribute("likeFlag", likeFlag);
         
+        // 价格
+        String bookname = book.getBookname();
+        bookname = URLEncoder.encode(bookname, "gbk");	// 书名
+        //爬取的网站与关键字
+  		String catchUrl = "http://book.manmanbuy.com/Search.aspx?key=" + bookname;
+  		System.out.println("URL：" + bookname);
+  		
+  		List<ComparePriceEntity> myEntity = new ArrayList<ComparePriceEntity>();
+  		myEntity = getEntity(catchUrl);
+  		context.put("price_list", myEntity);
+        
 		return SUCCESS;
+	}
+	
+	public static String catchData(String url){
+		//定义存储网页内容的字符串
+		String result = "";
+		//定义缓冲字符输入流
+		BufferedReader in = null;
+		try {
+			//将string转化成url对象
+			URL realUrl = new URL(url);
+			//初始化连接
+			URLConnection connection = realUrl.openConnection();
+			//反反爬虫
+			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
+			//开始实际的连接
+			connection.connect();
+			//初始化BufferedReader输入流来读取URL的响应
+			in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			//用于临时存储每一行数据
+			String line;
+			while((line = in.readLine()) != null){
+				//遍历每一行存储到result
+				result += line + "\n";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (in != null) {
+					in.close();
+				}
+			} catch (Exception e2){
+				e2.printStackTrace();
+			}
+		}
+	
+		return result;
+	}
+	
+	
+	public static List<ComparePriceEntity> getEntity(String catchUrl){
+		//存储爬取的数据
+		//"http://book.manmanbuy.com/Search.aspx?key=%BB%FA%C6%F7%D1%A7%CF%B0%D3%EBR%D3%EF%D1%D4"
+		String result = catchData(catchUrl);
+		//获取网站名称
+		List<String> site = new ArrayList<String>();
+		Pattern pattern = Pattern.compile("<div class='sitediv'>(.+?)：</div>");
+		Matcher matcher = pattern.matcher(result);
+		while(matcher.find()){
+			System.out.println("找到了网站");
+			System.out.println(matcher.group(1));
+			site.add(matcher.group(1));
+		}
+		//获取价格
+		List<String> price = new ArrayList<String>();
+		pattern = Pattern.compile("<div class='pricediv'>(.+?)</div>");
+		matcher = pattern.matcher(result);
+		while(matcher.find()){
+			System.out.println("找到了价格");
+			System.out.println(matcher.group(1));
+			price.add(matcher.group(1));
+		}
+		//获取网站连接
+		List<String> url = new ArrayList<String>();
+		pattern = Pattern.compile("href=\"(.+?)\" target='_blank'");
+		matcher = pattern.matcher(result);
+		while(matcher.find()){
+			System.out.println("找到了链接");
+			System.out.println(matcher.group(1));
+			String[] nets = matcher.group(1).split("=");
+			url.add(nets[2]);
+		}
+		//加入List中
+		List<ComparePriceEntity> entity = new ArrayList<ComparePriceEntity>();
+		for(int i = 0; i < site.size(); i++){
+			ComparePriceEntity comparePriceEntity = new ComparePriceEntity();
+			comparePriceEntity.setSite(site.get(i));
+			comparePriceEntity.setPrice(price.get(i));
+			comparePriceEntity.setGoodUrl(url.get(i));
+			entity.add(comparePriceEntity);
+		}
+		return entity;
 	}
 	
 }

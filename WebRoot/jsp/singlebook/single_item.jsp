@@ -218,6 +218,7 @@
 	</div>
 
 
+
 	<div style="height:16px;width:100%;background-color:#f8f8f8"></div>
 	<div style="height:40px;width:100%;margin-left:24px;padding-top:12px">
 		<span class="f16">导读</span>
@@ -245,9 +246,40 @@
 		</a>
 	</div>
 	
+	<div class="weui_cells weui_cells_access" style="height:44px;margin-top:-1px">
+		<a class="weui_cell " style="" href="#" >
+			<div class="weui_cell_bd weui_cell_primary" style="margin-top:4px">
+				<span class="f16" style="margin-left:8px">在线阅读</span>
+			</div>
+			<div class="weui_cell_ft" style="margin-top:8px">
+				<span class="f16 f-gray"></span>
+			</div> 
+		</a>
+	</div>
+	
+	
+	
+	<div style="height:16px;width:100%;background-color:#f8f8f8"></div>
+	<div style="height:40px;width:100%;margin-left:16px;padding-top:12px">
+		<span class="f16">价格一览</span>
+	</div>
+	<c:forEach var="price_list" items="${price_list }">
+	<div class="weui_cells weui_cells_access" style="margin-left:12px;height:44px;margin-top:-1px">
+		<a class="weui_cell " style="" href="${price_list.goodUrl }" >
+			<div class="weui_cell_bd weui_cell_primary" style="margin-top:0px">
+				<span class="f16" style="margin-left:0px">${price_list.site }</span>
+			</div>
+			<div class="weui_cell_ft" style="margin-top:0px">
+				<span class="f16 f-gray">${price_list.price }</span>
+			</div> 
+		</a>
+	</div>
+	</c:forEach>
+	
+	
+
 
 	<div style="height:16px;width:100%;background-color:#f8f8f8"></div>
-	
 	<div style="height:40px;width:100%;margin-left:16px;padding-top:12px">
 		<span class="f16">相关推荐</span>
 	</div>

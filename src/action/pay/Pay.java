@@ -66,8 +66,9 @@ public class Pay extends ActionSupport{
 		response.setCharacterEncoding("utf-8");
 		PrintWriter pw = response.getWriter();
 		//Ω¯––AESº”√‹
-		String encryptResult = EncryptUtil.parseByte2HexStr(EncryptUtil.encrypt(sb.toString()));
-		pw.write(encryptResult);
+//		String encryptResult = EncryptUtil.parseByte2HexStr(EncryptUtil.encrypt(sb.toString()));
+//		pw.write(encryptResult);
+		pw.write(sb.toString());
 		pw.flush();
 		pw.close();
 	}

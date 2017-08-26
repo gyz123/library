@@ -176,8 +176,9 @@ public class History extends ActionSupport{
 		response.setCharacterEncoding("utf-8");
 		PrintWriter pw = response.getWriter();
 		//进行AES加密
-		String encryptResult = EncryptUtil.parseByte2HexStr(EncryptUtil.encrypt(sb.toString()));
-		pw.write(encryptResult);
+//		String encryptResult = EncryptUtil.parseByte2HexStr(EncryptUtil.encrypt(sb.toString()));
+//		pw.write(encryptResult);
+		pw.write(sb.toString());
 		pw.flush();
 		pw.close();
 	}
@@ -190,10 +191,7 @@ public class History extends ActionSupport{
 		String bookno = request.getParameter("bookno");
 		
 		// 获取书本归还状态
-		String status = "N";
-		if(SQL4PersonalInfo.listenReturn(weid,bookno) != null){
-			status = "Y";
-		}
+		String status = SQL4PersonalInfo.listenReturn(weid,bookno);
 		System.out.println("归还状态:" + status);
 		
 		// 返回状态给前台

@@ -698,7 +698,7 @@ public class SQL4PersonalInfo {
 	
 	// ¼àÌý¹é»¹×´Ì¬
 	public static String listenReturn(String weid,String bookno){
-		String status = null;
+		String status = "N";
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection(
@@ -706,8 +706,10 @@ public class SQL4PersonalInfo {
 			Statement s = con.createStatement();
 			String query = "select returntime from borrow where weid = '" 
 									+ weid + "' and bookno = '"+ bookno + "';";
+			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			while (ret.next()) {  
+				System.out.println(ret.getString(1));
             	if(ret.getString(1) != null){
             		status = "Y";
             	}

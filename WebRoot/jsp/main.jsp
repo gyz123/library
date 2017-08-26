@@ -9,16 +9,16 @@
 	content="width=device-width,initial-scale=1,user-scalable=0">
 <title>首页</title>
 
-<link rel="stylesheet" href="../css/weui.css" />
-<link rel="stylesheet" href="../css/weui2.css" />
-<link rel="stylesheet" href="../css/weui3.css" />
-<link rel="stylesheet" type="text/css" href="../css/weuix.min.css">
+<link rel="stylesheet" href="css/weui.css" />
+<link rel="stylesheet" href="css/weui2.css" />
+<link rel="stylesheet" href="css/weui3.css" />
+<link rel="stylesheet" type="text/css" href="css/weuix.min.css">
 
-<script src="../js/zepto.min.js"></script>
-<script src="../js/swipe.js"></script>
+<script src="js/zepto.min.js"></script>
+<script src="js/swipe.js"></script>
 
-<link rel="stylesheet" href="../css/test.css">
-<link rel="stylesheet" href="../css/index.css">
+<link rel="stylesheet" href="css/test.css">
+<link rel="stylesheet" href="css/index.css">
 
 <style type="text/css">
 #mydiv {
@@ -383,8 +383,8 @@
 </script>
 
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-<script type="text/javascript" src="../js/jquery-3.1.1.min.js"></script>
-<link rel="stylesheet" type="text/css" href="../css/icon.css">
+<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/icon.css">
 <script>
 	var $j = jQuery.noConflict(); //自定义一个比较短的快捷方式
 </script>
@@ -722,8 +722,8 @@
       //   if (!expr) throw new Error(msg || 'failed');
       // }
     </script>
-	<script src="../js/slideout.js"></script>
-	<script src="../js/test.js"></script>
+	<script src="js/slideout.js"></script>
+	<script src="js/test.js"></script>
 	<script>
       window.onload = function() {
         document.querySelector('.js-slideout-toggle').addEventListener('click', function() {

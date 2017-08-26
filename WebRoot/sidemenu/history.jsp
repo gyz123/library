@@ -514,7 +514,7 @@
 		$j(document).ready((function(){
 			$j('.continue').click(function(){
 				console.log("continue方法触发了");
-				var bookno = $(this).attr("value");
+				bookno = $(this).attr("value");
 				console.log(bookno);
 				
 				//异步请求生成订单
@@ -537,7 +537,7 @@
 			
 			$j('.return').click(function(){
 				console.log("return方法触发了");
-				var bookno = $(this).attr("value");
+				bookno = $(this).attr("value");
 				console.log(bookno);
 				
 				//异步请求生成还书二维码
@@ -582,7 +582,9 @@
 			$j.ajax({    
             type:'post',        
             url:'/library/listen_return_status.action',    //servlet名
-            data:"weid=" + "<%=request.getParameter("weid")%>",   //参数 
+            data:"weid=" + "<%=request.getParameter("weid")%>" +
+            "&bookno=" + bookno ,   //参数 
+            
             cache:false,    
            // dataType:'json',    
             success:function(data){ 
@@ -593,7 +595,11 @@
             		alert("二维码已经过期，请重新生成");
             		window.clearInterval(stop); //停止触发
             	}
-            	if(count === 5){
+            	if(data === "Y"){
+            		window.clearInterval(stop); //停止触发
+            		location.href = "/library/return_success.action"; //成功跳转确认订单
+            	}
+            	if(count === 7){
             		window.clearInterval(stop); //停止触发
             		location.href = "/library/return_success.action"; //成功跳转确认订单
             	}
