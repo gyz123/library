@@ -193,7 +193,7 @@
 		</div>
 	</div>
 
-	<div class="weui_cells weui_cells_access" style="height:7%">
+	<div class="weui_cells weui_cells_access" style="height:44px">
 		<a class="weui_cell " style="height:24px;margin-top:8px" 
 				href="/library/get_book_xu.action?weid=${weid }&bookno=${book.bookno}" >
 			<div class="weui_cell_bd weui_cell_primary">
@@ -205,7 +205,7 @@
 		</a>
 	</div>
 
-	<div class="weui_cells weui_cells_access" style="height:7%;margin-top:-1px">
+	<div class="weui_cells weui_cells_access" style="height:44px;margin-top:-1px">
 		<a class="weui_cell " style="height:24px;margin-top:8px" 
 				href="/library/get_book_outline.action?weid=${weid }&bookno=${book.bookno}" >
 			<div class="weui_cell_bd weui_cell_primary">
@@ -247,7 +247,8 @@
 	</div>
 	
 	<div class="weui_cells weui_cells_access" style="height:44px;margin-top:-1px">
-		<a class="weui_cell " style="" href="#" >
+		<a class="weui_cell " style="" 
+			href="/library/onlineReading.action?bookno=${book.bookno }&weid=${weid }&chapter=1" >
 			<div class="weui_cell_bd weui_cell_primary" style="margin-top:4px">
 				<span class="f16" style="margin-left:8px">在线阅读</span>
 			</div>

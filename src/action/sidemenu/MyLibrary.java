@@ -1,0 +1,130 @@
+package action.sidemenu;
+
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.struts2.ServletActionContext;
+
+import po.ReserveOrder;
+import po.book.BookInCurrentList;
+import po.book.BorrowedBook;
+import po.user.UserDetailInfo;
+import util.sql.SQL4PersonalInfo;
+
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
+
+public class MyLibrary extends ActionSupport{
+	private static final long serialVersionUID=1L;
+	
+	// 主界面
+	@Override
+	public String execute() throws Exception {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getParameter("weid");
+		if(weid == null || weid.isEmpty()){
+			weid = (String)request.getSession(false).getAttribute("weid");
+		}
+		// 获取用户信息
+		UserDetailInfo user = SQL4PersonalInfo.queryUser(weid);		
+		ActionContext context = ActionContext.getContext();
+		context.put("weid", weid);
+		context.put("user", user);
+		
+		return SUCCESS;
+	}
+	
+	// 当前借阅
+	public String enterCurrent() throws Exception {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getParameter("weid");
+		ActionContext context = ActionContext.getContext();
+		context.put("weid", weid);
+		// 正在看的书
+		ArrayList<BookInCurrentList> bookList = SQL4PersonalInfo.getCurrentReading("now", weid);
+		context.put("booklist", bookList);
+		
+		return "ok";
+	}
+	
+	// 历史记录
+	public String enterHistory() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getParameter("weid");
+		ActionContext context = ActionContext.getContext();
+		context.put("weid", weid);
+		// 借过的书
+		ArrayList<BookInCurrentList> bookList = SQL4PersonalInfo.getCurrentReading("history", weid);
+		context.put("booklist", bookList);
+		
+		return "ok";
+	}
+	
+	
+	// 我的预定
+	public String enterOrder() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getParameter("weid");
+		ActionContext context = ActionContext.getContext();
+		context.put("weid", weid);
+		// 订单列表
+		ArrayList<ReserveOrder> list = SQL4PersonalInfo.getReserveOrder(weid);
+		context.put("booklist", list);
+	
+		return "ok";
+	}
+	// 取消订单
+	public void cancelOrder() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getParameter("weid");
+		String bookno = request.getParameter("bookno");
+		// 取消订单
+		SQL4PersonalInfo.cancelReserveOrder(weid, bookno);
+
+		// 刷新页面
+		Thread.sleep(2000);
+		HttpServletResponse response = ServletActionContext.getResponse();
+        response.setCharacterEncoding("utf-8");
+		String url = response.encodeURL("/library/enter_order.action?weid=" + weid);  
+		response.sendRedirect(url);
+	}
+	
+	
+	// 资料修改
+	public String enterInfo() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getParameter("weid");
+		ActionContext context = ActionContext.getContext();
+		context.put("weid", weid);
+	
+		// 用户原始资料
+		UserDetailInfo user = SQL4PersonalInfo.queryUser(weid);
+		context.put("user", user);
+		
+		return "ok";
+	}
+	// 确认修改
+	public String confirmModify() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getParameter("weID");
+		String username = request.getParameter("name");
+		String phone = request.getParameter("tel");
+		String idcard = request.getParameter("IDNumber");
+		// 修改
+		SQL4PersonalInfo.modifyUserInfo(weid, username, phone, idcard);
+		// 延时刷新
+		Thread.sleep(2000);
+		return "ok";
+	}
+	
+}

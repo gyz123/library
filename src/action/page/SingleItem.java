@@ -128,7 +128,6 @@ public class SingleItem extends ActionSupport{
 		return "ok";
 	}
 	
-	
 	// 用户添加评论
 	public void createNewComment() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -149,6 +148,15 @@ public class SingleItem extends ActionSupport{
 		String url = response.encodeURL("/library/get_book_comments?weid=" + weid + "&bookno=" + bookno);  
 		System.out.println("url:" + url);
 		response.sendRedirect(url);
+	}
+	
+	// 点赞
+	public void handleGoodNum() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String category = request.getParameter("category"); 
+		String commentid = request.getParameter("commentid");
+		SQLUtil.handleGoodNum(category, commentid);
 	}
 	
 	
@@ -183,6 +191,36 @@ public class SingleItem extends ActionSupport{
 		context.put("bookno",bookno);
 		context.put("xu", bookInfo.get("xu"));
 		context.put("bookname",bookInfo.get("bookname"));
+		
+		return "ok";
+	}
+	
+	// 在线阅读
+	public String onlineReading() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getParameter("weid");
+		String bookno = request.getParameter("bookno");
+		String chapter = request.getParameter("chapter");
+		if(chapter == null || chapter.isEmpty() || Integer.parseInt(chapter) <= 0){
+			chapter = "1";
+		}
+		
+		ActionContext context = ActionContext.getContext();
+		context.put("weid", weid);
+		context.put("bookno",bookno);
+		context.put("pagenum", chapter);
+		HashMap<String,String> bookInfo = SQLUtil.getBookXu(bookno);
+		context.put("bookname",bookInfo.get("bookname"));
+		
+		// 处理内容显示
+		String content = SQLUtil.getBookContent(bookno, chapter);
+        String[] strs = content.split("\n");
+        ArrayList<String> contentlist = new ArrayList<String>();
+        for(int i=0; i<strs.length; i++){
+        	contentlist.add(strs[i].trim());
+        }
+	    context.put("contentlist", contentlist);
 		
 		return "ok";
 	}
@@ -249,9 +287,9 @@ public class SingleItem extends ActionSupport{
   		String catchUrl = "http://book.manmanbuy.com/Search.aspx?key=" + bookname;
   		System.out.println("URL：" + bookname);
   		
-  		List<ComparePriceEntity> myEntity = new ArrayList<ComparePriceEntity>();
-  		myEntity = getEntity(catchUrl);
-  		context.put("price_list", myEntity);
+//  		List<ComparePriceEntity> myEntity = new ArrayList<ComparePriceEntity>();
+//  		myEntity = getEntity(catchUrl);
+//  		context.put("price_list", myEntity);
         
 		return SUCCESS;
 	}
@@ -337,5 +375,6 @@ public class SingleItem extends ActionSupport{
 		}
 		return entity;
 	}
+	
 	
 }

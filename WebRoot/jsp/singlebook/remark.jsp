@@ -55,8 +55,16 @@
     <c:forEach var="co" items="${commentlist }">
 		<li class="weui-comment-item">
 			<div class="weui-comment-li">
+				<!--  点赞处理
 				<span class="check"> <i class="weui-comment-icon"></i> <span
 					class="weui-comment-num">${co.goodnum }</span> </span>
+				-->
+				<span class="weui-weixin-read">
+					<i class="weui-weixin-zan">
+						<div style="display:none;" class="commentid">${co.commentid }</div>	
+					</i>
+					<span class="weui-weixin-num">${co.goodnum }</span>
+				</span>
 			</div>
 			<div class="userinfo" style="margin-left:0px">
 				<strong class="nickname f20" style="margin-left:14px">${co.wename }</strong> 
@@ -209,5 +217,69 @@ $(document).ready(function(){
 	});
 </script>
 
+<script>
+	$(function() {
+		$('.weui-weixin-zan').click(function() {
+			if ($(this).hasClass('zaned')) {
+				//取消赞
+				$(this).removeClass('zaned');
+				var val = $(this).next().html();
+				if (parseInt(val) == 0) {
+					var i = 1;
+				} else {
+					var i = parseInt(val) - 1;
+				}
+				$(this).next().html(i);
+				var commentidDom = $(this).find(".commentid");
+				//console.log(commentidDom);
+				var commentid = commentidDom.html();
+				console.log(commentid);
+				$.ajax({    
+		            type:'post',        
+		            url:'/library/handle_goodnum.action',    //servlet名
+		            data : {
+						commentid : commentid,
+						category : "minus"
+					}, //参数 
+		            cache:false,    
+		            //dataType:'json',    
+		            success:function(data){ 
+		            	console.log("取消点赞成功");
+		            },
+		            error:function(){
+		            	console.log("取消点赞error");
+		            }    
+		        	}); 
+
+			} else {
+				//点赞
+				$(this).addClass('zaned');
+				var val = $(this).next().html();
+				$(this).next().html(parseInt(val) + 1);
+				//ajax操作
+				var commentidDom = $(this).find(".commentid");
+				//console.log(commentidDom);
+				var commentid = commentidDom.html();
+				console.log(commentid);
+				$.ajax({    
+		            type:'post',        
+		            url:'/library/handle_goodnum.action',    //servlet名
+		            data : {
+						commentid : commentid,
+						category : "add"
+					}, //参数 
+		            cache:false,    
+		            //dataType:'json',    
+		            success:function(data){ 
+		            	console.log("点赞成功");
+		            },
+		            error:function(){
+		            	console.log("点赞error");
+		            }  
+				});
+			}
+		});
+	});
+</script> 
 </body>
 </html>

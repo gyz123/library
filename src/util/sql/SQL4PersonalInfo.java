@@ -12,7 +12,9 @@ import java.util.Iterator;
 import java.util.Map;
 
 import po.PayList;
+import po.ReserveOrder;
 import po.book.BookInCategory;
+import po.book.BookInCurrentList;
 import po.book.BookInShoppingcart;
 import po.book.BookWithoutImg;
 import po.book.BorrowedBook;
@@ -54,6 +56,28 @@ public class SQL4PersonalInfo {
 		}
 		return null;
 	}
+	
+	
+	// 修改用户信息
+	public static void modifyUserInfo(String weid,String username,String phone,String idcard){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "update user" 
+					+ " set phone = '" + phone 
+					+ "' , username = '" + username 
+					+ "' , idcard = '" + idcard + "' " 
+					+ "where weid = '" + weid + "';";
+			//System.out.println(query);
+            s.executeUpdate(query);
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	
 	// 添加收藏
@@ -720,5 +744,133 @@ public class SQL4PersonalInfo {
 		}
 		return status;
 	}
+	
+	
+	// 当前借阅 or 历史记录
+	public static ArrayList<BookInCurrentList> getCurrentReading(String category,String weid){
+		ArrayList<BookInCurrentList> list = new ArrayList<BookInCurrentList>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://"
+					+ WeixinUtil.MYSQL_DN, WeixinUtil.MYSQL_NAME,
+					WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "";
+			if(category.equals("now")){
+				query = "select book.bookno,book.bookname,book.bookimg,book.author,borrow.borrowtime " +
+						"from book,borrow " +
+						"where borrow.weid = '" + weid +"' " +
+						"and borrow.returntime is null and borrow.bookno = book.bookno;";
+			}else if(category.equals("history")){
+				query = "select book.bookno,book.bookname,book.bookimg,book.author,borrow.borrowtime " +
+						"from book,borrow " +
+						"where borrow.weid = '" + weid +"' " +
+						"and borrow.returntime is not null and borrow.bookno = book.bookno;";
+			}
+			System.out.println(query);
+			ResultSet ret = s.executeQuery(query);
+			// 获取书籍信息
+			while (ret.next()) {
+				BookInCurrentList book = new BookInCurrentList();
+				book.setBookno(ret.getString(1));
+				book.setBookname(ret.getString(2));
+				book.setBookimg(ret.getString(3));
+				book.setAuthor(ret.getString(4));
+				if(category.equals("now")){
+					// 计算剩余时间
+					String borrowtime = ret.getString(5);
+					String datas[];
+					int month = 1,day = 1;
+					if(!borrowtime.isEmpty()){
+						datas = borrowtime.split("-");
+						month = Integer.parseInt(datas[1]);
+						day = Integer.parseInt(datas[2]);
+					}
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					String nowDate = sdf.format(new Date());
+					String datas1[] = nowDate.split("-");
+					
+					int nowDay = Integer.parseInt(datas1[2]);
+					int temp = 1;
+					if(nowDay >= day){
+						temp = nowDay - day + 1 ;
+					}else{
+						switch(month){
+							case 2: temp = 28-day+1+nowDay; break;
+							case 4:
+							case 6:
+							case 9:
+							case 11:temp = 28-day+1+nowDay; break;
+							default: temp = 31-day+1+nowDay; break;
+						}
+					}
+					int leftTime = 31 - temp;
+					book.setLeftTime(leftTime + "");
+				}
+				
+				list.add(book);
+			}
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	
+	// 我的预定
+	public static ArrayList<ReserveOrder> getReserveOrder(String weid){
+		ArrayList<ReserveOrder> list = new ArrayList<ReserveOrder>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "select book.bookno,book.bookname,book.bookimg,reserve.reservetime,reserve.status "
+							+ "from book,reserve "
+							+ "where book.bookno = reserve.bookno and reserve.weid = '" + weid + "';";
+//			System.out.println(query);
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {  
+				ReserveOrder order = new ReserveOrder();
+				order.setBookno(ret.getString(1));
+				order.setBookname(ret.getString(2));
+				order.setBookimg(ret.getString(3));
+				order.setTime(ret.getString(4));
+				if(!ret.getString(5).equals("Y")){
+					order.setStatus("等待审核");
+					order.setFlag(0);
+				}else{
+					order.setStatus("已审核");
+					order.setFlag(1);
+				}
+				
+				list.add(order);
+            }
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	// 取消预定
+	public static void cancelReserveOrder(String weid, String bookno){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query="delete from reserve " +
+						"where weid = '" + weid + "' and bookno = " + bookno + ";";
+//			System.out.println(query);
+			s.executeUpdate(query);
+            
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 }

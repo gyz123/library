@@ -60,7 +60,7 @@
 		
 		<!-- 进入公告   -->
 		<action name="enter_anno" class="action.page.Library_main" method="enterAnno">
-			<result name="ok">/jsp/announcement.jsp</result>
+			<result name="ok">/jsp/single_announcement.jsp</result>
 		</action>
 		
 		<!-- jssdk动态获取 -->
@@ -99,6 +99,9 @@
 		<!-- 单本书籍，写书评  -->
 		<action name="handle_comment" class="action.page.SingleItem" method="createNewComment">
 		</action>
+		<!-- 单本书籍，点赞评论 -->
+		<action name="handle_goodnum" class="action.page.SingleItem" method="handleGoodNum">
+		</action>
 		<!-- 单本书籍，目录 -->
 		<action name="get_book_outline" class="action.page.SingleItem" method="getBookOutline">
 			<result name="ok">/jsp/singlebook/outline.jsp</result>
@@ -109,6 +112,10 @@
 		</action>
 		<!-- 单本书籍，收藏   -->
 		<action name="add_to_like" class="action.page.SingleItem" method="addToLike">
+		</action>
+		<!-- 单本书籍，在线阅读   -->
+		<action name="onlineReading" class="action.page.SingleItem" method="onlineReading">
+			<result name="ok">/jsp/singlebook/online_reading.jsp</result>
 		</action>
 		
 		<!-- 显示搜索结果 -->
@@ -123,6 +130,35 @@
 		
 		
 		<!-- 侧边栏菜单  -->
+		<!-- 我的图书馆，包含“我的书架”，“历史记录”两部分 -->
+		<action name="show_mylibrary" class="action.sidemenu.MyLibrary">
+			<result>/sidemenu/myLibrary.jsp</result>
+		</action>
+		<!-- 我的图书馆，当前借阅 -->
+		<action name="enter_current" class="action.sidemenu.MyLibrary" method="enterCurrent">
+			<result name="ok">/sidemenu/selfinfo/currentBorrow.jsp</result>
+		</action>
+		<!-- 我的图书馆，历史记录  -->
+		<action name="enter_history" class="action.sidemenu.MyLibrary" method="enterHistory">
+			<result name="ok">/sidemenu/selfinfo/historyBorrow.jsp</result>
+		</action>
+		<!-- 我的图书馆，我的预定   -->
+		<action name="enter_order" class="action.sidemenu.MyLibrary" method="enterOrder">
+			<result name="ok">/sidemenu/selfinfo/myOrder.jsp</result>
+		</action>
+		<!-- 我的图书馆，取消预定   -->
+		<action name="cancel_order" class="action.sidemenu.MyLibrary" method="cancelOrder">
+		</action>
+		<!-- 我的图书馆，资料编辑   -->
+		<action name="enter_info" class="action.sidemenu.MyLibrary" method="enterInfo">
+			<result name="ok">/sidemenu/selfinfo/myInfo.jsp</result>
+		</action>
+		<!-- 我的图书馆，确认修改   -->
+		<action name="confirm_modify" class="action.sidemenu.MyLibrary" method="confirmModify">
+			<result name="ok">/sidemenu/myLibrary.jsp</result>
+		</action>
+		
+		
 		<!-- 我的书架   -->
 		<action name="show_bookshelf" class="action.sidemenu.MyBookshelf">
 			<result>/sidemenu/myBookshelf.jsp</result>

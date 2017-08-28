@@ -15,6 +15,8 @@ import net.sf.json.JSONObject;
 
 import org.apache.struts2.ServletActionContext;
 
+import po.Announcement;
+import po.AnnouncementInList;
 import po.book.Book;
 import po.book.BookDetailInfo;
 import po.book.BookInCategory;
@@ -183,6 +185,10 @@ public class Library_main extends ActionSupport{
 //		request.setAttribute("signature", signature);
 //		request.setAttribute("url", url);
 		
+		// 公告列表
+		ArrayList<AnnouncementInList> annolist = SQLUtil.queryAllAnno();
+		context.put("annolist", annolist);
+		
 		return "ok";
 	}
 	
@@ -244,27 +250,41 @@ public class Library_main extends ActionSupport{
 //		request.setAttribute("url", url);
 //		
 		
+		// 公告列表
+		ArrayList<AnnouncementInList> annolist = SQLUtil.queryAllAnno();
+	    context.put("annolist", annolist);
+		
 		return SUCCESS;
 	}
 	
-	
+	// 单个公告
 	public String enterAnno() throws Exception{
 		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpServletResponse response = ServletActionContext.getResponse();
 		request.setCharacterEncoding("utf-8");
-        response.setCharacterEncoding("utf-8");
+//        HttpSession session = request.getSession(false);
+//		String weid = (String)session.getAttribute("weid");
+//        System.out.println("由session获得到weid:" + weid);
         
-        ArrayList<BookDetailInfo> bookList = new ArrayList<BookDetailInfo>();
-        BookDetailInfo book = SQLUtil.querySingleBookFromCat("2");
-        bookList.add(book);
-        book = SQLUtil.querySingleBookFromCat("142");
-        bookList.add(book);
-        book = SQLUtil.querySingleBookFromCat("184");
-        bookList.add(book);
+        String weid = request.getParameter("weid");
         ActionContext context = ActionContext.getContext();
-        context.put("booklist", bookList);
+        context.put("weid", weid);
+        
+        String anno_id = request.getParameter("anno_id");
+        Announcement anno = SQLUtil.queryAnno(anno_id);
+        context.put("anno", anno);
+        
+        // 处理内容显示
+        String annoContent = anno.getContent();
+        String[] strs = annoContent.split("\n");
+        ArrayList<String> contentlist = new ArrayList<String>();
+        for(int i=0; i<strs.length; i++){
+        	contentlist.add(strs[i].trim());
+        }
+	    context.put("contentlist", contentlist);
+        
 		return "ok";
 	}
+	
 	
 	/**
 	 * 首页ajax动态请求jssdk

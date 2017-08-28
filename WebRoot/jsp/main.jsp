@@ -548,24 +548,28 @@
 	</c:if> </header> <section class="menu-section" style="background-color:#2B2F3E">
 	<h3 class="menu-section-title">我的图书馆</h3>
 	<ul class="menu-section-list">
+		<li><a href="/library/show_mylibrary.action?weid=${weid }">个人中心</a>
+		</li>
+		<li><a href="/library/show_shoppingcart.action?weid=${weid }">待借清单</a>
+		</li>
+		<li><a href="/library/show_settings.action?weid=${weid }">推送设置</a>
+		</li>
+	<!--  
 		<li><a href="/library/show_bookshelf.action?weid=${weid }">我的收藏</a>
 		</li>
 		<li><a href="/library/show_history.action?weid=${weid }">我的借阅</a>
 		</li>
-		<li><a href="/library/show_shoppingcart.action?weid=${weid }">待借清单</a>
-		</li>
-		<li><a href="/library/initialWordPage.action?weid=${weid }">图书索引</a>
-		</li>
+	-->
 	</ul>
 	</section> <section class="menu-section" style="background-color:#2B2F3E">
 
-	<h3 class="menu-section-title">设置</h3>
+	<h3 class="menu-section-title">更多功能</h3>
 	<ul class="menu-section-list">
+		<li><a href="/library/initialWordPage.action?weid=${weid }">图书索引</a>
+		</li>
 		<li><a href="/library/shake.action?weid=${weid }">摇一摇</a>
 		</li>
 		<li><a href="/library/start_scan.action?weid=${weid }">扫一扫</a>
-		</li>
-		<li><a href="/library/show_settings.action?weid=${weid }">个人设置</a>
 		</li>
 	</ul>
 	</section> </nav>
@@ -621,18 +625,22 @@
 		<!-- 轮播  -->
 		<div class="slide" id="slide1" style="position:relative;z-index:0;">
 			<ul>
+			<c:forEach var="annolist" items="${annolist}">
+				<li>
+					<a href="/library/enter_anno.action?weid=${weid }&anno_id=${annolist.annoid }"> 
+						<img data-src="${annolist.img }" alt=""> 
+					</a>
+					<div class="slide-desc">${annolist.title }</div>
+				</li>
+			</c:forEach>
+			<!--  
 				<li><a href="#"> <img
-						src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
-						data-src="/library/image/announcement/1.jpg" alt=""> </a>
-					<div class="slide-desc">清明假期闭馆通知</div></li>
-				<li><a href="#"> <img
-						src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
 						data-src="/library/image/announcement/2.jpg" alt=""> </a>
 					<div class="slide-desc">图书馆借书流程及守则</div></li>
 				<li><a href="/library/enter_anno.action?weid=${weid }"> <img
-						src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC"
 						data-src="/library/image/announcement/3.jpg" alt=""> </a>
-					<div class="slide-desc">每日好书推荐</div></li>
+					<div class="slide-desc">每月好书推荐</div></li>
+			-->
 			</ul>
 			<div class="dot">
 				<span></span> <span></span> <span></span>

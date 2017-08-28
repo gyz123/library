@@ -49,6 +49,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
 
 <body>
+
+	<div class="weui-header bg-blue" style="height:56px;background-color:#01164b">
+		<div class="weui-header-left" style="margin-top:6px;">
+			<a class="icon icon-109 f-white" 
+				href="/library/back_to_main.action?weid=${weid }">&nbsp;&nbsp;&nbsp;</a>
+		</div>
+		<h1 class="weui-header-title" style="margin-top:16px">
+			<span class="f20">待借清单</span>
+		</h1>
+	</div>
+
 	<!--安全提示-->
 	<div class="safety-tip">
 		<p class="fadeInDown animated">

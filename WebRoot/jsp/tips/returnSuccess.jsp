@@ -44,7 +44,7 @@
   				<p class="weui_btn_area">
   					<a href="/library/back_to_main.action?weid=${weid }" 
   						class="weui_btn weui_btn_primary">返回首页</a>
-  					<a href="/library/show_history.action?weid=${weid }" 
+  					<a href="/library/show_mylibrary.action?weid=${weid }" 
   						class="weui_btn weui_btn_default">查看借阅</a>
   				</p>
   			</div>

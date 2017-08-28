@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import po.Announcement;
+import po.AnnouncementInList;
 import po.Comment;
 import po.book.Book;
 import po.book.BookDetailInfo;
@@ -371,6 +373,29 @@ public class SQLUtil {
 			e.printStackTrace();
 		}
 	}
+	
+	// 点赞/取消
+	public static void handleGoodNum(String category,String commentid){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "";
+			if(category.equals("add")){
+				query = "update bookcomment set goodnum = goodnum+1 " + 
+						"where commentid = '"+ commentid + "';";
+			}else if(category.equals("minus")){
+				query = "update bookcomment set goodnum = goodnum-1 " + 
+						"where commentid = '"+ commentid + "';";
+			}
+			s.executeUpdate(query);
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 
 	// 目录
 	public static HashMap<String, String> getBookOutline(String bookno) {
@@ -417,6 +442,29 @@ public class SQLUtil {
 			e.printStackTrace();
 		}
 		return bookInfo;
+	}
+	
+	// 在线阅读
+	public static String getBookContent(String bookno, String chapter) {
+		String content = "";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://"
+					+ WeixinUtil.MYSQL_DN, WeixinUtil.MYSQL_NAME,
+					WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "select bookcontent from bookcontent where bookno = "
+					+ bookno + " and chapter = '" + chapter + "';";
+			System.out.println(query);
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {
+				content = ret.getString(1);
+			}
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return content;
 	}
 	
 	
@@ -697,6 +745,59 @@ public class SQLUtil {
 			e.printStackTrace();
 		}
 		return bookno;
+	}
+	
+	
+	// 公告列表
+	public static ArrayList<AnnouncementInList> queryAllAnno(){
+		ArrayList<AnnouncementInList> list = new ArrayList<AnnouncementInList>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://"
+					+ WeixinUtil.MYSQL_DN, WeixinUtil.MYSQL_NAME,
+					WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "select anno_id,title,img from announcement;";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {
+				AnnouncementInList anno = new AnnouncementInList();
+				anno.setAnnoid(ret.getString(1));
+				anno.setTitle(ret.getString(2));
+				anno.setImg(ret.getString(3));
+				list.add(anno);
+			}
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	
+	// 获取公告详情
+	public static Announcement queryAnno(String anno_id){
+		Announcement anno = new Announcement();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://"
+					+ WeixinUtil.MYSQL_DN, WeixinUtil.MYSQL_NAME,
+					WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "select * from announcement where anno_id = '" + anno_id + "';";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {
+				anno.setCategory(ret.getString(1));
+				anno.setTitle(ret.getString(2));
+				anno.setTime(ret.getString(3));
+				anno.setContent(ret.getString(4));
+				anno.setImg(ret.getString(5));
+				anno.setAnnoid(anno_id);
+			}
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return anno;
 	}
 	
 }
