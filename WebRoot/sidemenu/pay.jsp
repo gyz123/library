@@ -96,8 +96,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 															var obj = eval('('
 																	+ data
 																	+ ')');
-															alert("获取到obj:"
-																	+ obj.appId);
+															//alert("获取到obj:" + obj.appId);
 															if (parseInt(obj.agent) < 5) {
 																alert("您的微信版本低于5.0无法使用微信支付");
 																return;
@@ -114,16 +113,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 																				"paySign" : obj.paySign
 																			//微信签名  
 																			},
-																			function(
-																					res) {
-																				alert(res.err_msg);
+																			function(res) {
+																				//alert(res.err_msg);
 																				if (res.err_msg == "get_brand_wcpay_request:ok") {
 																					// 支付成功
 																					window.location.href = obj.sendUrl;
 																				} else {
 																					// 支付失败
-																					alert("fail");
-																					window.location.href = "/library/regFailure.action";
+																					alert("支付失败");
+																					window.location.href = "/library/back_to_main.action";
 																					//<span style="font-family:微软雅黑;">当失败后，继续跳转该支付页面让用户可以继续付款，贴别注意不能直接调转jsp，</span><span style="font-size:10.5pt">不然会报</span><span style="font-size:12.0pt"> system:access_denied。</span>  
 																				}
 																			});

@@ -14,7 +14,7 @@
 	<link rel="stylesheet" href="css/weui3.css" />
 	<link rel="stylesheet" type="text/css" href="css/weuix.min.css">
 	
-<script src="js/zepto.min.js"></script>
+
 <script src="js/jquery-3.1.1.min.js"></script>
   <script>
 		var $j = jQuery.noConflict(); //自定义一个比较短的快捷方式

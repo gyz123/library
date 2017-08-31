@@ -142,6 +142,13 @@
 		<action name="enter_history" class="action.sidemenu.MyLibrary" method="enterHistory">
 			<result name="ok">/sidemenu/selfinfo/historyBorrow.jsp</result>
 		</action>
+		<!-- 我的图书馆，阅读评价 -->
+		<action name="enter_comment" class="action.sidemenu.MyLibrary" method="enterComment">
+			<result name="ok">/sidemenu/selfinfo/bookComment.jsp</result>
+		</action>
+		<!-- 我的图书馆，提交评价   -->
+		<action name="submit_comment" class="action.sidemenu.MyLibrary" method="submitComment">
+		</action>
 		<!-- 我的图书馆，我的预定   -->
 		<action name="enter_order" class="action.sidemenu.MyLibrary" method="enterOrder">
 			<result name="ok">/sidemenu/selfinfo/myOrder.jsp</result>

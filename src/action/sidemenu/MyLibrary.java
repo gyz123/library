@@ -9,10 +9,12 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 
 import po.ReserveOrder;
+import po.book.BookDetailInfo;
 import po.book.BookInCurrentList;
 import po.book.BorrowedBook;
 import po.user.UserDetailInfo;
 import util.sql.SQL4PersonalInfo;
+import util.sql.SQLUtil;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -64,6 +66,36 @@ public class MyLibrary extends ActionSupport{
 		context.put("booklist", bookList);
 		
 		return "ok";
+	}
+	// 阅读评价
+	public String enterComment() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getParameter("weid");
+		String bookno = request.getParameter("bookno");
+		ActionContext context = ActionContext.getContext();
+		context.put("weid", weid);
+		// 当前书籍
+		BookDetailInfo book = SQLUtil.querySingleBookFromCat(bookno);
+		context.put("book", book);
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("weid", weid);
+		session.setAttribute("commentbookno", bookno);
+		
+		return "ok";
+	}
+	// 提交评价
+	public void submitComment() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getParameter("weid");
+		String bookno = (String) request.getSession().getAttribute("commentbookno");
+		String comment = request.getParameter("comment");
+		System.out.println("用户评分：" + request.getParameter("fen"));
+		// 提交评价
+		SQLUtil.handleNewComment(weid, bookno, comment);
+		SQLUtil.updateCommentStatus(weid, bookno);
 	}
 	
 	

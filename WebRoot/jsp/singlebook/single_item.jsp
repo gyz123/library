@@ -261,12 +261,12 @@
 	
 	
 	<div style="height:16px;width:100%;background-color:#f8f8f8"></div>
-	<div style="height:40px;width:100%;margin-left:16px;padding-top:12px">
+	<div style="height:40px;width:100%;margin-left:24px;padding-top:12px">
 		<span class="f16">价格一览</span>
 	</div>
 	<c:forEach var="price_list" items="${price_list }">
 	<div class="weui_cells weui_cells_access" style="margin-left:12px;height:44px;margin-top:-1px">
-		<a class="weui_cell " style="" href="${price_list.goodUrl }" >
+		<a class="weui_cell " style="" href="${price_list.url }" >
 			<div class="weui_cell_bd weui_cell_primary" style="margin-top:0px">
 				<span class="f16" style="margin-left:0px">${price_list.site }</span>
 			</div>
@@ -281,7 +281,7 @@
 
 
 	<div style="height:16px;width:100%;background-color:#f8f8f8"></div>
-	<div style="height:40px;width:100%;margin-left:16px;padding-top:12px">
+	<div style="height:40px;width:100%;margin-left:24px;padding-top:12px">
 		<span class="f16">相关推荐</span>
 	</div>
 	<div class="weui_cell" style="height">

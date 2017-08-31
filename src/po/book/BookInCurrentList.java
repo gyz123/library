@@ -6,6 +6,7 @@ public class BookInCurrentList {
 	private String bookimg;
 	private String author;
 	private String leftTime;
+	private int whetherComment;
 	
 	public String getBookno() {
 		return bookno;
@@ -36,6 +37,12 @@ public class BookInCurrentList {
 	}
 	public void setLeftTime(String leftTime) {
 		this.leftTime = leftTime;
+	}
+	public int getWhetherComment() {
+		return whetherComment;
+	}
+	public void setWhetherComment(int whetherComment) {
+		this.whetherComment = whetherComment;
 	}
 	
 }

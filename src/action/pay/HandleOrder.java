@@ -37,7 +37,7 @@ public class HandleOrder extends ActionSupport{
 		
 		HttpServletResponse response = ServletActionContext.getResponse();
         response.setCharacterEncoding("utf-8");
-		String url = response.encodeURL("/library/success_Back.action?weid=" + weid);  
+		String url = response.encodeURL("/library/back_to_main.action?weid=" + weid);  
 		response.sendRedirect(url);
 		
 		return ;

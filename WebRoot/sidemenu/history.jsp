@@ -243,7 +243,9 @@
             console.log(data.num);
           });
   //]]>
-</script><script type="text/javascript">
+</script>
+
+<script type="text/javascript">
 //<![CDATA[
                 // 基于准备好的dom，初始化echarts实例
         // 第二个参数可以指定前面引入的主题 , 'shine'

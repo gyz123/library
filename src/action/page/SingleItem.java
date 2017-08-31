@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 
+import po.BookPrice;
 import po.Comment;
 import po.ComparePriceEntity;
 import po.book.Book;
@@ -290,6 +291,13 @@ public class SingleItem extends ActionSupport{
 //  		List<ComparePriceEntity> myEntity = new ArrayList<ComparePriceEntity>();
 //  		myEntity = getEntity(catchUrl);
 //  		context.put("price_list", myEntity);
+  		
+  		// 全网价格
+  		ArrayList<BookPrice> list = SQL4PersonalInfo.getPriceList(bookno);
+  		context.put("price_list", list);
+  		
+  		// 增加该图书阅读量
+  		SQL4PersonalInfo.updateReadingNum(bookno);
         
 		return SUCCESS;
 	}

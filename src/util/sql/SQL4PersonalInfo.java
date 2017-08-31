@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import po.BookPrice;
 import po.PayList;
 import po.ReserveOrder;
 import po.book.BookInCategory;
@@ -131,6 +132,64 @@ public class SQL4PersonalInfo {
 			e.printStackTrace();
 		}
 		return "N";
+	}
+	
+	
+	// 价格
+	public static ArrayList<BookPrice> getPriceList(String bookno){
+		ArrayList<BookPrice> list = new ArrayList<BookPrice>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			
+			String query = "select * from bookprice where bookno = " + bookno + ";"; 
+			ResultSet ret = s.executeQuery(query);
+			// 将搜索到的9本书放入ArrayList中
+			while (ret.next()) {  
+				BookPrice book1 = new BookPrice();
+				book1.setSite(ret.getString(8));
+				book1.setPrice(ret.getString(2));
+				book1.setUrl(ret.getString(5));
+				list.add(book1);
+				
+				BookPrice book2 = new BookPrice();
+				book2.setSite(ret.getString(9));
+				book2.setPrice(ret.getString(3));
+				book2.setUrl(ret.getString(6));
+				list.add(book2);
+				
+				if(ret.getString(4) != null){
+					BookPrice book3 = new BookPrice();
+					book3.setSite(ret.getString(10));
+					book3.setPrice(ret.getString(4));
+					book3.setUrl(ret.getString(7));
+					list.add(book3);
+				}
+				
+            }
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	
+	// 阅读量 +1
+	public static void updateReadingNum(String bookno){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "update book set readingnum = readingnum+1 where bookno = " + bookno + ";";
+			s.executeUpdate(query);
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -762,7 +821,7 @@ public class SQL4PersonalInfo {
 						"where borrow.weid = '" + weid +"' " +
 						"and borrow.returntime is null and borrow.bookno = book.bookno;";
 			}else if(category.equals("history")){
-				query = "select book.bookno,book.bookname,book.bookimg,book.author,borrow.borrowtime " +
+				query = "select book.bookno,book.bookname,book.bookimg,book.author,borrow.borrowtime,borrow.whether_comment " +
 						"from book,borrow " +
 						"where borrow.weid = '" + weid +"' " +
 						"and borrow.returntime is not null and borrow.bookno = book.bookno;";
@@ -806,6 +865,15 @@ public class SQL4PersonalInfo {
 					}
 					int leftTime = 31 - temp;
 					book.setLeftTime(leftTime + "");
+				}
+				else if(category.equals("history")){
+					String whetherComment = ret.getString(6);
+					if(whetherComment != null && !whetherComment.isEmpty()){
+						// 已评论
+						book.setWhetherComment(1);	
+					}else{
+						book.setWhetherComment(0);
+					}
 				}
 				
 				list.add(book);

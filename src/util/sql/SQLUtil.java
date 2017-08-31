@@ -348,8 +348,7 @@ public class SQLUtil {
 	}
 
 	// 写书评
-	public static void handleNewComment(String weid, String bookno,
-			String comment) {
+	public static void handleNewComment(String weid, String bookno, String comment) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://"
@@ -798,6 +797,23 @@ public class SQLUtil {
 			e.printStackTrace();
 		}
 		return anno;
+	}
+	
+	// 历史记录确认评价
+	public static void updateCommentStatus(String weid,String bookno){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://"
+					+ WeixinUtil.MYSQL_DN, WeixinUtil.MYSQL_NAME,
+					WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "update borrow set whether_comment = 'Y' " +
+						"where bookno = " + bookno + " and weid = '" + weid + "';";
+			s.executeUpdate(query);
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

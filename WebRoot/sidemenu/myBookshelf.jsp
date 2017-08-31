@@ -29,7 +29,7 @@
 		</h1>
 	</div>
 
-	<div class="weui_cells weui_cells_access">
+	<div class="weui_cells weui_cells_access" >
 		<c:forEach  var="booklist" items="${booklist}">
 			<a class="weui_cell" href="/library/show_singleItem.action?bookno=${booklist.bookno }&weid=${weid }">
 				<div class="weui_cell_hd">
@@ -46,7 +46,10 @@
 		</c:forEach>
 	</div>
 	
-	<c:if var="flag" test="${booklist[7].bookno != null }" scope="page">
+	
+	
+	
+	<c:if var="flag" test="${booklist[3].bookno != null }" scope="page">
 	<div class='pager'>
 		<div class="pager-left">
 			<div class="pager-first">
@@ -68,7 +71,7 @@
 	</div>
 	</c:if>
 
-	<c:if var="flag" test="${booklist[7].bookno == null }" scope="page">
+	<c:if var="flag" test="${booklist[3].bookno == null }" scope="page">
 	<div class='pager' style="position:fixed;bottom:0;width:100%">
 		<div class="pager-left">
 			<div class="pager-first">
