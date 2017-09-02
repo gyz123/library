@@ -168,7 +168,7 @@
             		window.clearInterval(stop); //停止触发
             		location.href = "/library/return_success.action"; //成功跳转确认订单
             	}
-            	if(count === 7){
+            	if(count === 12){
             		window.clearInterval(stop); //停止触发
             		location.href = "/library/return_success.action"; //成功跳转确认订单
             	}

@@ -586,6 +586,7 @@ public class SQL4PersonalInfo {
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			String time = df.format(new Date());
 			String query = "select bookno,bookname from paylist where subscribenum = '" + subscribenum + "';";
+			System.out.println(query);
 			ResultSet ret = s.executeQuery(query);
 			ArrayList<BookWithoutImg> list = new ArrayList<BookWithoutImg>();
 			while (ret.next()) {  
@@ -599,6 +600,7 @@ public class SQL4PersonalInfo {
 				BookWithoutImg book = (BookWithoutImg)iterator.next();
 				query = "insert into borrow (weid,bookno,bookname,borrowtime) values ('" + weid + "','" 
 						+ book.getBookno() + "','" + book.getBookname() + "','" + time + "');";
+				System.out.println(query);
 				s.executeUpdate(query);
 			}
 			
