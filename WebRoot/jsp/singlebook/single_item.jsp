@@ -246,6 +246,7 @@
 		</a>
 	</div>
 	
+	<c:if test="${book.dianzi == 'Y' }">
 	<div class="weui_cells weui_cells_access" style="height:44px;margin-top:-1px">
 		<a class="weui_cell " style="" 
 			href="/library/onlineReading.action?bookno=${book.bookno }&weid=${weid }&chapter=1" >
@@ -257,7 +258,7 @@
 			</div> 
 		</a>
 	</div>
-	
+	</c:if>
 	
 	
 	<div style="height:16px;width:100%;background-color:#f8f8f8"></div>
@@ -307,7 +308,7 @@
 	
 	<div style="height:51px"></div>
 	
-	<c:if var="flag" test="${book.leftnum > 0 }" scope="page">
+	<c:if var="flag" test="${book.leftnum > 0 && book.dianzi == 'N' }" scope="page">
 	<section class="weui-menu" style="">
         <div class="weui-menu-inner" >
             <a href="/library/add_to_reserve.action?bookno=${book.bookno }&weid=${weid }&orderFlag=yes" 
@@ -324,7 +325,7 @@
     </section>
 	</c:if>
 	
-	<c:if var="flag" test="${book.leftnum == 0 }" scope="page">
+	<c:if var="flag" test="${book.leftnum == 0 && book.dianzi == 'N' }" scope="page">
 	<section class="weui-menu" style="">
         <div class="weui-menu-inner" >
             <a href="/library/add_to_reserve.action?bookno=${book.bookno }&weid=${weid }&orderFlag=no" 
@@ -334,6 +335,48 @@
         </div>
     </section>
 	</c:if>
+	
+	
+	<c:if var="flag" test="${book.leftnum > 0 && book.dianzi == 'Y' }" scope="page">
+	<section class="weui-menu" style="">
+        <div class="weui-menu-inner" >
+            <a href="/library/add_to_reserve.action?bookno=${book.bookno }&weid=${weid }&orderFlag=yes" 
+            			style="display:block;padding-top:12px" id="reserveSuccess">
+            	我要预定
+            </a>
+        </div>
+        <div class="weui-menu-inner" >
+            <a href="/library/add_to_shoppingcart.action?bookno=${book.bookno }&weid=${weid }" 
+            			style="display:block;padding-top:12px" id="addSuccess">
+            	加入待借清单
+            </a>
+        </div>
+        <div class="weui-menu-inner" >
+            <a href="/library/payEbook.action?bookno=${book.bookno }&weid=${weid }" 
+            			style="display:block;padding-top:12px" id="addSuccess">
+            	借阅电子版
+            </a>
+        </div>
+    </section>
+	</c:if>
+	
+	<c:if var="flag" test="${book.leftnum == 0 && book.dianzi == 'Y' }" scope="page">
+	<section class="weui-menu" style="">
+        <div class="weui-menu-inner" >
+            <a href="/library/add_to_reserve.action?bookno=${book.bookno }&weid=${weid }&orderFlag=no" 
+            			style="display:block;padding-top:12px" id="reserveSuccess">
+            	我要预定
+            </a>
+        </div>
+        <div class="weui-menu-inner" >
+            <a href="/library/payEbook.action?bookno=${book.bookno }&weid=${weid }" 
+            			style="display:block;padding-top:12px" id="addSuccess">
+            	借阅电子版
+            </a>
+        </div>
+    </section>
+	</c:if>
+	
 
 	<script>
 	$(document).ready(function()

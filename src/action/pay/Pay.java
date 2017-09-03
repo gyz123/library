@@ -60,6 +60,7 @@ public class Pay extends ActionSupport{
 		session.setMaxInactiveInterval(60);
 		session.setAttribute("subscribenum", subscribenum);
 		session.setAttribute("weid", weid);
+		session.setAttribute("ebookno", "");
 		
 		// 返回二维码信息给前台
 		HttpServletResponse response = ServletActionContext.getResponse();
@@ -118,4 +119,31 @@ public class Pay extends ActionSupport{
 	}
 	
 
+	// 电子书支付
+	public String payEbook() throws Exception {
+		System.out.println("执行Pay的payEbook方法");
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getParameter("weid");
+		String bookno = request.getParameter("bookno");
+		
+		ActionContext context = ActionContext.getContext();
+		context.put("openid", weid);
+		UserDetailInfo user = SQLUtil.querySingleUser("weid", weid);
+		context.put("user",user);
+		SimpleDateFormat df = new SimpleDateFormat("yyyy年MM月dd日 hh:mm:ss");
+		String date = df.format(new Date());
+		context.put("date", date);
+		ArrayList<BookInShoppingcart> booklist = SQL4PersonalInfo.getEBookInfo(bookno);
+		context.put("booklist", booklist);
+		
+		// 设置session
+		HttpSession session = request.getSession(false);
+		session.setAttribute("subscribenum", "");
+		session.setAttribute("weid", weid);
+		session.setAttribute("ebookno", bookno);
+		
+		return "ok";
+	}
+	
 }

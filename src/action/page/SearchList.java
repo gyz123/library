@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -87,6 +88,10 @@ public class SearchList extends ActionSupport{
 		request.setCharacterEncoding("utf-8");
         response.setCharacterEncoding("utf-8");
         String weid = request.getParameter("weid");
+        if(weid == null || weid.isEmpty() || weid.equals("null")){
+        	HttpSession session = request.getSession(false);
+        	weid = (String)session.getAttribute("weid");
+        }
         
         // 获得搜索条件
         String pageNum = request.getParameter("pagenum");

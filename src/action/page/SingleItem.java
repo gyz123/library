@@ -203,14 +203,19 @@ public class SingleItem extends ActionSupport{
 		String weid = request.getParameter("weid");
 		String bookno = request.getParameter("bookno");
 		String chapter = request.getParameter("chapter");
-		if(chapter == null || chapter.isEmpty() || Integer.parseInt(chapter) <= 0){
-			chapter = "1";
-		}
 		
 		ActionContext context = ActionContext.getContext();
 		context.put("weid", weid);
 		context.put("bookno",bookno);
 		context.put("pagenum", chapter);
+		if(chapter == null || chapter.isEmpty() || Integer.parseInt(chapter) <= 0){
+			chapter = "1";
+		}
+		// 提示付费阅读
+		if(Integer.parseInt(chapter) >= 3){
+			return "hintPay";
+		}
+		
 		HashMap<String,String> bookInfo = SQLUtil.getBookXu(bookno);
 		context.put("bookname",bookInfo.get("bookname"));
 		
@@ -256,6 +261,8 @@ public class SingleItem extends ActionSupport{
         String bookno = request.getParameter("bookno");
         //点击事件增加用户喜爱度
         InterestUtil.clickBook(weid, bookno);
+        // 增加书籍搜索热度
+        SQLUtil.updateBookPoint(bookno);
 		if(bookno == null){ 
 			bookno = "1";  // 测试用例：显示编号为1的书籍信息
 		}

@@ -200,7 +200,7 @@ public class SQLUtil {
 					WeixinUtil.MYSQL_PASSWORD);
 			Statement s = con.createStatement();
 
-			String query = "select bookno,bookname,bookimg,author,leftnum,publisher,readingnum,score from book where category in "
+			String query = "select bookno,bookname,bookimg,author,leftnum,publisher,readingnum,score,dianzi from book where category in "
 					+ category
 					+ " ORDER BY "
 					+ target
@@ -220,6 +220,14 @@ public class SQLUtil {
 				book.setPublisher(ret.getString(6));
 				book.setReadingnum(ret.getString(7));
 				book.setScore(ret.getString(8));
+				// 有无电子版
+				String result = ret.getString(9);
+				if(result != null && result.equals("Y")){
+					book.setDianzi("电子版/纸质版");
+				}else{
+					book.setDianzi("纸质版");
+				}
+				
 				bookList.add(book);
 			}
 			con.close();
@@ -228,7 +236,43 @@ public class SQLUtil {
 		}
 		return bookList;
 	}
+	
+	// 增加类别热度值
+	public static void updateCatPoint(String category){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://"
+					+ WeixinUtil.MYSQL_DN, WeixinUtil.MYSQL_NAME,
+					WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
 
+			String query = "update point_category set point = point+1 " +
+							"where category = '" + category + "';";
+			s.executeUpdate(query);
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// 增加书籍热度值
+	public static void updateBookPoint(String bookno){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://"
+					+ WeixinUtil.MYSQL_DN, WeixinUtil.MYSQL_NAME,
+					WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+
+			String query = "update point_book set point = point+1 " +
+							"where bookno = '" + bookno + "';";
+			s.executeUpdate(query);
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	// 查找单本书籍（所有）（由类别进入）
 	public static BookDetailInfo querySingleBookFromCat(String bookNo) {
 		BookDetailInfo book = new BookDetailInfo();
@@ -262,6 +306,14 @@ public class SQLUtil {
 				book.setAuthor(ret.getString(13));
 				book.setReadingnum(ret.getString(14));
 				book.setScore(ret.getString(15));
+				// 有无电子版
+				String result = ret.getString(17);
+				if(result != null && result.equals("Y")){
+					book.setDianzi("Y");
+				}else{
+					book.setDianzi("N");
+				}
+				
 			}
 			query = "select tag1,tag2,tag3 from booktag where bookno = "
 					+ bookNo + ";";
@@ -480,18 +532,18 @@ public class SQLUtil {
 			String query = "";
 			
 			if(type.equals("chinese")){
-				query = "select bookno,bookname,bookimg,publisher,author,leftnum,readingnum,score from book " +
+				query = "select bookno,bookname,bookimg,publisher,author,leftnum,readingnum,score,dianzi from book " +
 						"where bookname like '%" + keyword +"%' limit "
 						+ (5*((Integer.parseInt(pageNum))-1)) + ",5;";
 			}else if(type.equals("pinyin")){
 				keyword = PinyinUtils.split(keyword);//keyword拼音分词
 				query = "select book.bookno, book.bookname, book.bookimg, book.publisher, " +
-						"book.author, book.leftnum, book.readingnum, book.score " +
+						"book.author, book.leftnum, book.readingnum, book.score, book.dianzi " +
 						"from book,pinyin " +
 						"where book.bookno = pinyin.id and pinyin.pinyin like '%" + keyword +"%' limit "
 						+ (5*((Integer.parseInt(pageNum))-1)) + ",5;";
 			}else if(type.equals("isbn")){
-				query = "select bookno,bookname,bookimg,publisher,author,leftnum,readingnum,score from book " +
+				query = "select bookno,bookname,bookimg,publisher,author,leftnum,readingnum,score,dianzi from book " +
 						"where isbn = '" + keyword +"' limit "
 						+ (5*((Integer.parseInt(pageNum))-1)) + ",5;";
 			}
@@ -509,6 +561,14 @@ public class SQLUtil {
 				book.setLeftNum(ret.getString(6));
 				book.setReadingnum(ret.getString(7));
 				book.setScore(ret.getString(8));
+				// 有无电子版
+				String result = ret.getString(9);
+				if(result != null && result.equals("Y")){
+					book.setDianzi("电子版/纸质版");
+				}else{
+					book.setDianzi("纸质版");
+				}
+				
 				bookSearchList.add(book);
 			}
 			con.close();

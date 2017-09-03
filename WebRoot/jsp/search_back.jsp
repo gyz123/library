@@ -85,6 +85,9 @@ $(function() {
 					</div>
 					<div style="margin-top:16px">
 						<span class="f14">${booklist.publisher}</span>
+						<div style="float:right;margin-right:12px">
+						<span class="f12 f-gray">${booklist.dianzi}</span>
+					</div>
 					</div>
 					<div style="margin-top:4px">
 						<span class="f14">作者：${booklist.author}</span>&nbsp;&nbsp;&nbsp;

@@ -56,10 +56,19 @@
 					alt="" style="width:72px;margin-right:8px;display:block;margin-right:16px">
 			</div>
 			<div class="weui_cell_bd weui_cell_primary">
-				<div><span class="f24">${booklist.bookname}</span></div>
-				<div style="margin-top:16px"><span class="f14">${booklist.publisher}</span></div>
-				<div style="margin-top:4px"><span class="f14">作者：${booklist.author}</span>&nbsp;&nbsp;&nbsp;
-				<span class="f14">剩余量：${booklist.leftNum}</span></div>
+				<div>
+					<span class="f24">${booklist.bookname}</span>
+				</div>
+				<div style="margin-top:16px">
+					<span class="f14">${booklist.publisher}</span>
+					<div style="float:right;margin-right:12px">
+						<span class="f12 f-gray">${booklist.dianzi}</span>
+					</div>
+				</div>
+				<div style="margin-top:4px">
+					<span class="f14">作者：${booklist.author}</span>&nbsp;&nbsp;&nbsp;
+					<span class="f14">剩余量：${booklist.leftNum}</span>
+				</div>
 			</div>
 		</a> 
 		</c:forEach>

@@ -116,7 +116,9 @@
 		<!-- 单本书籍，在线阅读   -->
 		<action name="onlineReading" class="action.page.SingleItem" method="onlineReading">
 			<result name="ok">/jsp/singlebook/online_reading.jsp</result>
+			<result name="hintPay">/jsp/tips/readingPay.jsp</result>
 		</action>
+		
 		
 		<!-- 显示搜索结果 -->
 		<action name="show_searchInfo" class="action.page.SearchList">
@@ -163,6 +165,14 @@
 		<!-- 我的图书馆，确认修改   -->
 		<action name="confirm_modify" class="action.sidemenu.MyLibrary" method="confirmModify">
 			<result name="ok">/sidemenu/myLibrary.jsp</result>
+		</action>
+		<!-- 我的图书馆，我的电子书  -->
+		<action name="enterEbook" class="action.sidemenu.MyLibrary" method="enterEbook">
+			<result name="ok">/sidemenu/selfinfo/myEbook.jsp</result>
+		</action>
+		<!-- 我的图书馆，开始阅读   -->
+		<action name="startReading" class="action.sidemenu.MyLibrary" method="startReading">
+			<result name="ok">/sidemenu/selfinfo/ebookHavePayed.jsp</result>
 		</action>
 		
 		
@@ -212,6 +222,10 @@
 		</action>
 		<!-- 支付，监听管理员是否确认   -->
 		<action name="listen_status" class="action.pay.Pay" method="listenStatus">
+		</action>
+		<!-- 支付，电子书付款   -->
+		<action name="payEbook" class="action.pay.Pay" method="payEbook">
+			<result name="ok">/sidemenu/pay.jsp</result>
 		</action>
 		
 		<!-- 设置   -->

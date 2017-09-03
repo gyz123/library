@@ -9,6 +9,7 @@ public class BookInCategory {
 	private String leftNum;
 	private String readingnum;
 	private String score;
+	private String dianzi;
 	
 	public String getBookno() {
 		return bookno;
@@ -58,7 +59,13 @@ public class BookInCategory {
 	public void setScore(String score) {
 		this.score = score;
 	}
-
+	public String getDianzi() {
+		return dianzi;
+	}
+	public void setDianzi(String dianzi) {
+		this.dianzi = dianzi;
+	}
+	
 	@Override
 	public String toString() {
 		return "bookno=" + bookno + ",bookname=" + bookname

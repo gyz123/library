@@ -943,4 +943,84 @@ public class SQL4PersonalInfo {
 	}
 	
 	
+	// 获取已付费的电子书
+	public static ArrayList<BookInCategory> queryMyEBook(String weid){
+		ArrayList<BookInCategory> bookList = new ArrayList<BookInCategory>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			
+			String query = "select book.bookno,book.bookname,book.bookimg,book.publisher,book.author " +
+							"from ebook,book " +
+							"where book.bookno = ebook.bookno and ebook.weid = '" + weid + "';"; 
+			ResultSet ret = s.executeQuery(query);
+			// 将搜索到的9本书放入ArrayList中
+			while (ret.next()) {  
+				BookInCategory book = new BookInCategory();
+				book.setBookno(ret.getString(1));
+            	book.setBookname(ret.getString(2));
+            	book.setBookimg(ret.getString(3));
+            	book.setPublisher(ret.getString(4));
+            	book.setAuthor(ret.getString(5));
+            	bookList.add(book);
+            }
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bookList;
+	}
+	
+	
+	// 生成电子书订单
+	public static ArrayList<BookInShoppingcart> getEBookInfo(String bookno){
+		ArrayList<BookInShoppingcart> list = new ArrayList<BookInShoppingcart>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			String query = "select bookno,bookname,bookimg,price " +
+							"from book " +
+							"where bookno = '" + bookno + "';";
+			ResultSet ret = s.executeQuery(query);
+			while (ret.next()) {  
+            	BookInShoppingcart book = new BookInShoppingcart();
+            	book.setBookno(ret.getString(1));
+            	book.setBookname(ret.getString(2));
+            	book.setBookimg(ret.getString(3));
+            	book.setPrice(ret.getString(4));
+            	list.add(book);
+            }
+			con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	// 添加电子书到用户电子书列表
+	public static void addToEBook(String weid, String bookno){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://" + WeixinUtil.MYSQL_DN , WeixinUtil.MYSQL_NAME, WeixinUtil.MYSQL_PASSWORD);
+			Statement s = con.createStatement();
+			// 支付日期
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			String time = df.format(new Date());
+			String query = "insert into ebook (weid,bookno,paytime) values ('" + weid + "','" 
+						+ bookno + "','" + time + "');";
+			System.out.println(query);
+			s.executeUpdate(query);
+			
+            con.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 }

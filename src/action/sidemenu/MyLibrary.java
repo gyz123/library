@@ -1,6 +1,7 @@
 package action.sidemenu;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +11,7 @@ import org.apache.struts2.ServletActionContext;
 
 import po.ReserveOrder;
 import po.book.BookDetailInfo;
+import po.book.BookInCategory;
 import po.book.BookInCurrentList;
 import po.book.BorrowedBook;
 import po.user.UserDetailInfo;
@@ -158,5 +160,52 @@ public class MyLibrary extends ActionSupport{
 		Thread.sleep(2000);
 		return "ok";
 	}
+	
+	
+	// 我的电子书
+	public String enterEbook() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getParameter("weid");
+		ActionContext context = ActionContext.getContext();
+		context.put("weid", weid);
+		
+		// 获取已借阅的电子书
+		ArrayList<BookInCategory> bookList = SQL4PersonalInfo.queryMyEBook(weid);
+		context.put("booklist", bookList);
+		
+		return "ok";
+	}
+	// 开始阅读
+	public String startReading() throws Exception{
+		HttpServletRequest request = ServletActionContext.getRequest();
+		request.setCharacterEncoding("utf-8");
+		String weid = request.getParameter("weid");
+		String bookno = request.getParameter("bookno");
+		String chapter = request.getParameter("chapter");
+		
+		ActionContext context = ActionContext.getContext();
+		context.put("weid", weid);
+		context.put("bookno",bookno);
+		context.put("pagenum", chapter);
+		if(chapter == null || chapter.isEmpty() || Integer.parseInt(chapter) <= 0){
+			chapter = "1";
+		}
+		
+		HashMap<String,String> bookInfo = SQLUtil.getBookXu(bookno);
+		context.put("bookname",bookInfo.get("bookname"));
+		
+		// 处理内容显示
+		String content = SQLUtil.getBookContent(bookno, chapter);
+        String[] strs = content.split("\n");
+        ArrayList<String> contentlist = new ArrayList<String>();
+        for(int i=0; i<strs.length; i++){
+        	contentlist.add(strs[i].trim());
+        }
+	    context.put("contentlist", contentlist);
+		
+		return "ok";
+	}
+	
 	
 }

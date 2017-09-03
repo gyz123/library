@@ -19,6 +19,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class HandleOrder extends ActionSupport{
 	private static final long serialVersionUID=1L;
 
+	// 支付成功后的回调
 	// 设置订单信息
 	public void success() throws Exception{
 		System.out.println("执行HandleOrder的success方法");
@@ -28,9 +29,18 @@ public class HandleOrder extends ActionSupport{
 		HttpSession session = request.getSession(false);
 		String subscribenum = (String)session.getAttribute("subscribenum");
 		String weid = (String)session.getAttribute("weid");
+		String ebookno = (String)session.getAttribute("ebookno");
+		System.out.println("获取到session中的数据：subs=" + subscribenum + ",ebook=" + ebookno);
 		
 		// 支付成功后续操作
-		successOperation(subscribenum,weid);
+		if(!subscribenum.isEmpty() && ebookno.isEmpty()){
+			successOperation(subscribenum,weid);
+		}
+		// 电子书支付
+		else if(!ebookno.isEmpty() && subscribenum.isEmpty()){
+			SQL4PersonalInfo.addToEBook(weid, ebookno);		// 加入到ebook列表
+		}
+		
 		
 		ActionContext context = ActionContext.getContext();
 		context.put("weid", weid);
@@ -57,5 +67,6 @@ public class HandleOrder extends ActionSupport{
 		// 设置用户支付状态为true
 		SQL4PersonalInfo.setWhetherPay(subscribenum);	
 	}
+	
 	
 }

@@ -19,6 +19,7 @@ public class BookDetailInfo {
 	private String tag1;
 	private String tag2;
 	private String tag3;
+	private String dianzi;
 	
 	public BookDetailInfo() {
 	}
@@ -143,6 +144,14 @@ public class BookDetailInfo {
 
 	public void setTag3(String tag3) {
 		this.tag3 = tag3;
+	}
+
+	public String getDianzi() {
+		return dianzi;
+	}
+
+	public void setDianzi(String dianzi) {
+		this.dianzi = dianzi;
 	}
 
 	@Override

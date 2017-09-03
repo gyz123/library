@@ -66,23 +66,10 @@ public class Library_main extends ActionSupport{
 		// 文学：中国文学、外国文学
        	if(catName.equals("wenxue")){
        		bookList = SQLUtil.querySingleCat("('中国文学','外国文学')", pageNum, target);
-//       		String str = SQLUtil.querySingleCat2("('中国文学','外国文学')", pageNum);
-//       		String[] dataList = str.split("##");
-//       		System.out.println("共 " + dataList.length + " 本书");
-//       		for(int i=0; i<dataList.length; i++){
-//       			Book book = new Book();
-//       			System.out.println("当前书本信息: " + dataList[i]);
-//       			String[] bookdata = dataList[i].split(";;");
-//       			System.out.println("每本书 " + bookdata.length + " 条数据: ");
-//       			book.setBookno(bookdata[0]);
-//            	book.setBookname(bookdata[1]);
-//            	book.setBookimg(bookdata[2]);
-//            	bookList.add(book);
-//       		}
        		context.put("catid","wenxue");
        		context.put("cat", "文学");
        		context.put("booklist", bookList);
-       		
+       		SQLUtil.updateCatPoint("文学");
        	}
        	// 传记
        	else if(catName.equals("zhuanji")){
@@ -93,6 +80,7 @@ public class Library_main extends ActionSupport{
        		context.put("catid","zhuanji");
        		context.put("cat", "传记");
        		context.put("booklist", bookList);
+       		SQLUtil.updateCatPoint("传记");
        	}
        	// 历史
        	else if(catName.equals("lishi")){
@@ -100,6 +88,7 @@ public class Library_main extends ActionSupport{
        		context.put("catid","lishi");
        		context.put("cat", "历史");
        		context.put("booklist", bookList);
+       		SQLUtil.updateCatPoint("历史");
        	}
        	// 哲学
        	else if(catName.equals("zhexue")){
@@ -107,6 +96,7 @@ public class Library_main extends ActionSupport{
        		context.put("catid","zhexue");
        		context.put("cat", "哲学");
        		context.put("booklist", bookList);
+       		SQLUtil.updateCatPoint("哲学");
        	}
        	// 儿童
        	else if(catName.equals("ertong")){
@@ -114,6 +104,7 @@ public class Library_main extends ActionSupport{
        		context.put("catid","ertong");
        		context.put("cat", "少儿");
        		context.put("booklist", bookList);
+       		SQLUtil.updateCatPoint("儿童");
        	}
        	// 小说
        	else if(catName.equals("xiaoshuo")){
@@ -121,6 +112,7 @@ public class Library_main extends ActionSupport{
        		context.put("catid","xiaoshuo");
        		context.put("cat", "小说");
        		context.put("booklist", bookList);
+       		SQLUtil.updateCatPoint("小说");
        	}
        	// 心理：鸡汤、心理
        	else if(catName.equals("xinli")){
@@ -128,6 +120,7 @@ public class Library_main extends ActionSupport{
        		context.put("catid","xinli");
        		context.put("cat", "心理");
        		context.put("booklist", bookList);
+       		SQLUtil.updateCatPoint("心理");
        	}
        	// 社会：成功励志、教育、管理
        	else if(catName.equals("shehui")){
@@ -135,13 +128,15 @@ public class Library_main extends ActionSupport{
        		context.put("catid","shehui");
        		context.put("cat", "社会");
        		context.put("booklist", bookList);
+       		SQLUtil.updateCatPoint("社会");
        	}
-       	// 计算机
+       	// 科技
        	else if(catName.equals("keji")){
        		bookList = SQLUtil.querySingleCat("('计算机','科技','互联网')", pageNum, target);
        		context.put("catid","keji");
        		context.put("cat", "科技");
        		context.put("booklist", bookList);
+       		SQLUtil.updateCatPoint("科技");
        	}
 		return "ok";
 	}
@@ -151,7 +146,7 @@ public class Library_main extends ActionSupport{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		request.setCharacterEncoding("utf-8");
 		String weid = request.getParameter("weid");
-		if(weid == null || weid.isEmpty()){
+		if(weid == null || weid.isEmpty() || weid.equals("null")){
 			weid = request.getSession(false).getAttribute("weid").toString();
 		}
 		ActionContext context = ActionContext.getContext();

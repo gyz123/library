@@ -35,7 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				style="margin-left:16px;">订单详情</span>
 	<div class="weui-form-preview" style="margin-top:12px">
 		<div class="weui-form-preview-hd">
-			<label class="weui-form-preview-label">应付押金</label> 
+			<label class="weui-form-preview-label">应付金额</label> 
 			<em class="weui-form-preview-value">${(booklist[0].price + booklist[1].price)/100.0 }</em>
 		</div>
 		<div class="weui-form-preview-bd">
@@ -57,6 +57,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<p>
 				<label class="weui-form-preview-label">借书时间</label> <span
 					class="weui-form-preview-value">${date }</span>
+			</p>
+			</div>
+			<div style="margin-top:8px">
+			<p>
+				<label class="weui-form-preview-label">有效期</label> <span
+					class="weui-form-preview-value">30天</span>
 			</p>
 			</div>
 			
